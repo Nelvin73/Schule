@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:data="clr-namespace:Groll.Schule.DataManager;assembly=DataManager"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <data:UowSchuleDB x:Key="UnitOfWork" />
+
+
+</ResourceDictionary>

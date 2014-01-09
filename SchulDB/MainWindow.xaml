@@ -1,0 +1,65 @@
+﻿<my:RibbonWindow x:Class="Groll.Schule.SchulDB.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:my="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
+        xmlns:comm="clr-namespace:Groll.Schule.SchulDB.Commands"
+        Title="SchulDB"
+        x:Name="RibbonWindow"
+        Width="800" Height="600">
+    
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>       
+        
+        <my:Ribbon x:Name="Ribbon" Title="Ribbon Title" >
+            <my:Ribbon.HelpPaneContent>
+                <my:RibbonButton SmallImageSource="Images/i1.bmp" />
+            </my:Ribbon.HelpPaneContent>
+            <my:Ribbon.QuickAccessToolBar>
+                <my:RibbonQuickAccessToolBar>
+                    <my:RibbonButton Content="Save"  SmallImageSource="Images/i1.bmp" Command="Save" />
+                    <my:RibbonButton Content="Text2"  SmallImageSource="Images/i1.bmp" />
+                </my:RibbonQuickAccessToolBar>
+            </my:Ribbon.QuickAccessToolBar>
+            <my:Ribbon.ApplicationMenu>
+                <my:RibbonApplicationMenu >
+                    <my:RibbonApplicationMenuItem Header="MenuItem1" x:Name="MenuItem1" ImageSource="Images\i1.bmp" />
+                </my:RibbonApplicationMenu>
+            </my:Ribbon.ApplicationMenu>
+            
+            <my:RibbonTab Header="Standard" Selector.IsSelected="True" >
+                <my:RibbonGroup Header="Stammdaten">
+                    <my:RibbonButton Label="Schüler" SmallImageSource="Images/Schüler.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="schuelerdetails" LargeImageSource="Images/Schüler.ico"  />                    
+                    <my:RibbonButton Label="Klassen" SmallImageSource="Images/Klasse.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="klassendetails" LargeImageSource="Images/Klasse.ico" />
+                    <my:RibbonButton Label="Fächer" SmallImageSource="Images/Schultafel_Schulfaecher_320986.jpg" Command="comm:BasicCommands.NavigateTo" CommandParameter="faecherdetails" LargeImageSource="Images/Mappe.ico" />
+                    <my:RibbonButton Label="Schuljahre" SmallImageSource="Images/neues-jahr-2012.jpg" Command="comm:BasicCommands.NavigateTo" CommandParameter="schuljahredetails" LargeImageSource="Images/neues-jahr-2012.jpg" />                        
+                </my:RibbonGroup>
+                <my:RibbonGroup Header="Beobachtungen">
+                    <my:RibbonButton Label="Eingeben" SmallImageSource="Images/Schüler.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe" LargeImageSource="Images/Schultafel_Schulfaecher_320986.jpg"  />
+                    <my:RibbonButton Label="Exportieren" SmallImageSource="Images/Klasse.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe"  />
+                    <my:RibbonButton Label="Korrigieren" SmallImageSource="Images/Mappe.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe"  />
+                    
+                </my:RibbonGroup>
+            </my:RibbonTab>
+            
+            <my:RibbonTab Header="Listen" Selector.IsSelected="false"  >
+                <my:RibbonGroup Header="Schüler-Listen">
+                    <my:RibbonButton Label="Klassenliste" SmallImageSource="Images\i1.bmp" />
+                    <my:RibbonButton Label="Notenliste" SmallImageSource="Images\i1.bmp" />
+                    <my:RibbonButton Label="Dump Context" Command="comm:BasicCommands.DumpContext" />
+                    
+                </my:RibbonGroup>
+                <my:RibbonGroup Header="Reports" >
+                    <my:RibbonButton Label="Beobachtungen" SmallImageSource="Images\i1.bmp" />                    
+                </my:RibbonGroup>
+            </my:RibbonTab>
+     
+        </my:Ribbon>
+        
+        <!-- Main content -->
+        <Frame x:Name="ContentFrame"  Grid.Row="1" />
+    </Grid>
+</my:RibbonWindow>
