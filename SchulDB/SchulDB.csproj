@@ -170,6 +170,10 @@
       <Project>{435f8ab6-4e8f-4611-989e-379a32a4c27f}</Project>
       <Name>Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UserControls\UserControls.csproj">
+      <Project>{26246406-b254-4bf1-a49c-a171dceada96}</Project>
+      <Name>UserControls</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\SmallIcon.png" />

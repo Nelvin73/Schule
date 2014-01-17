@@ -43,6 +43,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatePickerEx.xaml.cs">
+      <DependentUpon>DatePickerEx.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MultiThumbSlider.xaml.cs">
       <DependentUpon>MultiThumbSlider.xaml</DependentUpon>
     </Compile>
@@ -50,6 +53,10 @@
     <Compile Include="ThreeDigitDoubleConverter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="DatePickerEx.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MultiThumbSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
