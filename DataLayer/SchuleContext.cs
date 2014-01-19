@@ -17,10 +17,9 @@ namespace Groll.Schule.DataAccess
     {
         public SchuleContext() : base("Groll.SchulDB")
         {
+            Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
             Database.SetInitializer(new SchuleContextInitializer());
-          
-            //Database.DefaultConnectionFactory = new
-            //           SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
+                        
 
             //Database.SetInitializer(new DropCreateDatabaseAlways<SchuleContext>());
             //AddSampleData();           

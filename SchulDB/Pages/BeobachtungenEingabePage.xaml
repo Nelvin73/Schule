@@ -34,10 +34,11 @@
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <ComboBox x:Name="cbKlassenListe" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" MinWidth="200"/>
-                    <DatePicker loc:DatePickerWatermarkBehaviour.Watermark="Allgemein (kein Datum)"  SelectedDate="{Binding BeoDatum, Mode=TwoWay}" Style="{DynamicResource DatePickerStyle1}"     />
-                    <UI:DatePickerEx loc:DatePickerWatermarkBehaviour.Watermark="Allgemein (kein Datum)"    />
+                    
+                    <UI:DatePickerX  WatermarkText="kein Datum" SelectedDate="{Binding BeoDatum, Mode=TwoWay}" />
+                    
                 </StackPanel>
-                <ComboBox x:Name="cbSchülerListe" ItemsSource="{Binding SchülerListe}" MinWidth="200" SelectedItem="{Binding SelectedSchüler}" />
+                <ListBox x:Name="cbSchülerListe" ItemsSource="{Binding SchülerListe}" MinWidth="200" MinHeight="100"  SelectedItem="{Binding SelectedSchüler}" />
             </StackPanel>
 
         </GroupBox>
@@ -45,8 +46,7 @@
         <GroupBox Header="Beobachtung eingeben" Margin="10,16.08,10,6.732" Grid.Row="1" Grid.ColumnSpan="2">
             <TextBox Text="{Binding BeoText}" />
         </GroupBox>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="337,89.268,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="Button_Click_1" Height="22"/>
-        <TextBox Text="{Binding BeoDatum}" HorizontalAlignment="Left" Height="23" Margin="469,53.268,0,0" Grid.Row="2" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <Button Content="Hinzufügen" HorizontalAlignment="Left" Margin="337,89.268,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="Button_Click_1" Height="22"/>
 
 
     </Grid>
