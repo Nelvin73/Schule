@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Groll.Schule.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,5 +45,20 @@ namespace Groll.Schule.SchulDB.Pages
             j.BeoDatum = null;
             System.Diagnostics.Debug.WriteLine(j.Fächerliste.Count);
         }
+
+        // Liste neuladen beim Ändern des Filters
+        private void Filter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var s = TryFindResource("SchülerListeViewSource") as CollectionViewSource;
+            s.View.Refresh();          
+        }
+
+        // Filter
+        void s_Filter(object sender, FilterEventArgs e)
+        {            
+            var i = e.Item as Schueler;
+            e.Accepted = i != null && (Filter.Text == "" || i.DisplayName.ToLower().Contains(Filter.Text.ToLower()));            
+        }
+
     }
 }

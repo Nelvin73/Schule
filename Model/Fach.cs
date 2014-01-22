@@ -14,5 +14,10 @@ namespace Groll.Schule.Model
 
         public Fach() { }
         public Fach(string Name) { this.Name = Name; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

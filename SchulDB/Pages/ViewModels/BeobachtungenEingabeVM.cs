@@ -112,17 +112,13 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
             if (uow != null)
             {
                 // Aktuelles Schuljahr holen
-                int currentSJ = uow.Settings["Global.AktuellesSchuljahr"].GetInt(Schuljahr.GetCurrent().Startjahr);                
+                int currentSJ = uow.Settings["Global.AktuellesSchuljahr"].GetInt(Schuljahr.GetCurrent().Startjahr);
 
                 // Klassen des Schuljahres holen
-                KlassenListe = new ObservableCollection<Klasse>(uow.Klassen.GetList( k => k.Schuljahr.Startjahr == currentSJ));
-        
+                KlassenListe = new ObservableCollection<Klasse>(uow.Klassen.GetList(k => k.Schuljahr.Startjahr == currentSJ));
+
                 // Aktuelle Fächer holen
-                Fächerliste = new ObservableCollection<Fach>(uow.Fächer.GetList( f => f.Inaktiv == false));
-                
-              //  KlassenListe = new ObservableCollection<Klasse>(uow.Klassen.GetList());
-              //  SchülerListe = new ObservableCollection<Schueler>(uow.Schueler.GetList());
-              //  System.Windows.MessageBox.Show(uow.Settings["Global.AktuellesSchuljahr"].GetValue().ToString());
+                Fächerliste = new ObservableCollection<Fach>(uow.Fächer.GetList(f => f.Inaktiv == false));
             }
         }
 
@@ -148,6 +144,22 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
         }
 
         #endregion
+
+
+        // Commands
+        public void AddCurrentComment()
+        {
+            Beobachtung b = new Beobachtung()
+            {
+                 Datum = beoDatum,
+                 Fach = selectedFach, 
+                 Text = beoText, 
+                 Schuljahr = ScurrentSJ,
+                 Schueler = selectedSchüler};
+                
+                uow.Beobachtungen.Add(b);
+
+        }
 
     }
 }

@@ -14,39 +14,48 @@
 
     <Page.Resources>
         <VM:BeobachtungenEingabeVM x:Key="ViewModel" UnitOfWork="{StaticResource UnitOfWork}" BeoText="Beobachtung" BeoDatum="12.11.2013" />
-
+        <CollectionViewSource x:Key="SchülerListeViewSource" Source="{Binding SchülerListe, Source={StaticResource ViewModel}}" Filter="s_Filter"  />
     </Page.Resources>
 
 
     <Grid x:Name="root" DataContext="{StaticResource ViewModel}" >
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="621*"/>
-            <ColumnDefinition Width="179*"/>
+            <ColumnDefinition Width="519*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="32*"/>
-            <RowDefinition Height="29*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Header="Schüler auswählen" Margin="10,10,10,3.92" Grid.Row="0">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <ComboBox x:Name="cbKlassenListe" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" MinWidth="200"/>
-                    
-                    <UI:DatePickerX  WatermarkText="kein Datum" SelectedDate="{Binding BeoDatum, Mode=TwoWay}" />
-                    
+        <GroupBox Header="Schüler auswählen" Margin="3" Grid.Row="0">
+            <StackPanel Margin="3">
+                <StackPanel Orientation="Horizontal" Margin="3">
+                    <TextBlock Text="Klasse:" Margin="3" />
+                    <ComboBox x:Name="cbKlassenListe" Margin="3" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" MinWidth="200"/>
                 </StackPanel>
-                <ListBox x:Name="cbSchülerListe" ItemsSource="{Binding SchülerListe}" MinWidth="200" MinHeight="100"  SelectedItem="{Binding SelectedSchüler}" />
+                <TextBox x:Name="Filter" TextChanged="Filter_TextChanged" Margin="3" />
+                <ListBox x:Name="cbSchülerListe" Margin="3"  ItemsSource="{Binding Mode=OneWay, Source={StaticResource SchülerListeViewSource}}" MinWidth="200" MinHeight="100"  SelectedItem="{Binding SelectedSchüler}" SelectionMode="Extended" />
             </StackPanel>
 
         </GroupBox>
+        <StackPanel Margin="3" Grid.Column="1" >
+            <TextBlock Text="Fach" Margin="3" />
+            <ListBox x:Name="lbFächer" ItemsSource="{Binding Fächerliste}" SelectedIndex="{Binding SelectedFach}" MinHeight="100" Margin="3" />
 
-        <GroupBox Header="Beobachtung eingeben" Margin="10,16.08,10,6.732" Grid.Row="1" Grid.ColumnSpan="2">
-            <TextBox Text="{Binding BeoText}" />
+            <TextBlock Text="Datum" Margin="3,10,3,3" />
+            <UI:DatePickerX  WatermarkText="kein Datum" SelectedDate="{Binding BeoDatum, Mode=TwoWay}" Margin="3" />
+        </StackPanel>
+        
+        <GroupBox Header="Beobachtung eingeben" Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
+            <TextBox Text="{Binding BeoText}" Margin="3" />
         </GroupBox>
-        <Button Content="Hinzufügen" HorizontalAlignment="Left" Margin="337,89.268,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="Button_Click_1" Height="22"/>
+        <Button Content="Hinzufügen" HorizontalAlignment="Right"  Grid.Row="2" Width="75" Click="Button_Click_1" Height="22" Grid.ColumnSpan="2" Margin="3,3,12,3"/>
+
+
+
 
 
     </Grid>

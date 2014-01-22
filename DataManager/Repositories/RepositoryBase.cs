@@ -37,6 +37,11 @@ namespace Groll.Schule.DataManager.Repositories
                 return context.Set<T>().Add(new T());
             }
 
+            public T Add(T t)
+            {
+                return context.Set<T>().Add(t);
+            }
+
             public List<T> GetList()
             {
                 return context.Set<T>().ToList();
