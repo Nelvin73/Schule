@@ -10,6 +10,8 @@ namespace Groll.Schule.SchulDB.Pages
     public interface ISchulDBPage
     {
         void SetMainWindow(MainWindow x);
+
+      //   bool OnDisplayed();
         
     }
 }

@@ -12,6 +12,7 @@ namespace Groll.Schule.Model
         public DateTime? Datum { get; set; }
         public string Text { get; set; }
         public virtual Fach Fach { get; set; }
+        public int SchuljahrId { get; set; }
         public virtual Schuljahr Schuljahr { get; set; }
         public virtual Schueler Schueler { get; set; }
     }

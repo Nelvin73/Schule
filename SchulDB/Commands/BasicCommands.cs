@@ -24,6 +24,11 @@ namespace Groll.Schule.SchulDB.Commands
         }
 
 
+        public static void CanExecute_TRUE(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+            // e.Handled = true;
+        }
 
 
     }

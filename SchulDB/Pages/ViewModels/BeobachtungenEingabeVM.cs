@@ -26,6 +26,10 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
         private Fach selectedFach;
         private ObservableCollection<Klasse> klassenListe;
         private ObservableCollection<Schueler> schülerListe;
+        private List<Beobachtung> beobachtungenHistoryListe;
+        private BeoHistoryMode beobachtungenHistoryMode;
+
+        public enum BeoHistoryMode { LastEntered, SortDate, CurrentSchueler }
 
         #region Properties
 
@@ -33,39 +37,63 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
         public UowSchuleDB UnitOfWork
         {
             get { return uow; }
-            set { uow = value; OnUnitOfWorkChanged(); }
+            set
+            {
+                if (uow == value)
+                    return;
+                uow = value; OnUnitOfWorkChanged();
+            }
         }
-        
+
         // Datum der Beobachtungen (NULL = Allgemein)        
         public DateTime? BeoDatum
         {
             get { return beoDatum; }
-            set { beoDatum = value; OnPropertyChanged(); }
+            set
+            {
+                if (beoDatum == value)
+                    return;
+                beoDatum = value; OnPropertyChanged();
+            }
         }
 
         // Beobachtungstext        
         public string BeoText
         {
             get { return beoText; }
-            set { beoText = value; OnPropertyChanged(); }
+            set
+            {
+                if (beoText == value)
+                    return;
+                beoText = value; OnPropertyChanged();
+            }
         }
 
         // Liste der Fächer / z.B. für Dropdown oder Liste        
         public ObservableCollection<Fach> Fächerliste
         {
             get { return fächerListe; }
-            set { fächerListe = value; OnPropertyChanged(); }
-        }   
-     
+            set
+            {
+                if (fächerListe == value)
+                    return;
+                fächerListe = value; OnPropertyChanged();
+                if (fächerListe.Count > 0)
+                    SelectedFach = fächerListe[0];
+            }
+        }
+
         // Liste der Klassen / z.B. für Dropdown oder Liste        
         public ObservableCollection<Klasse> KlassenListe
         {
             get { return klassenListe; }
             set
             {
+                if (klassenListe == value)
+                    return;
                 klassenListe = value; OnPropertyChanged();
                 if (klassenListe.Count > 0)
-                    SelectedKlasse = klassenListe[0];                  
+                    SelectedKlasse = klassenListe[0];
             }
         }
 
@@ -73,35 +101,81 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
         public ObservableCollection<Schueler> SchülerListe
         {
             get { return schülerListe; }
-            set { schülerListe = value; OnPropertyChanged();
-            if (schülerListe.Count > 0)
-                SelectedSchüler = schülerListe[0]; 
+            set
+            {
+                if (schülerListe == value)
+                    return;
+                schülerListe = value; OnPropertyChanged();
+                if (schülerListe.Count > 0)
+                    SelectedSchüler = schülerListe[0];
             }
         }
+
+        // Liste der Beobachtungen / z.B. für Dropdown oder Liste                       
+        public List<Beobachtung> BeobachtungenHistoryListe
+        {
+            get { return beobachtungenHistoryListe; }
+            set
+            {
+                if (beobachtungenHistoryListe == value)
+                    return;
+                beobachtungenHistoryListe = value; OnPropertyChanged();
+            }
+        }
+
+        // History-Modus
+        public BeoHistoryMode BeobachtungenHistoryType
+        {
+            get { return beobachtungenHistoryMode; }
+            set
+            {
+                if (beobachtungenHistoryMode == value)
+                    return;
+                beobachtungenHistoryMode = value; OnPropertyChanged(); UpdateHistory();
+            }
+        }
+
+
 
         public Klasse SelectedKlasse
         {
             get { return selectedKlasse; }
-            set { selectedKlasse = value; OnPropertyChanged(); OnSelectedKlasseChanged(); }
-        }       
+            set
+            {
+                if (selectedKlasse == value)
+                    return;
+                selectedKlasse = value; OnPropertyChanged(); OnSelectedKlasseChanged();
+            }
+        }
 
         public Schueler SelectedSchüler
         {
             get { return selectedSchüler; }
-            set { selectedSchüler = value; OnPropertyChanged(); OnSelectedSchülerChanged(); }
+            set
+            {
+                if (selectedSchüler == value)
+                    return;
+                selectedSchüler = value; OnPropertyChanged(); OnSelectedSchülerChanged();
+            }
         }
 
         public Fach SelectedFach
         {
             get { return selectedFach; }
-            set { selectedFach = value; OnPropertyChanged(); }
-        } 
-             
+            set
+            {
+                if (selectedFach == value)
+                    return;
+                selectedFach = value; OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         //  Konstructor
         public BeobachtungenEingabeVM()
-        {           
+        {
+            BeoDatum = DateTime.Now;
         }
 
         #region Verhalten bei Änderungen der Auswahl
@@ -111,23 +185,29 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
             // Initialisierung
             if (uow != null)
             {
-                // Aktuelles Schuljahr holen
-                int currentSJ = uow.Settings["Global.AktuellesSchuljahr"].GetInt(Schuljahr.GetCurrent().Startjahr);
+                // Aktuelles Schuljahr holen                               
+                var sj = uow.Settings["Global.AktuellesSchuljahr"];
+                if (sj == null)
+                    return;
+                currentSJ = sj.GetInt(Schuljahr.GetCurrent().Startjahr);
 
                 // Klassen des Schuljahres holen
                 KlassenListe = new ObservableCollection<Klasse>(uow.Klassen.GetList(k => k.Schuljahr.Startjahr == currentSJ));
 
                 // Aktuelle Fächer holen
                 Fächerliste = new ObservableCollection<Fach>(uow.Fächer.GetList(f => f.Inaktiv == false));
+                fächerListe.Insert(0, new Fach("<kein Fach>") { FachId = -1000});
+
+                UpdateHistory();
             }
         }
 
         private void OnSelectedKlasseChanged()
-        { 
+        {
             // Eine Klasse wurde ausgewählt => Schülerliste aktualisieren
             SchülerListe = new ObservableCollection<Schueler>(SelectedKlasse.Schueler);
-            
-            
+
+
         }
 
         private void OnSelectedSchülerChanged()
@@ -135,31 +215,61 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
             // Ein Schüler wurde ausgewählt 
             int i = 0;  // Dummy
         }
-        
 
-
-        private void UpdateSchülerListe()
+        private void UpdateHistory()
         {
+            switch (beobachtungenHistoryMode)
+            {
+                case BeoHistoryMode.LastEntered:
+                    BeobachtungenHistoryListe = uow.Beobachtungen.GetObservableCollection().OrderByDescending(x => x.BeobachtungId).Take(10).ToList();
+                    break;
+
+                case BeoHistoryMode.SortDate:
+                    BeobachtungenHistoryListe = uow.Beobachtungen.GetObservableCollection().OrderByDescending(x => x.Datum).Take(10).ToList();                    
+                    break;
+
+                case BeoHistoryMode.CurrentSchueler:
+                    BeobachtungenHistoryListe = uow.Beobachtungen.GetObservableCollection().Where (s => s.Schueler == selectedSchüler).OrderByDescending(x => x.BeobachtungId).Take(10).ToList();                    
+                    break;
+            }
 
         }
+
+
 
         #endregion
 
 
         // Commands
+
+        #region Public Interface für Commands
+        public bool ValidateCurrent()
+        {
+            return selectedSchüler != null && beoText.Length > 0 && currentSJ > 0;
+
+        }
         public void AddCurrentComment()
         {
             Beobachtung b = new Beobachtung()
             {
-                 Datum = beoDatum,
-                 Fach = selectedFach, 
-                 Text = beoText, 
-                 Schuljahr = ScurrentSJ,
-                 Schueler = selectedSchüler};
-                
-                uow.Beobachtungen.Add(b);
+                Datum = beoDatum,
+                Fach = (selectedFach == null || selectedFach.FachId == -1000) ? null : selectedFach,
+                Text = beoText,
+                SchuljahrId = currentSJ,
+                Schueler = selectedSchüler
+            };
 
+            uow.Beobachtungen.Add(b);
+            uow.Save();
+            UpdateHistory();
         }
 
+        public void ClearInput()
+        {
+            BeoDatum = DateTime.Now;
+            BeoText = "";
+        }
+
+        #endregion
     }
 }

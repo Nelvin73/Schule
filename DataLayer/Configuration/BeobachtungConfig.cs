@@ -15,6 +15,7 @@ namespace Groll.Schule.DataAccess.Configuration
         {
             // Set table name 
             this.ToTable("Beobachtungen");
+            this.HasRequired(c => c.Schuljahr).WithMany().HasForeignKey(k => k.SchuljahrId);
         }
     }
    

@@ -61,6 +61,19 @@ namespace Groll.Schule.SchulDB
             UnitOfWork.DumpContext();
         }
 
+
+        private RibbonVM ribbonVM;
+        public RibbonVM RibbonVM
+        {
+            get
+            {
+                if (ribbonVM == null)
+                    ribbonVM = FindResource("RibbonVM") as RibbonVM;
+
+                return ribbonVM;
+            }
+        }
+
         public void ShowPage(string p, bool CreateNew = false)
         {
             ISchulDBPage page = null;

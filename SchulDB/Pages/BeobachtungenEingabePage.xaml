@@ -1,19 +1,19 @@
 ﻿<Page
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:Model="clr-namespace:Groll.Schule.Model;assembly=Model"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:Model="clr-namespace:Groll.Schule.Model;assembly=Model"
         xmlns:UI="clr-namespace:Groll.UserControls;assembly=UserControls"
-    x:Class="Groll.Schule.SchulDB.Pages.BeobachtungenEingabePage" 
-    xmlns:VM="clr-namespace:Groll.Schule.SchulDB.Pages.ViewModels"
-    xmlns:loc="clr-namespace:Groll.Schule.SchulDB.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="460" d:DesignWidth="800"
-	Title="" Loaded="Page_Loaded">
+        x:Class="Groll.Schule.SchulDB.Pages.BeobachtungenEingabePage" 
+        xmlns:VM="clr-namespace:Groll.Schule.SchulDB.Pages.ViewModels"
+        xmlns:loc="clr-namespace:Groll.Schule.SchulDB.Pages"
+        mc:Ignorable="d" 
+        d:DesignHeight="460" d:DesignWidth="800"
+	    Title="" Loaded="Page_Loaded" Unloaded="Page_Unloaded" Initialized="Page_Initialized">
 
     <Page.Resources>
-        <VM:BeobachtungenEingabeVM x:Key="ViewModel" UnitOfWork="{StaticResource UnitOfWork}" BeoText="Beobachtung" BeoDatum="12.11.2013" />
+        <VM:BeobachtungenEingabeVM x:Key="ViewModel" UnitOfWork="{StaticResource UnitOfWork}" />
         <CollectionViewSource x:Key="SchülerListeViewSource" Source="{Binding SchülerListe, Source={StaticResource ViewModel}}" Filter="s_Filter"  />
     </Page.Resources>
 
@@ -41,22 +41,49 @@
             </StackPanel>
 
         </GroupBox>
-        <StackPanel Margin="3" Grid.Column="1" >
-            <TextBlock Text="Fach" Margin="3" />
-            <ListBox x:Name="lbFächer" ItemsSource="{Binding Fächerliste}" SelectedIndex="{Binding SelectedFach}" MinHeight="100" Margin="3" />
+        <GroupBox Header="Bezug auswählen" Margin="3" Grid.Column="1">
 
-            <TextBlock Text="Datum" Margin="3,10,3,3" />
-            <UI:DatePickerX  WatermarkText="kein Datum" SelectedDate="{Binding BeoDatum, Mode=TwoWay}" Margin="3" />
-        </StackPanel>
-        
-        <GroupBox Header="Beobachtung eingeben" Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
-            <TextBox Text="{Binding BeoText}" Margin="3" />
+            <StackPanel Margin="3" >
+                <TextBlock Text="Datum" Margin="3,3,3,3" />
+                <UI:DatePickerX  WatermarkText="kein Datum" SelectedDate="{Binding BeoDatum, Mode=TwoWay}" Margin="3" BorderBrush="{x:Null}" />
+                <TextBlock Text="Fach" Margin="3,10,3,3" />
+                <ListBox x:Name="lbFächer" ItemsSource="{Binding Fächerliste}" SelectedItem="{Binding SelectedFach}" MinHeight="80" Margin="3" />
+
+            </StackPanel>
         </GroupBox>
-        <Button Content="Hinzufügen" HorizontalAlignment="Right"  Grid.Row="2" Width="75" Click="Button_Click_1" Height="22" Grid.ColumnSpan="2" Margin="3,3,12,3"/>
+        <GroupBox Header="Beobachtung eingeben" Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
+            <TextBox Text="{Binding BeoText}" Margin="3" x:Name="txtBeoText"/>
+        </GroupBox>
+        <GroupBox Header="Die letzten Beobachtungen" Grid.Row="2" Margin="3">
 
+            <ListBox Grid.Column="0" Grid.Row="2" Margin="3" ItemsSource="{Binding BeobachtungenHistoryListe}" Height="100" HorizontalContentAlignment="Stretch" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Stretch">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Fach: " />
+                                    <TextBlock Text="{Binding Fach, TargetNullValue=Allgemein}" />
+                                    <TextBlock Text=",  Datum: " />
+                                    <TextBlock Text="{Binding Datum, TargetNullValue=Allgemein}" />
+                                    <TextBlock Text=",  Schüler: " />
+                                    <TextBlock Text="{Binding Schueler.DisplayName, Mode=OneWay}" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding Text}" />
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </GroupBox>
+        <StackPanel Margin="12"  Grid.Row="2" Grid.Column="1">
+            <Button Content="Hinzufügen" HorizontalAlignment="Right" Width="75" Click="Button_Click_1" Height="22"  VerticalAlignment="Top" />
+        </StackPanel>
 
 
 
 
     </Grid>
 </Page>
+
+    
