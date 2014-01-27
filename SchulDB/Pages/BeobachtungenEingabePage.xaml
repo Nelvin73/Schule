@@ -52,15 +52,15 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Beobachtung eingeben" Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
-            <TextBox Text="{Binding BeoText}" Margin="3" x:Name="txtBeoText"/>
+            <TextBox Text="{Binding BeoText}" Margin="3" x:Name="txtBeoText" AcceptsReturn="True" SpellCheck.IsEnabled="True" AcceptsTab="True" TextWrapping="Wrap"/>
         </GroupBox>
         <GroupBox Header="Die letzten Beobachtungen" Grid.Row="2" Margin="3">
 
-            <ListBox Grid.Column="0" Grid.Row="2" Margin="3" ItemsSource="{Binding BeobachtungenHistoryListe}" Height="100" HorizontalContentAlignment="Stretch" >
+            <ListBox Grid.Column="0" Grid.Row="2" Margin="3" ItemsSource="{Binding BeobachtungenHistoryListe}" Height="150" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Stretch">
-                            <StackPanel>
+                        <Border BorderBrush="Gray" BorderThickness="0,0,0,1" HorizontalAlignment="Stretch">
+                            <StackPanel CanHorizontallyScroll="False">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Fach: " />
                                     <TextBlock Text="{Binding Fach, TargetNullValue=Allgemein}" />
@@ -69,7 +69,7 @@
                                     <TextBlock Text=",  Schüler: " />
                                     <TextBlock Text="{Binding Schueler.DisplayName, Mode=OneWay}" />
                                 </StackPanel>
-                                <TextBlock Text="{Binding Text}" />
+                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" />
                             </StackPanel>
                         </Border>
                     </DataTemplate>

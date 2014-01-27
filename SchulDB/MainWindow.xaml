@@ -84,7 +84,7 @@
 
                 </RibbonGroup>
                 <RibbonGroup Header="Eingabe" >
-                    <RibbonButton Label="Eingabe zurücksetzen" Command="comm:BeobachtungenCommands.ClearInput" />
+                    <RibbonButton Label="Eingabe löschen" Command="comm:BeobachtungenCommands.ClearInput" LargeImageSource="Images/Trash.ico" />
                 </RibbonGroup>
                 <RibbonGroup Header="Fertige Texte" />
 
