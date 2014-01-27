@@ -176,6 +176,7 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
         public BeobachtungenEingabeVM()
         {
             BeoDatum = DateTime.Now;
+            beoText = "";
         }
 
         #region Verhalten bei Änderungen der Auswahl
@@ -248,8 +249,9 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
             return selectedSchüler != null && beoText.Length > 0 && currentSJ > 0;
 
         }
-        public void AddCurrentComment()
+        public void AddCurrentComment(bool clear = true)
         {
+            // Save current comment
             Beobachtung b = new Beobachtung()
             {
                 Datum = beoDatum,
@@ -262,6 +264,9 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
             uow.Beobachtungen.Add(b);
             uow.Save();
             UpdateHistory();
+
+            if (clear)
+                BeoText = "";
         }
 
         public void ClearInput()

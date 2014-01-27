@@ -50,9 +50,11 @@ namespace Groll.Schule.SchulDB.Pages
             this.CommandBindings.AddRange(new List<CommandBinding>
                 {
                     new CommandBinding(BeobachtungenCommands.ClearInput, Executed_ClearInput, BasicCommands.CanExecute_TRUE),
-                    
+                    new CommandBinding(BeobachtungenCommands.Add, Executed_Add, CanExecute_Add)
                 });
         }
+
+       
 
 
 
@@ -70,6 +72,15 @@ namespace Groll.Schule.SchulDB.Pages
                 txtBeoText.Text = "";
         }
 
+        private void Executed_Add(object sender, ExecutedRoutedEventArgs e)
+        {            
+            ViewModel.AddCurrentComment((e.Parameter ?? "").ToString() != "noClear");            
+        }
+
+        private void CanExecute_Add(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = ViewModel.ValidateCurrent();
+        }
         #endregion
 
 

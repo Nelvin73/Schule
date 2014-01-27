@@ -211,6 +211,16 @@
   <ItemGroup>
     <Resource Include="Images\test.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Trash.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Trash_red.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Add_Comment.ico" />
+    <Resource Include="Images\Add_Document.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

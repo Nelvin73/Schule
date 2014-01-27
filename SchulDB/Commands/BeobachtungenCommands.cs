@@ -10,6 +10,8 @@ namespace Groll.Schule.SchulDB.Commands
     public class BeobachtungenCommands
     {
         private static RoutedUICommand clearInput = new RoutedUICommand("ClearInput", "ClearInput", typeof(BeobachtungenCommands));
+        private static RoutedUICommand add = new RoutedUICommand("Add", "Add", typeof(BeobachtungenCommands));
+        // private static RoutedUICommand clearInput = new RoutedUICommand("ClearInput", "ClearInput", typeof(BeobachtungenCommands));
 
 
 
@@ -17,10 +19,16 @@ namespace Groll.Schule.SchulDB.Commands
         {
             get { return clearInput; }
         }
+        public static RoutedUICommand Add
+        {
+            get { return add; }
+        }
+        /**public static RoutedUICommand ClearInput
+                {
+                    get { return clearInput; }
+                }
 
-
-
-
+                */
 
     }
 }

@@ -9,6 +9,9 @@ namespace Groll.Schule.SchulDB
 {
     public class RibbonVM : ObservableObject
     {
+        public MainWindow MainWindow { get; set; }
+
+
 
         #region ShowContextTabgroups
 
@@ -46,7 +49,17 @@ namespace Groll.Schule.SchulDB
 
         public RibbonVM()
         {
-            ShowBeobachtungenTab = false;
+            if (App.Current.MainWindow == null)
+            {
+                // Designer mode!
+                ShowBeobachtungenTab = true;
+                BeobachtungenIsSelected = true;
+            }
+            else
+            {
+                // Normal Mode
+                ShowBeobachtungenTab = false;
+            }
         }
     }
 }

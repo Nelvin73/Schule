@@ -52,7 +52,7 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Beobachtung eingeben" Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
-            <TextBox Text="{Binding BeoText}" Margin="3" x:Name="txtBeoText"/>
+            <TextBox Text="{Binding BeoText, UpdateSourceTrigger=PropertyChanged}" Margin="3" x:Name="txtBeoText"/>
         </GroupBox>
         <GroupBox Header="Die letzten Beobachtungen" Grid.Row="2" Margin="3">
 
