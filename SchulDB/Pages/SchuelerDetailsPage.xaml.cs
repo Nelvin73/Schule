@@ -36,7 +36,11 @@ namespace Groll.Schule.SchulDB.Pages
             CollectionViewSource schuelerSource = this.FindResource("schuelerViewSource") as CollectionViewSource;
             var UOW = (this.FindResource("UnitOfWork")) as Groll.Schule.DataManager.UowSchuleDB;
             schuelerSource.Source = UOW.Schueler.GetObservableCollection();
+        }
 
+        public void OnDatabaseChanged()
+        {
+            throw new NotImplementedException();
         }
     }
 }

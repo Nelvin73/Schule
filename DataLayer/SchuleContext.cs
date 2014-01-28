@@ -15,14 +15,13 @@ namespace Groll.Schule.DataAccess
 {
     public partial class SchuleContext : DbContext
     {
-        public SchuleContext() : base("Groll.SchulDB")
+        private SchuleContext() : this("Groll.SchulDB") {    }
+
+        private SchuleContext(string DBfile)
+            : base(DBfile)
         {
             Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
-            Database.SetInitializer(new SchuleContextInitializer());
-                        
-
-            //Database.SetInitializer(new DropCreateDatabaseAlways<SchuleContext>());
-            //AddSampleData();           
+            Database.SetInitializer(new SchuleContextInitializer());        
         }
 
         public DbSet<Setting> Settings { get; set; }
@@ -48,7 +47,33 @@ namespace Groll.Schule.DataAccess
             base.OnModelCreating(modelBuilder);
         }
 
-        
+        /// <summary>
+        /// Öffnet die Standard-DB (Groll.SchulDB.sdf)
+        /// </summary>
+        /// <returns>SchuleContext</returns>
+        public static SchuleContext Open()
+        {
+            return new SchuleContext();
+        }
+
+        /// <summary>
+        /// Öffnet die Developer-DB (SchuleDB_dev.sdf)
+        /// </summary>
+        /// <returns>SchuleContext</returns>
+        public static SchuleContext OpenDev()
+        {
+            return new SchuleContext("Groll.SchulDB_dev");
+        }
+
+        /// <summary>
+        /// Öffnet eine beliebige DB
+        /// </summary>
+        /// <param name="File">Filename der zu öffnenden DB</param>
+        /// <returns>SchuleContext</returns>
+        public static SchuleContext Open(string File)
+        {
+            return new SchuleContext(File);
+        }
 
     }
 

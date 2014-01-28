@@ -10,13 +10,26 @@ namespace Groll.Schule.SchulDB
     public class RibbonVM : ObservableObject
     {
         public MainWindow MainWindow { get; set; }
+        
+        #region CurrentDB info properties        
+        private string currentDBtype = "";
+        public string CurrentDBtype
+        {
+            get { return currentDBtype; }
+            set { currentDBtype = value; OnPropertyChanged(); }
+        }
 
-
-
+        private string currentDdFile = "";
+        public string CurrentDbFile
+        {
+            get { return currentDdFile; }
+            set { currentDdFile = value; OnPropertyChanged(); }
+        }
+        #endregion
+      
         #region ShowContextTabgroups
 
         private bool showBeobachtungenTab;
-
         public bool ShowBeobachtungenTab
         {
             get { return showBeobachtungenTab; }

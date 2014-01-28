@@ -29,8 +29,7 @@ namespace Groll.Schule.SchulDB.Pages
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ((MainWindow)Window.GetWindow(this)).ShowPage("schuelerdetails");
-            int i = 1;
-        }
+         }
 
 
 
@@ -38,8 +37,11 @@ namespace Groll.Schule.SchulDB.Pages
         
         public void SetMainWindow(MainWindow x)
         {
-            // MainWindow not used on Welcome Page
-            return;            
+            // MainWindow not used on Welcome Page            
+        }
+
+        public void OnDatabaseChanged()
+        {            
         }
     }
 }

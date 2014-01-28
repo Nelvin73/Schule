@@ -12,15 +12,42 @@ namespace Groll.Schule.DataManager
 {
     public class UowSchuleDB : IDisposable
     {
-        private SchuleContext context = new SchuleContext();
-        
+        public enum DatabaseType { Standard, Development, Custom, None }
+
+        #region öffentliche Eigenschaften
+        public string CurrentDbFilename
+        {
+            get
+            {
+                if (context == null)
+                    return "";
+                else
+                    return context.Database.Connection.DataSource.Replace("|DataDirectory|", "");
+            }
+        }
+
+        public DatabaseType CurrentDbType
+        {
+            get
+            {
+                return currentDBtype;
+            }
+        }
+        #endregion
+
+        #region interne Felder
+        private SchuleContext context;
+        private DatabaseType currentDBtype = DatabaseType.None;
+
         private RepositoryBase<Schueler> repSchueler;
         private RepositoryBase<Klasse> repKlassen;
         private RepositoryBase<Fach> repFächer;
         private RepositoryBase<Beobachtung> repBeobachtungen;
         private RepositoryBase<Schuljahr> repSchuljahre;
         private SettingsRepository repSettings;
+        #endregion
 
+        #region Repositories
         public SettingsRepository Settings
         {
             get
@@ -87,15 +114,19 @@ namespace Groll.Schule.DataManager
             }
         }
 
+        #endregion
+
         public UowSchuleDB()
         {
-            context.Schueler.Load();
-            context.Fächer.Load();
-            context.Klassen.Load();
-            context.Schuljahre.Load();            
-
+            // Default Konstruktor verbindet sich noch nicht mit der Datenbank.            
         }
 
+        public UowSchuleDB(DatabaseType DBtype, string Filename = "")
+        {
+            ConnectDatabase(DBtype, Filename);                     
+        }
+
+        #region Public Interface
         public void Save()
         {
             context.SaveChanges();
@@ -134,5 +165,50 @@ namespace Groll.Schule.DataManager
                 System.Diagnostics.Debug.WriteLine("[{0}] {1} - {2} ({3})", s.Entity.BeobachtungId, s.Entity.Text, s.Entity.Schueler.DisplayName, s.State.ToString());
             }
         }
+        
+        public void ConnectDatabase(DatabaseType DBtype, string Filename = "")
+        {
+            switch (DBtype)
+            {
+                case DatabaseType.Standard:
+                    context = SchuleContext.Open();
+                    break;
+
+                case DatabaseType.Development:
+                    context = SchuleContext.OpenDev();
+                    break;
+
+                case DatabaseType.Custom:
+                    context = SchuleContext.Open(Filename);
+                    break;
+            }
+            currentDBtype = DBtype;
+            PreloadDatabase();
+            ResetRepositories();
+            
+        }       
+
+        #endregion
+
+        #region interne Hilfsfunktionen
+        private void PreloadDatabase()
+        {
+            context.Schueler.Load();
+            context.Fächer.Load();
+            context.Klassen.Load();
+            context.Schuljahre.Load();                        
+        }
+
+        private void ResetRepositories()
+        {
+            repBeobachtungen = null;
+            repFächer = null;
+            repKlassen = null;
+            repSchueler = null;
+            repSchuljahre = null;
+            repSettings = null;
+        }
+
+        #endregion
     }
 }

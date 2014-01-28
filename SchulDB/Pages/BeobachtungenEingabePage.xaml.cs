@@ -83,14 +83,18 @@ namespace Groll.Schule.SchulDB.Pages
         }
         #endregion
 
-
+        #region ISchulDBPage Implementierung
         public void SetMainWindow(MainWindow x)
         {
             // Save MainWindow handle
             this.Tag = x;
         }
 
-
+        public void OnDatabaseChanged()
+        {
+            viewModel.Refresh();
+        }
+        #endregion
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -136,5 +140,18 @@ namespace Groll.Schule.SchulDB.Pages
         }
         #endregion
 
+        private void test(object sender, DataTransferEventArgs e)
+        {
+          //  MessageBox.Show("Target Updated");
+        }
+
+        private void test2(object sender, DataTransferEventArgs e)
+        {
+         //   MessageBox.Show("Source Updated");
+        }
+
+
+
+       
     }
 }
