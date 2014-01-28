@@ -84,7 +84,11 @@
 
                 </RibbonGroup>
                 <RibbonGroup Header="Eingabe" >
-                    <RibbonButton Label="Eingabe löschen" Command="comm:BeobachtungenCommands.ClearInput" LargeImageSource="Images/Trash.ico" />
+                    <RibbonButton Label="Eingabe löschen" Command="comm:BeobachtungenCommands.ClearInput" LargeImageSource="Images/Trash.ico"  />                                                           
+                    <RibbonSplitButton Label="Beobachtung speichern" Command="comm:BeobachtungenCommands.Add" LargeImageSource="Images/Add_Comment.ico"  >
+                        <RibbonMenuItem Header="Speichern" Command="comm:BeobachtungenCommands.Add" ImageSource="Images/Add_Comment.ico" />
+                        <RibbonMenuItem Header="Speichern ohne Löschen" Command="comm:BeobachtungenCommands.Add" CommandParameter="noClear" ImageSource="Images/Add_Comment.ico" />
+                    </RibbonSplitButton>
                 </RibbonGroup>
                 <RibbonGroup Header="Fertige Texte" />
 
