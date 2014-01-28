@@ -207,7 +207,10 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
         private void OnSelectedKlasseChanged()
         {
             // Eine Klasse wurde ausgewählt => Schülerliste aktualisieren
-            SchülerListe = new ObservableCollection<Schueler>(SelectedKlasse.Schueler);
+            if (selectedKlasse == null)
+                SchülerListe = new ObservableCollection<Schueler>();
+            else
+                SchülerListe = new ObservableCollection<Schueler>(SelectedKlasse.Schueler);
 
 
         }
