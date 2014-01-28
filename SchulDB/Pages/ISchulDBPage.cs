@@ -11,6 +11,7 @@ namespace Groll.Schule.SchulDB.Pages
     {
         void SetMainWindow(MainWindow x);
 
+        void OnDatabaseChanged();
       //   bool OnDisplayed();
         
     }

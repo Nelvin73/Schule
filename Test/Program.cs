@@ -167,7 +167,7 @@ namespace Test
        //                 SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");           
 
           
-            var i = new SchuleContext();
+            var i = SchuleContext.Open();
             
             Console.WriteLine( "\nSchüler: " + i.Schueler.Count());
             foreach (var j in i.Schueler)

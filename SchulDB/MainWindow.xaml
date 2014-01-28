@@ -29,9 +29,34 @@
                     <RibbonButton Content="Text2"  SmallImageSource="Images/i1.bmp" />
                 </RibbonQuickAccessToolBar>
             </Ribbon.QuickAccessToolBar>
-            <Ribbon.ApplicationMenu>
-                <RibbonApplicationMenu >
-                    <RibbonApplicationMenuItem Header="MenuItem1" x:Name="MenuItem1" ImageSource="Images\i1.bmp" />
+            
+            <Ribbon.ApplicationMenu>                
+                <RibbonApplicationMenu Label="File" LargeImageSource="Images/DB.ico" SmallImageSource="Images/DB.ico" >
+                    <RibbonApplicationMenu.AuxiliaryPaneContent>
+                        <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock Text="SchulDB v1.1" FontSize="32" HorizontalAlignment="Center" />
+                            <TextBlock Text="(c) 2014 by Christian Groll" FontSize="12" HorizontalAlignment="Center"/>                                                        
+                            <TextBlock Margin="10" Text="" FontSize="12" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Aktuelle Datenbank: " FontSize="14" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding CurrentDBtype}" FontSize="12" FontStyle="Italic" HorizontalAlignment="Center"/>
+                            <TextBlock Margin="10" Text="" FontSize="12" HorizontalAlignment="Center" />
+                            <TextBlock Text="Datenbank-Datei: " FontSize="14" FontWeight="Bold"  HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding CurrentDbFile}" FontSize="12" FontStyle="Italic" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </RibbonApplicationMenu.AuxiliaryPaneContent>
+                    <RibbonApplicationMenuItem Header="Datenbank wechseln" ImageSource="Images\DB.ico" >
+                        <RibbonApplicationMenuItem Header="Standard" ImageSource="Images\DB.ico" Command="comm:BasicCommands.ChangeDatabase" />
+                        <RibbonApplicationMenuItem Header="Test-Daten" ImageSource="Images\DB_Test.ico" Command="comm:BasicCommands.ChangeDatabase" CommandParameter="dev" />
+                        <RibbonApplicationMenuItem Header="Datei öffnen" ImageSource="Images\DB_Search.ico" Command="comm:BasicCommands.ChangeDatabase" CommandParameter="custom" />
+                    </RibbonApplicationMenuItem>    
+                    <RibbonSeparator />
+                    
+                    <RibbonApplicationMenuItem Header="Konfiguration" ImageSource="Images\i1.bmp" />
+                    <RibbonApplicationMenuItem IsEnabled="False"  />
+                    <RibbonApplicationMenuItem IsEnabled="False"  />
+                    <RibbonApplicationMenuItem IsEnabled="False"  />
+                    <RibbonApplicationMenuItem IsEnabled="False"  />
+                    <RibbonApplicationMenuItem IsEnabled="False"  />                      
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
 

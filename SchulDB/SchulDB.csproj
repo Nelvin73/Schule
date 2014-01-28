@@ -62,6 +62,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="RibbonVM.cs" />
+    <Compile Include="Settings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -154,7 +155,7 @@
     <None Include="Properties\DataSources\Groll.Schule.Model.Stundenplan.datasource" />
     <None Include="Properties\DataSources\Groll.Schule.Model.Unterrichtsstunde.datasource" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
@@ -220,6 +221,11 @@
   <ItemGroup>
     <Resource Include="Images\Add_Comment.ico" />
     <Resource Include="Images\Add_Document.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\DB.ico" />
+    <Resource Include="Images\DB_Search.ico" />
+    <Resource Include="Images\DB_Test.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

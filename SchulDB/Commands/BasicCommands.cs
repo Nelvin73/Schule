@@ -10,7 +10,8 @@ namespace Groll.Schule.SchulDB.Commands
     public class BasicCommands
     {
         private static RoutedUICommand navigateToPage = new RoutedUICommand("NavigateTo", "NavigateTo", typeof(BasicCommands));
-        private static RoutedUICommand dumpContext = new RoutedUICommand("DumpContext", "DumpContext", typeof(BasicCommands));   
+        private static RoutedUICommand dumpContext = new RoutedUICommand("DumpContext", "DumpContext", typeof(BasicCommands));
+        private static RoutedUICommand changeDB = new RoutedUICommand("ChangeDatabase", "ChangeDatabase", typeof(BasicCommands));   
 
         
         public static RoutedUICommand NavigateTo
@@ -23,6 +24,10 @@ namespace Groll.Schule.SchulDB.Commands
             get { return dumpContext; }
         }
 
+        public static RoutedUICommand ChangeDatabase
+        {
+            get { return changeDB; }
+        }
 
         public static void CanExecute_TRUE(object sender, CanExecuteRoutedEventArgs e)
         {

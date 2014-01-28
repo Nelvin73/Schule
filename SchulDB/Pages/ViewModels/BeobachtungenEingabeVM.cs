@@ -196,9 +196,10 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
                 KlassenListe = new ObservableCollection<Klasse>(uow.Klassen.GetList(k => k.Schuljahr.Startjahr == currentSJ));
 
                 // Aktuelle Fächer holen
-                Fächerliste = new ObservableCollection<Fach>(uow.Fächer.GetList(f => f.Inaktiv == false));
-                fächerListe.Insert(0, new Fach("<kein Fach>") { FachId = -1000});
-
+                var fl = new ObservableCollection<Fach>(uow.Fächer.GetList(f => f.Inaktiv == false));
+                fl.Insert(0, new Fach("<kein Fach>") { FachId = -1000 });
+                Fächerliste = fl;
+               
                 UpdateHistory();
             }
         }
@@ -273,6 +274,11 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
         {
             BeoDatum = DateTime.Now;
             BeoText = "";
+        }
+
+        public void Refresh()
+        {
+            OnUnitOfWorkChanged();
         }
 
         #endregion

@@ -25,25 +25,39 @@ namespace Groll.Schule.SchulDB
     {
         private Dictionary<string, ISchulDBPage> pages = new Dictionary<string, ISchulDBPage>();
         private Groll.Schule.DataManager.UowSchuleDB UnitOfWork;
+        private string currentPage;
+        private RibbonVM ribbonVM;
+        
+        public RibbonVM RibbonVM
+        {
+            get
+            {
+                if (ribbonVM == null)
+                    ribbonVM = FindResource("RibbonVM") as RibbonVM;
 
+                return ribbonVM;
+            }
+        }
         public MainWindow()
         {
             try
             {
                 InitializeComponent();
 
-                // Verknüpfe Command Bindings
-              
+                // Verknüpfe Command Bindings              
                 this.CommandBindings.AddRange( new List<CommandBinding>
                 {
                     new CommandBinding(BasicCommands.NavigateTo, Executed_NavigateTo, CanExecute_TRUE),
                     new CommandBinding(ApplicationCommands.Save, Executed_Save, CanExecute_TRUE),
-                    new CommandBinding(BasicCommands.DumpContext, Executed_DumpContext, CanExecute_TRUE)
+                    new CommandBinding(BasicCommands.DumpContext, Executed_DumpContext, CanExecute_TRUE),
+                    new CommandBinding(BasicCommands.ChangeDatabase, Executed_ChangeDatabase, CanExecute_TRUE)
+
                 });
 
-
+                // Initialisiere Datenbank
                 UnitOfWork = this.FindResource("UnitOfWork") as Groll.Schule.DataManager.UowSchuleDB;
-                UnitOfWork.Schueler.GetList();
+                ConnectDatabase();
+
                 ShowPage("welcome");   
             }
             catch (Exception e)
@@ -56,24 +70,38 @@ namespace Groll.Schule.SchulDB
                      
         }
 
-        private void Executed_DumpContext(object sender, ExecutedRoutedEventArgs e)
+        private void ConnectDatabase()
         {
-            UnitOfWork.DumpContext();
+            string db = Properties.Settings.Default.UsedDatabase;
+            if (db == "<Default>")
+                ConnectDatabase( DataManager.UowSchuleDB.DatabaseType.Standard);
+            else if (db == "<Dev>")
+                ConnectDatabase( DataManager.UowSchuleDB.DatabaseType.Development);
+            else
+                ConnectDatabase(  DataManager.UowSchuleDB.DatabaseType.Custom, db);
         }
 
-
-        private RibbonVM ribbonVM;
-        public RibbonVM RibbonVM
+        private void ConnectDatabase(DataManager.UowSchuleDB.DatabaseType DBtype, string Filename = "")
         {
-            get
+            var oldType = UnitOfWork.CurrentDbType;
+            if (oldType != DBtype || Filename != UnitOfWork.CurrentDbFilename)
             {
-                if (ribbonVM == null)
-                    ribbonVM = FindResource("RibbonVM") as RibbonVM;
+                UnitOfWork.ConnectDatabase(DBtype, Filename);
 
-                return ribbonVM;
+                // Update subPages                
+                foreach (var p in pages)
+                {
+                    var page = p.Value as ISchulDBPage;
+                    if (page != null)
+                        page.OnDatabaseChanged();
+                }
+
+                RibbonVM.CurrentDBtype = DBtype.ToString();
+                RibbonVM.CurrentDbFile = UnitOfWork.CurrentDbFilename;
             }
-        }
 
+        }
+        
         public void ShowPage(string p, bool CreateNew = false)
         {
             ISchulDBPage page = null;
@@ -121,6 +149,7 @@ namespace Groll.Schule.SchulDB
                     pages[p] = page;
                     page.SetMainWindow(this);
                 }
+                currentPage = p;
             }
 
             // Show page
@@ -140,11 +169,44 @@ namespace Groll.Schule.SchulDB
         }
 
       
-
         private void Executed_Save(object sender, ExecutedRoutedEventArgs e)
         {
             UnitOfWork.Save();
         }
+
+        /// <summary>
+        /// Führt das Command "ChangeDatabase" aus
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Executed_ChangeDatabase(object sender, ExecutedRoutedEventArgs e)
+        {            
+            switch ((e.Parameter ?? "").ToString())
+            {
+                case "custom":
+                    // User custom database selected
+                    MessageBox.Show("Funktion noch nicht implementiert!");
+                    break;
+
+                case "dev":
+                    ConnectDatabase(DataManager.UowSchuleDB.DatabaseType.Development);
+                    Properties.Settings.Default.UsedDatabase = "<Dev>";
+                    Properties.Settings.Default.Save();
+                    break;
+
+                default:
+                    ConnectDatabase(DataManager.UowSchuleDB.DatabaseType.Standard);
+                    Properties.Settings.Default.UsedDatabase = "<Default>";
+                    Properties.Settings.Default.Save();
+                    break;
+            }
+        }
+
+        private void Executed_DumpContext(object sender, ExecutedRoutedEventArgs e)
+        {
+            UnitOfWork.DumpContext();
+        }
+
 
         private void CanExecute_TRUE(object sender, CanExecuteRoutedEventArgs e)
         {

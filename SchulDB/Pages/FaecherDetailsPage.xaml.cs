@@ -44,8 +44,13 @@ namespace Groll.Schule.SchulDB.Pages
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var UOW = (this.FindResource("UnitOfWork")) as Groll.Schule.DataManager.UowSchuleDB;
-            UOW.Fächer.Create().Name = "Test";
-            int i = 0;
+            UOW.Fächer.Create().Name = "Test";            
+        }
+
+
+        public void OnDatabaseChanged()
+        {
+            throw new NotImplementedException();
         }
     }
 }
