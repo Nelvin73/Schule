@@ -76,9 +76,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </GroupBox>
-        <StackPanel Margin="12"  Grid.Row="2" Grid.Column="1">
-            <Button Content="Hinzufügen" HorizontalAlignment="Right" Width="75" Click="Button_Click_1" Height="22"  VerticalAlignment="Top" />
-        </StackPanel>
+       
 
 
 
