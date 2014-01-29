@@ -6,7 +6,7 @@
         xmlns:Model="clr-namespace:Groll.Schule.Model;assembly=Model"
         xmlns:UI="clr-namespace:Groll.UserControls;assembly=UserControls"
         x:Class="Groll.Schule.SchulDB.Pages.BeobachtungenEingabePage" 
-        xmlns:VM="clr-namespace:Groll.Schule.SchulDB.Pages.ViewModels"
+        xmlns:VM="clr-namespace:Groll.Schule.SchulDB.ViewModels"
         xmlns:loc="clr-namespace:Groll.Schule.SchulDB.Pages"
         mc:Ignorable="d" 
         d:DesignHeight="460" d:DesignWidth="800"
@@ -28,6 +28,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <GroupBox Header="Schüler auswählen" Margin="3" Grid.Row="0">
@@ -42,7 +43,6 @@
 
         </GroupBox>
         <GroupBox Header="Bezug auswählen" Margin="3" Grid.Column="1">
-
             <StackPanel Margin="3" >
                 <TextBlock Text="Datum" Margin="3,3,3,3" />
                 <UI:DatePickerX  WatermarkText="kein Datum" SelectedDate="{Binding BeoDatum, Mode=TwoWay}" Margin="3" BorderBrush="{x:Null}" />
@@ -52,25 +52,28 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Beobachtung eingeben" Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
-            <TextBox Text="{Binding BeoText, UpdateSourceTrigger=PropertyChanged}" Margin="3" x:Name="txtBeoText"/>
+            <TextBox Text="{Binding BeoText, UpdateSourceTrigger=PropertyChanged}" Margin="3" x:Name="txtBeoText" SpellCheck.IsEnabled="True" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"/>
         </GroupBox>
-        <GroupBox Header="Die letzten Beobachtungen" Grid.Row="2" Margin="3">
+        <GridSplitter Grid.Row="2" Grid.ColumnSpan="2" Height="10" ShowsPreview="True" HorizontalAlignment="Stretch" />
+        <GroupBox Header="Die letzten Beobachtungen" Grid.Row="3" Margin="3" Grid.ColumnSpan="2">
 
-            <ListBox Grid.Column="0" Grid.Row="2" Margin="3" ItemsSource="{Binding BeobachtungenHistoryListe, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="100" HorizontalContentAlignment="Stretch" TargetUpdated="test" >
+            <ListBox Margin="3" ItemsSource="{Binding BeobachtungenHistoryListe, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalContentAlignment="Stretch" TargetUpdated="test" ScrollViewer.CanContentScroll="False" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Stretch">
                             <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Fach: " />
-                                    <TextBlock Text="{Binding Fach, TargetNullValue=Allgemein}" />
-                                    <TextBlock Text=",  Datum: " />
-                                    <TextBlock Text="{Binding Datum, TargetNullValue=Allgemein}" />
-                                    <TextBlock Text=",  Schüler: " />
-                                    <TextBlock Text="{Binding Schueler.DisplayName, Mode=OneWay}" />
-                                </StackPanel>
-                                <TextBlock Text="{Binding Text}" />
-                            </StackPanel>
+                                <Border BorderBrush="Gray" Background="#FF2E2E2E" Margin="3">
+                                    <StackPanel Orientation="Horizontal" Margin="3">
+                                        <TextBlock Text="Fach: " Foreground="White" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding Fach, TargetNullValue=Allgemein}" Foreground="Yellow" />
+                                        <TextBlock Text=",  Datum: " Foreground="White" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding Datum, TargetNullValue=Allgemein}" Foreground="Yellow" />
+                                        <TextBlock Text=",  Schüler: " Foreground="White" FontWeight="Bold" />
+                                        <TextBlock Text="{Binding Schueler.DisplayName, Mode=OneWay}" Foreground="Yellow" />
+                                    </StackPanel>
+                                </Border>
+                                <TextBlock Text="{Binding Text}" Margin="3,3,3,10" />
+                            </StackPanel>                                
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

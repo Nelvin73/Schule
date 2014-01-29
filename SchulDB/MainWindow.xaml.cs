@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Groll.Schule.SchulDB.Pages;
 using Groll.Schule.SchulDB.Commands;
+using Groll.Schule.SchulDB.ViewModels;
 
 namespace Groll.Schule.SchulDB
 {
@@ -83,23 +84,8 @@ namespace Groll.Schule.SchulDB
 
         private void ConnectDatabase(DataManager.UowSchuleDB.DatabaseType DBtype, string Filename = "")
         {
-            var oldType = UnitOfWork.CurrentDbType;
-            if (oldType != DBtype || Filename != UnitOfWork.CurrentDbFilename)
-            {
-                UnitOfWork.ConnectDatabase(DBtype, Filename);
-
-                // Update subPages                
-                foreach (var p in pages)
-                {
-                    var page = p.Value as ISchulDBPage;
-                    if (page != null)
-                        page.OnDatabaseChanged();
-                }
-
-                RibbonVM.CurrentDBtype = DBtype.ToString();
-                RibbonVM.CurrentDbFile = UnitOfWork.CurrentDbFilename;
-            }
-
+            if (UnitOfWork.CurrentDbType != DBtype || Filename != UnitOfWork.CurrentDbFilename)            
+                UnitOfWork.ConnectDatabase(DBtype, Filename);                           
         }
         
         public void ShowPage(string p, bool CreateNew = false)

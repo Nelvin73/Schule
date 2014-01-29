@@ -14,11 +14,23 @@ namespace Groll.Schule.DataManager
     {
         public enum DatabaseType { Standard, Development, Custom, None }
 
+        #region OnDatabaseChanged-Event
+        public event EventHandler<EventArgs> DatabaseChanged;
+
+        private void OnDatabaseChanged()
+        {
+            if (DatabaseChanged != null)
+                foreach (EventHandler<EventArgs> i in DatabaseChanged.GetInvocationList())
+                    i(this, new EventArgs());
+
+        }
+        #endregion
+
         #region öffentliche Eigenschaften
         public string CurrentDbFilename
         {
             get
-            {
+            {               
                 if (context == null)
                     return "";
                 else
@@ -52,7 +64,7 @@ namespace Groll.Schule.DataManager
         {
             get
             {
-                if (repSettings == null)
+                if (repSettings == null && context != null)
                     repSettings = new SettingsRepository(context);
 
                 return repSettings; ;
@@ -63,7 +75,7 @@ namespace Groll.Schule.DataManager
         {
             get
             {
-                if (repBeobachtungen == null)
+                if (repBeobachtungen == null && context != null)
                     repBeobachtungen = new RepositoryBase<Beobachtung>(context);                
 
                 return repBeobachtungen; ;
@@ -74,7 +86,7 @@ namespace Groll.Schule.DataManager
         {
             get
             {
-                if (repSchuljahre == null)
+                if (repSchuljahre == null && context != null)
                     repSchuljahre = new RepositoryBase<Schuljahr>(context);
 
                 return repSchuljahre; ;
@@ -85,7 +97,7 @@ namespace Groll.Schule.DataManager
         {
             get
             {
-                if (repFächer == null)
+                if (repFächer == null && context != null)
                     repFächer = new RepositoryBase<Fach>(context);
 
                 return repFächer; ;
@@ -96,7 +108,7 @@ namespace Groll.Schule.DataManager
         {
             get
             {
-                if (repSchueler == null)
+                if (repSchueler == null && context != null)
                     repSchueler = new RepositoryBase<Schueler>(context);
 
                 return repSchueler;
@@ -107,7 +119,7 @@ namespace Groll.Schule.DataManager
         {
             get
             {
-                if (repKlassen == null)
+                if (repKlassen == null && context != null)
                     repKlassen = new RepositoryBase<Klasse>(context);
 
                 return repKlassen;
@@ -128,18 +140,23 @@ namespace Groll.Schule.DataManager
 
         #region Public Interface
         public void Save()
-        {
-            context.SaveChanges();
+        {            
+            if (context != null)
+                context.SaveChanges();
         }
 
 
         public void Dispose()
         {
-            context.Dispose();
+            if (context != null)
+                context.Dispose();
         }
 
         public void DumpContext()
         {
+            if (context == null)
+                return;
+
             System.Diagnostics.Debug.WriteLine("Dumping Context\n===========================\n");
             System.Diagnostics.Debug.WriteLine("Schueler\n===========================");
             foreach (var s in context.ChangeTracker.Entries<Schueler>())
@@ -186,6 +203,9 @@ namespace Groll.Schule.DataManager
             PreloadDatabase();
             ResetRepositories();
             
+            // Fire event
+            OnDatabaseChanged();
+            
         }       
 
         #endregion
@@ -193,6 +213,9 @@ namespace Groll.Schule.DataManager
         #region interne Hilfsfunktionen
         private void PreloadDatabase()
         {
+            if (context == null)
+                return;
+
             context.Schueler.Load();
             context.Fächer.Load();
             context.Klassen.Load();

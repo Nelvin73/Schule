@@ -21,7 +21,7 @@ namespace Groll.Schule.DataAccess
             : base(DBfile)
         {
             Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
-            Database.SetInitializer(new SchuleContextInitializer());        
+            Database.SetInitializer(new SchuleContextInitializer());                 
         }
 
         public DbSet<Setting> Settings { get; set; }
@@ -62,7 +62,7 @@ namespace Groll.Schule.DataAccess
         /// <returns>SchuleContext</returns>
         public static SchuleContext OpenDev()
         {
-            return new SchuleContext("Groll.SchulDB_dev");
+            return new SchuleContext("Groll.SchulDB_dev");           
         }
 
         /// <summary>

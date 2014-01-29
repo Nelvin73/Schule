@@ -25,15 +25,15 @@ namespace Groll.Schule.SchulDB.Pages
     {
 
         #region ViewModel
-        private Groll.Schule.SchulDB.Pages.ViewModels.BeobachtungenEingabeVM viewModel;
+        private Groll.Schule.SchulDB.ViewModels.BeobachtungenEingabeVM viewModel;
 
-        public Groll.Schule.SchulDB.Pages.ViewModels.BeobachtungenEingabeVM ViewModel
+        public Groll.Schule.SchulDB.ViewModels.BeobachtungenEingabeVM ViewModel
         {
             get
             {
                 if (viewModel == null)
                 {
-                    viewModel = this.FindResource("ViewModel") as Groll.Schule.SchulDB.Pages.ViewModels.BeobachtungenEingabeVM;
+                    viewModel = this.FindResource("ViewModel") as Groll.Schule.SchulDB.ViewModels.BeobachtungenEingabeVM;
                     if (viewModel == null)
                         throw new ResourceReferenceKeyNotFoundException();
                 }
@@ -50,15 +50,28 @@ namespace Groll.Schule.SchulDB.Pages
             this.CommandBindings.AddRange(new List<CommandBinding>
                 {
                     new CommandBinding(BeobachtungenCommands.ClearInput, Executed_ClearInput, BasicCommands.CanExecute_TRUE),
-                    new CommandBinding(BeobachtungenCommands.Add, Executed_Add, CanExecute_Add)
+                    new CommandBinding(BeobachtungenCommands.Add, Executed_Add, CanExecute_Add),
+                    new CommandBinding(BeobachtungenCommands.InsertText, Executed_InsertText, BasicCommands.CanExecute_TRUE)
                 });
         }
 
+       
        
 
 
 
         #region ICommand implementierungen
+        private void Executed_InsertText(object sender, ExecutedRoutedEventArgs e)
+        {
+            // Text aus History einfügen
+            if (txtBeoText.IsSelectionActive)
+            {
+                string x = txtBeoText.Text;
+                x = x.Remove(txtBeoText.SelectionStart, txtBeoText.SelectionLength).Insert(txtBeoText.SelectionStart, e.Parameter.ToString());
+                txtBeoText.Text = x;
+            }   
+        }
+
         private void Executed_ClearInput(object sender, ExecutedRoutedEventArgs e)
         {
             // Eingabe im Model löschen

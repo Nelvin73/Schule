@@ -8,7 +8,7 @@ using Groll.Schule.Model;
 using Groll.Schule.DataManager;
 using System.Collections.ObjectModel;
 
-namespace Groll.Schule.SchulDB.Pages.ViewModels
+namespace Groll.Schule.SchulDB.ViewModels
 {
     /// <summary>
     /// ViewModel für die Beobachtungs-Eingabe-Seite
@@ -183,6 +183,22 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
 
         private void OnUnitOfWorkChanged()
         {
+            uow.DatabaseChanged += uow_DatabaseChanged;
+            RefreshData();
+        }
+
+        /// <summary>
+        /// EventHandler für das DatabaseChanged event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void uow_DatabaseChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void RefreshData()
+        {
             // Initialisierung
             if (uow != null)
             {
@@ -199,10 +215,11 @@ namespace Groll.Schule.SchulDB.Pages.ViewModels
                 var fl = new ObservableCollection<Fach>(uow.Fächer.GetList(f => f.Inaktiv == false));
                 fl.Insert(0, new Fach("<kein Fach>") { FachId = -1000 });
                 Fächerliste = fl;
-               
+
                 UpdateHistory();
             }
         }
+
 
         private void OnSelectedKlasseChanged()
         {

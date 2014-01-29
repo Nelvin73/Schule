@@ -61,7 +61,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="RibbonVM.cs" />
+    <Compile Include="Helper\Extensions.cs" />
+    <Compile Include="Reports\BeobachtungenExport.cs" />
+    <Compile Include="ViewModels\RibbonVM.cs" />
     <Compile Include="Settings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -125,7 +127,7 @@
     <Compile Include="Pages\SchuelerDetailsPage.xaml.cs">
       <DependentUpon>SchuelerDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ViewModels\BeobachtungenEingabeVM.cs" />
+    <Compile Include="ViewModels\BeobachtungenEingabeVM.cs" />
     <Compile Include="Pages\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
@@ -226,6 +228,42 @@
     <Resource Include="Images\DB.ico" />
     <Resource Include="Images\DB_Search.ico" />
     <Resource Include="Images\DB_Test.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Notiz.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Aktenschrank.ico" />
+    <Resource Include="Images\Notiz2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Word">
+      <Guid>{00020905-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>8</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

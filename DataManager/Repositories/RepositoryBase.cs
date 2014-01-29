@@ -11,8 +11,7 @@ namespace Groll.Schule.DataManager.Repositories
 {
     public class RepositoryBase<T> where T : class, new()
         {
-            protected SchuleContext context;
-            
+            protected SchuleContext context;            
 
             public RepositoryBase(SchuleContext context)
             {

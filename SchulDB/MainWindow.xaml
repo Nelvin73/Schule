@@ -2,14 +2,14 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
         xmlns:comm="clr-namespace:Groll.Schule.SchulDB.Commands"
-        xmlns:ViewModels="clr-namespace:Groll.Schule.SchulDB.Pages.ViewModels" x:Class="Groll.Schule.SchulDB.MainWindow"
+        xmlns:ViewModels="clr-namespace:Groll.Schule.SchulDB.ViewModels" x:Class="Groll.Schule.SchulDB.MainWindow"
         xmlns:local="clr-namespace:Groll.Schule.SchulDB"
         Title="SchulDB"
         x:Name="RibbonWindow"
         Width="1024" Height="800">
     <RibbonWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <local:RibbonVM x:Key="RibbonVM" />
+        <ViewModels:RibbonVM x:Key="RibbonVM" UnitOfWork="{StaticResource UnitOfWork}"  />
     </RibbonWindow.Resources>
 
 
@@ -38,7 +38,7 @@
                             <TextBlock Text="(c) 2014 by Christian Groll" FontSize="12" HorizontalAlignment="Center"/>                                                        
                             <TextBlock Margin="10" Text="" FontSize="12" HorizontalAlignment="Center"/>
                             <TextBlock Text="Aktuelle Datenbank: " FontSize="14" FontWeight="Bold" HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding CurrentDBtype}" FontSize="12" FontStyle="Italic" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding CurrentDbType}" FontSize="12" FontStyle="Italic" HorizontalAlignment="Center"/>
                             <TextBlock Margin="10" Text="" FontSize="12" HorizontalAlignment="Center" />
                             <TextBlock Text="Datenbank-Datei: " FontSize="14" FontWeight="Bold"  HorizontalAlignment="Center"/>
                             <TextBlock Text="{Binding CurrentDbFile}" FontSize="12" FontStyle="Italic" HorizontalAlignment="Center"/>
@@ -91,7 +91,7 @@
                 </RibbonGroup>
             </RibbonTab>
 
-
+            <!-- RibbonTab Beobachtungen -->
             <RibbonTab Header="Beobachtungen" Selector.IsSelected="true" ContextualTabGroupHeader="Beobachtungen" IsSelected="{Binding BeobachtungenIsSelected}"  >
                 <RibbonGroup Header="Ansicht" >
                     <RibbonComboBox Label="History"  >
@@ -117,8 +117,17 @@
                 </RibbonGroup>
                 <RibbonGroup Header="Einfügen" >
 
+                    <RibbonMenuButton Label="Letzte Kommentare" LargeImageSource="Images/Aktenschrank.ico" ItemsSource="{Binding Last10Beobachtungen}" >
+                        <RibbonMenuButton.ItemContainerStyle>
+                            <Style TargetType="{x:Type RibbonMenuItem}">
+                                <Setter Property="Header" Value="{Binding Text}" />
+                                <Setter Property="Command" Value="{x:Static comm:BeobachtungenCommands.InsertText }" />
+                                <Setter Property="CommandParameter" Value="{Binding Text}" />
+                                <Setter Property="ImageSource" Value="Images/Notiz2.ico" />
+                            </Style>
+                        </RibbonMenuButton.ItemContainerStyle>
+                    </RibbonMenuButton>
                     <RibbonButton Label="Gespeicherte Sätze" SmallImageSource="Images/Add_Document.ico" />
-                    <RibbonButton Label="Letzte Kommentare" SmallImageSource="Images/Add_Document.ico" />
                 </RibbonGroup>
                 <RibbonGroup Header="Export" />
 
