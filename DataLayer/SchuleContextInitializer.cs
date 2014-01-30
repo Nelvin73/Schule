@@ -27,7 +27,7 @@ namespace Groll.Schule.DataAccess
             new List<Klasse> {
                 new Klasse { Schuljahr = SJ, Name = "1a", Schueler = new List<Schueler> { Tamara, Fenja, Cedric }},
                 new Klasse { Schuljahr = SJ, Name = "2a", Schueler = new List<Schueler> { Felian, Christian, Moni }},
-                new Klasse { Schuljahr = oldSJ, Name = "2b", Schueler = new List<Schueler> { Moni }}
+                new Klasse { Schuljahr = oldSJ, Name = "2b", Schueler = new List<Schueler> { Moni, Tamara }}
                 }.ForEach( x=> context.Klassen.Add(x));
 
             var Mathe = new Fach ("Mathe");

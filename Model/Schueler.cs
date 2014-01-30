@@ -36,7 +36,13 @@ namespace Groll.Schule.Model
         {
             get { return !Geburtsdatum.HasValue ? null : (int?) ((DateTime.Now - Geburtsdatum.Value).Days / 365); } 
         }
-        
+
+        public Klasse GetKlasse(int SchuljahrId)
+        {
+            return Klassen.FirstOrDefault(x => x.SchuljahrId == SchuljahrId);
+
+        }
+
         public string DisplayName { get { return GetDisplayName(); } }
         
         public string GetDisplayName(DisplayNameFormat NameFormat = 0)

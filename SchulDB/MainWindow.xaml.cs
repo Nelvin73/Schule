@@ -58,7 +58,7 @@ namespace Groll.Schule.SchulDB
                 // Initialisiere Datenbank
                 UnitOfWork = this.FindResource("UnitOfWork") as Groll.Schule.DataManager.UowSchuleDB;
                 ConnectDatabase();
-
+               
                 ShowPage("welcome");   
             }
             catch (Exception e)

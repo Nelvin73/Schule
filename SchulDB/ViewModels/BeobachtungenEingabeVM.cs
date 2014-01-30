@@ -33,6 +33,18 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         #region Properties
 
+        // CurrentSJ
+        public int CurrentSJ
+        {
+            get { return currentSJ; }
+            set
+            {
+                if (currentSJ == value)
+                    return;
+                currentSJ = value; OnUnitOfWorkChanged();
+            }
+        }
+
         // Unit of Work
         public UowSchuleDB UnitOfWork
         {

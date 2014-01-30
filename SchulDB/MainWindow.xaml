@@ -129,7 +129,17 @@
                     </RibbonMenuButton>
                     <RibbonButton Label="Gespeicherte Sätze" SmallImageSource="Images/Add_Document.ico" />
                 </RibbonGroup>
-                <RibbonGroup Header="Export" />
+                <RibbonGroup Header="Export" >
+                    <RibbonSplitButton Label="Word" LargeImageSource="Images/Word_Doc2.ico"  Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" CommandParameter="All" >
+                        <RibbonMenuItem ImageSource="Images/Word_Doc1.ico" Header="Alle Beobachtungen" Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" CommandParameter="All" />
+                        <RibbonSeparator />
+                        <RibbonMenuItem ImageSource="Images/Word_Doc1.ico" Header="Aktuelles Schuljahr" Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" CommandParameter="CSJ" />
+                        <RibbonMenuItem ImageSource="Images/Klasse.ico" Header="Aktuelle Klasse" Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" CommandParameter="CKL">
+                            <RibbonMenuItem ImageSource="Images/Word_Doc1.ico" Header="Nur aktuelles Schuljahr" Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" CommandParameter="CKL" />
+                            <RibbonMenuItem ImageSource="Images/Word_Doc1.ico" Header="Alles" Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" CommandParameter="CKLA" />
+                        </RibbonMenuItem>
+                    </RibbonSplitButton>
+                </RibbonGroup>
 
 
 

@@ -47,7 +47,7 @@
                 <TextBlock Text="Datum" Margin="3,3,3,3" />
                 <UI:DatePickerX  WatermarkText="kein Datum" SelectedDate="{Binding BeoDatum, Mode=TwoWay}" Margin="3" BorderBrush="{x:Null}" />
                 <TextBlock Text="Fach" Margin="3,10,3,3" />
-                <ListBox x:Name="lbFächer" ItemsSource="{Binding Fächerliste,  NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}" SelectedItem="{Binding SelectedFach}" MinHeight="80" Margin="3" TargetUpdated="test" SourceUpdated="test2" />
+                <ListBox x:Name="lbFächer" ItemsSource="{Binding Fächerliste}" SelectedItem="{Binding SelectedFach}" MinHeight="80" Margin="3"  />
 
             </StackPanel>
         </GroupBox>
@@ -57,7 +57,7 @@
         <GridSplitter Grid.Row="2" Grid.ColumnSpan="2" Height="10" ShowsPreview="True" HorizontalAlignment="Stretch" />
         <GroupBox Header="Die letzten Beobachtungen" Grid.Row="3" Margin="3" Grid.ColumnSpan="2">
 
-            <ListBox Margin="3" ItemsSource="{Binding BeobachtungenHistoryListe, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalContentAlignment="Stretch" TargetUpdated="test" ScrollViewer.CanContentScroll="False" >
+            <ListBox Margin="3" ItemsSource="{Binding BeobachtungenHistoryListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Stretch">

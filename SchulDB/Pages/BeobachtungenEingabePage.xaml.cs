@@ -51,10 +51,12 @@ namespace Groll.Schule.SchulDB.Pages
                 {
                     new CommandBinding(BeobachtungenCommands.ClearInput, Executed_ClearInput, BasicCommands.CanExecute_TRUE),
                     new CommandBinding(BeobachtungenCommands.Add, Executed_Add, CanExecute_Add),
-                    new CommandBinding(BeobachtungenCommands.InsertText, Executed_InsertText, BasicCommands.CanExecute_TRUE)
+                    new CommandBinding(BeobachtungenCommands.InsertText, Executed_InsertText, BasicCommands.CanExecute_TRUE),
+                    new CommandBinding(BeobachtungenCommands.ExportBeobachtungen, Executed_Export, BasicCommands.CanExecute_TRUE)
                 });
         }
 
+       
        
        
 
@@ -83,6 +85,37 @@ namespace Groll.Schule.SchulDB.Pages
             // Falls Textfeld Fokus hat, auch den angezeigten Text löschen
             if (txtBeoText.IsFocused)
                 txtBeoText.Text = "";
+        }
+
+        private void Executed_Export(object sender, ExecutedRoutedEventArgs e)
+        {
+            // TEST: Export all
+            var exp = new Reports.BeobachtungenExport();
+            switch (e.Parameter.ToString())
+            {
+                case "All":
+                    exp.ExportToWord(ViewModel.UnitOfWork.Beobachtungen.GetList());
+                    break;
+                case "CSJ":                    
+                    exp.ExportToWord(ViewModel.UnitOfWork.Beobachtungen.GetList(
+                        x => x.SchuljahrId == ViewModel.CurrentSJ ));
+                    break;
+                case "CKL":
+                    int cSJ = ViewModel.CurrentSJ;
+                    
+                    exp.ExportToWord(
+                        ViewModel.UnitOfWork.Beobachtungen.GetList().Where(
+                        x => x.Schueler.GetKlasse(ViewModel.CurrentSJ).KlasseId == ViewModel.SelectedKlasse.KlasseId));
+            
+                    break;
+
+                case "CKLA":
+                 break;
+                     
+
+            }
+
+       
         }
 
         private void Executed_Add(object sender, ExecutedRoutedEventArgs e)
@@ -152,16 +185,6 @@ namespace Groll.Schule.SchulDB.Pages
             txtBeoText.Focus();
         }
         #endregion
-
-        private void test(object sender, DataTransferEventArgs e)
-        {
-          //  MessageBox.Show("Target Updated");
-        }
-
-        private void test2(object sender, DataTransferEventArgs e)
-        {
-         //   MessageBox.Show("Source Updated");
-        }
 
 
 
