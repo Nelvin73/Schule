@@ -7,11 +7,11 @@
         Title="SchulDB"
         x:Name="RibbonWindow"
         Width="1024" Height="800">
+    
     <RibbonWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <ViewModels:RibbonVM x:Key="RibbonVM" UnitOfWork="{StaticResource UnitOfWork}"  />
     </RibbonWindow.Resources>
-
 
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
@@ -23,6 +23,7 @@
             <Ribbon.HelpPaneContent>
                 <RibbonButton SmallImageSource="Images/i1.bmp" />
             </Ribbon.HelpPaneContent>
+            
             <Ribbon.QuickAccessToolBar>
                 <RibbonQuickAccessToolBar>
                     <RibbonButton Content="Save"  SmallImageSource="Images/i1.bmp" Command="Save" />
@@ -44,11 +45,13 @@
                             <TextBlock Text="{Binding CurrentDbFile}" FontSize="12" FontStyle="Italic" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </RibbonApplicationMenu.AuxiliaryPaneContent>
+           
                     <RibbonApplicationMenuItem Header="Datenbank wechseln" ImageSource="Images\DB.ico" >
                         <RibbonApplicationMenuItem Header="Standard" ImageSource="Images\DB.ico" Command="comm:BasicCommands.ChangeDatabase" />
                         <RibbonApplicationMenuItem Header="Test-Daten" ImageSource="Images\DB_Test.ico" Command="comm:BasicCommands.ChangeDatabase" CommandParameter="dev" />
                         <RibbonApplicationMenuItem Header="Datei öffnen" ImageSource="Images\DB_Search.ico" Command="comm:BasicCommands.ChangeDatabase" CommandParameter="custom" />
                     </RibbonApplicationMenuItem>    
+             
                     <RibbonSeparator />
                     
                     <RibbonApplicationMenuItem Header="Konfiguration" ImageSource="Images\i1.bmp" />
@@ -61,7 +64,7 @@
             </Ribbon.ApplicationMenu>
 
             <Ribbon.ContextualTabGroups>
-                <RibbonContextualTabGroup Header="Beobachtungen" Visibility="{Binding ShowBeobachtungenTab, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#FFFFE800" />
+                <RibbonContextualTabGroup Header="Beobachtungen" Visibility="{Binding BeobachtungenTabVM.IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#FFFFE800" />
             </Ribbon.ContextualTabGroups>
 
            
@@ -92,7 +95,7 @@
             </RibbonTab>
 
             <!-- RibbonTab Beobachtungen -->
-            <RibbonTab Header="Beobachtungen" Selector.IsSelected="true" ContextualTabGroupHeader="Beobachtungen" IsSelected="{Binding BeobachtungenIsSelected}"  >
+            <RibbonTab DataContext="{Binding BeobachtungenTabVM}" Header="{Binding Header}" ContextualTabGroupHeader="Beobachtungen" IsSelected="{Binding IsSelected}" Visibility="{Binding IsVisible}"  >
                 <RibbonGroup Header="Ansicht" >
                     <RibbonComboBox Label="History"  >
                         <RibbonGallery SelectedValue="Green"
@@ -108,6 +111,7 @@
                     </RibbonComboBox>
 
                 </RibbonGroup>
+              
                 <RibbonGroup Header="Eingabe" >
                     <RibbonButton Label="Eingabe löschen" Command="comm:BeobachtungenCommands.ClearInput" LargeImageSource="Images/Trash.ico"  />                                                           
                     <RibbonSplitButton Label="Beobachtung speichern" Command="comm:BeobachtungenCommands.Add" LargeImageSource="Images/Add_Comment.ico"  >
@@ -115,8 +119,8 @@
                         <RibbonMenuItem Header="Speichern ohne Löschen" Command="comm:BeobachtungenCommands.Add" CommandParameter="noClear" ImageSource="Images/Add_Comment.ico" />                    
                     </RibbonSplitButton>
                 </RibbonGroup>
+              
                 <RibbonGroup Header="Einfügen" >
-
                     <RibbonMenuButton Label="Letzte Kommentare" LargeImageSource="Images/Aktenschrank.ico" ItemsSource="{Binding Last10Beobachtungen}" >
                         <RibbonMenuButton.ItemContainerStyle>
                             <Style TargetType="{x:Type RibbonMenuItem}">
@@ -127,18 +131,32 @@
                             </Style>
                         </RibbonMenuButton.ItemContainerStyle>
                     </RibbonMenuButton>
-                    <RibbonButton Label="Gespeicherte Sätze" SmallImageSource="Images/Add_Document.ico" />
+                    
+                    <RibbonButton Label="Gespeicherte Sätze" LargeImageSource="Images/Add_Document.ico" />
                 </RibbonGroup>
-                <RibbonGroup Header="Export" >
-                    <RibbonSplitButton Label="Word" LargeImageSource="Images/Word_Doc2.ico"  Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" CommandParameter="All" >
-                        <RibbonMenuItem ImageSource="Images/Word_Doc1.ico" Header="Alle Beobachtungen" Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" CommandParameter="All" />
-                        <RibbonSeparator />
-                        <RibbonMenuItem ImageSource="Images/Word_Doc1.ico" Header="Aktuelles Schuljahr" Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" CommandParameter="CSJ" />
-                        <RibbonMenuItem ImageSource="Images/Klasse.ico" Header="Aktuelle Klasse" Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" CommandParameter="CKL">
-                            <RibbonMenuItem ImageSource="Images/Word_Doc1.ico" Header="Nur aktuelles Schuljahr" Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" CommandParameter="CKL" />
-                            <RibbonMenuItem ImageSource="Images/Word_Doc1.ico" Header="Alles" Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" CommandParameter="CKLA" />
-                        </RibbonMenuItem>
-                    </RibbonSplitButton>
+                
+                <RibbonGroup Header="Exportieren" >
+                    <RibbonButton Label="Exportieren" LargeImageSource="Images/Word_Doc2.ico"  Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" />
+                   
+                    <RibbonMenuButton MinWidth="100" LargeImageSource="{Binding ExportFilterSelected.LargeImageSource, Mode=OneWay}" Label="{Binding ExportFilterSelected.Header}"  >
+                        <RibbonGallery SelectedItem="{Binding ExportFilterSelected}" >
+                            <RibbonGalleryCategory Header="Beobachtungen einschränken" ItemsSource="{Binding ExportFilterItemSource}" >
+                                <RibbonGalleryCategory.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" >
+                                            <Image Margin="3" Source="{Binding LargeImageSource, Mode=OneWay}" Height="64" Width="64" Stretch="Uniform" HorizontalAlignment="Center" StretchDirection="DownOnly"  />
+                                            <TextBlock Margin="3" Text="{Binding Header}" VerticalAlignment="Center"  />
+                                        </StackPanel>                                        
+                                    </DataTemplate>
+                                </RibbonGalleryCategory.ItemTemplate>                                
+                            </RibbonGalleryCategory>
+                        </RibbonGallery>                        
+                    </RibbonMenuButton>
+                    <RibbonRadioButton Label="Gruppieren nach Schülern"  SmallImageSource="Images/Schüler.ico" IsChecked="{Binding GroupBySchüler}" />
+                    <RibbonRadioButton Label="Gruppieren nach Datum" SmallImageSource="Images/Kalender.bmp" />
+                    
+                  
+
                 </RibbonGroup>
 
 

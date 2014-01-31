@@ -11,19 +11,9 @@ using System.ComponentModel;
  * TODO:
  * 
  * - Template verwenden
- * - Sortierung korrekt machen
- * - schöneres Standardformat
- * - Ausgabe gruppiert nach ...
- *     o Klasse -> Schüler -> Datum
- *     o Klasse -> Datum -> Schüler
- * - Auswahl der Daten (Klassen, Schuljahr ...)
- * 
- * 
  * 
  * */
 
-// Schuljahr -> Klasse -> Schüler -> Datum
-// Schuljahr -> Klasse -> Datum -> Schüler
 
 
 namespace Groll.Schule.SchulDB.Reports
@@ -123,6 +113,7 @@ namespace Groll.Schule.SchulDB.Reports
         {
             // Default value
         }
+
 
         /// <summary>
         /// Exportiert die übergebenen Beobachtungen in Word
@@ -347,7 +338,7 @@ namespace Groll.Schule.SchulDB.Reports
 
                     // Datum ausgeben
                     app.Selection.set_Style(FormatGruppenHeader);
-                    app.Selection.TypeText(beo.Datum == null ? "Allgemein" : beo.Datum.Value.ToShortDateString());
+                    app.Selection.TypeText(beo.Datum == null ? "Allgemein" : beo.Datum.Value.ToString("dd.mm.yyyy"));
                     app.Selection.TypeParagraph();
                 }
                
@@ -392,7 +383,7 @@ namespace Groll.Schule.SchulDB.Reports
         /// <summary>
         /// Exportiert alle Beobachtungen in Word
         /// </summary>
-        public void ExportToWork(Schule.DataManager.UowSchuleDB UOW = null)
+        public void ExportToWord(Schule.DataManager.UowSchuleDB UOW = null)
         {
             if (UOW == null)
                 UOW = App.Current.FindResource("UnitOfWork") as Groll.Schule.DataManager.UowSchuleDB;
@@ -400,5 +391,78 @@ namespace Groll.Schule.SchulDB.Reports
             if (UOW != null)   
                 ExportToWord(UOW.Beobachtungen.GetList());
         }
+
+        /// <summary>
+        /// Exportiert alle Beobachtungen einer Klasse in Word
+        /// </summary>
+        public void ExportToWord(Klasse Klasse, Schule.DataManager.UowSchuleDB UOW = null)
+        {
+            if (UOW == null)
+                UOW = App.Current.FindResource("UnitOfWork") as Groll.Schule.DataManager.UowSchuleDB;
+
+            if (UOW != null)
+            {
+                var t = from b in UOW.Beobachtungen.GetList()
+                        where (b.Klasse) == Klasse
+                        select b;
+                            
+                ExportToWord(t);
+            }
+        }
+
+        /// <summary>
+        /// Exportiert alle Beobachtungen eines Jahrgangs in Word
+        /// </summary>
+        public void ExportToWord(Schuljahr Schuljahr, Schule.DataManager.UowSchuleDB UOW = null)
+        {
+            ExportToWord(Schuljahr.Startjahr, UOW);
+        }
+
+        /// <summary>
+        /// Exportiert alle Beobachtungen eines Jahrgangs in Word
+        /// </summary>
+        public void ExportToWord(int Schuljahr, Schule.DataManager.UowSchuleDB UOW = null)
+        {
+            if (UOW == null)
+                UOW = App.Current.FindResource("UnitOfWork") as Groll.Schule.DataManager.UowSchuleDB;
+
+            if (UOW != null)
+            {
+                ExportToWord(UOW.Beobachtungen.GetList(x => x.SchuljahrId == Schuljahr));
+            }
+        }
+
+         /// <summary>
+        /// Exportiert alle Beobachtungen eines Schülers in Word
+        /// </summary>
+        public void ExportToWord(Schueler Schüler, int Schuljahr = 0, Schule.DataManager.UowSchuleDB UOW = null)
+        {
+            if (UOW == null)
+                UOW = App.Current.FindResource("UnitOfWork") as Groll.Schule.DataManager.UowSchuleDB;
+
+            if (UOW != null)
+            {
+                groupBy = GroupByType.GroupBySchüler;
+                var t = from b in UOW.Beobachtungen.GetList()
+                        where (b.Schueler) == Schüler && (b.SchuljahrId == Schuljahr|| Schuljahr == 0)
+                        select b;
+
+                ExportToWord(t);
+            }
+        }
+
+        /// <summary>
+        /// Exportiert alle Beobachtungen eines Schülers in Word
+        /// </summary>
+        public void ExportToWord(Schueler Schüler, Schuljahr Schuljahr, Schule.DataManager.UowSchuleDB UOW = null)
+        {
+            ExportToWord(Schüler, Schuljahr == null ? 0 : Schuljahr.Startjahr, UOW);
+        }
+
+       
+                     
+
+
+
     }
 }

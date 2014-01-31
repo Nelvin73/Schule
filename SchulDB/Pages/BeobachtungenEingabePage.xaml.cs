@@ -89,30 +89,33 @@ namespace Groll.Schule.SchulDB.Pages
 
         private void Executed_Export(object sender, ExecutedRoutedEventArgs e)
         {
-            // TEST: Export all
-            var exp = new Reports.BeobachtungenExport();
-            switch (e.Parameter.ToString())
-            {
-                case "All":
-                    exp.ExportToWord(ViewModel.UnitOfWork.Beobachtungen.GetList());
-                    break;
-                case "CSJ":                    
-                    exp.ExportToWord(ViewModel.UnitOfWork.Beobachtungen.GetList(
-                        x => x.SchuljahrId == ViewModel.CurrentSJ ));
-                    break;
-                case "CKL":
-                    int cSJ = ViewModel.CurrentSJ;
-                    
-                    exp.ExportToWord(
-                        ViewModel.UnitOfWork.Beobachtungen.GetList().Where(
-                        x => x.Schueler.GetKlasse(ViewModel.CurrentSJ).KlasseId == ViewModel.SelectedKlasse.KlasseId));
+            // Get parameters             
+            var mw = Tag as MainWindow;
+            if (mw == null || mw.RibbonVM == null)            
+                throw new InvalidOperationException("RibbonVM existiert nicht");
             
+            var vm = mw.RibbonVM.BeobachtungenTabVM;
+            var exp = new Reports.BeobachtungenExport();
+
+            exp.GroupBy = vm.GroupBySchüler ? Reports.BeobachtungenExport.GroupByType.GroupBySchüler : Reports.BeobachtungenExport.GroupByType.GroupByDatum;
+            
+            switch (vm.ExportFilterSelected.Tag.ToString())
+            {
+                case "ALL":   // Alle
+                    exp.ExportToWord();
                     break;
-
-                case "CKLA":
-                 break;
-                     
-
+                case "SJ": // Aktuelles Schuljahr
+                    exp.ExportToWord(ViewModel.CurrentSJ);
+                    break;
+                case "KL": // Aktuelle Klasse
+                    exp.ExportToWord(ViewModel.SelectedKlasse);
+                    break;
+                case "SSJ":  // Aktueller Schüler (nur dieses Schuljahr)
+                    exp.ExportToWord(ViewModel.SelectedSchüler, ViewModel.CurrentSJ);
+                    break;
+                case "SCH":  // Aktueller Schüler (Komplett)                
+                    exp.ExportToWord(ViewModel.SelectedSchüler);
+                    break;
             }
 
        
@@ -167,7 +170,9 @@ namespace Groll.Schule.SchulDB.Pages
         {
             // Navigated away from Page
             // Hide Context Tab
-            (Tag as MainWindow).RibbonVM.ShowBeobachtungenTab = false;
+            var mw = Tag as MainWindow;
+            if (mw != null && mw.RibbonVM != null)            
+                mw.RibbonVM.BeobachtungenTabVM.IsVisible = false;                                       
         }
 
         private void Page_Initialized(object sender, EventArgs e)
@@ -179,10 +184,12 @@ namespace Groll.Schule.SchulDB.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             // Navigated toward Page
-            var rvm = (Tag as MainWindow).RibbonVM;
-            rvm.ShowBeobachtungenTab = true;
-            rvm.BeobachtungenIsSelected = true;
-            txtBeoText.Focus();
+            var mw = Tag as MainWindow;
+            if (mw != null && mw.RibbonVM != null)
+            {
+                mw.RibbonVM.BeobachtungenTabVM.IsSelected = mw.RibbonVM.BeobachtungenTabVM.IsVisible = true;
+                txtBeoText.Focus();
+            }
         }
         #endregion
 

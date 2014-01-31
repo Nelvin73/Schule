@@ -15,5 +15,19 @@ namespace Groll.Schule.Model
         public int SchuljahrId { get; set; }
         public virtual Schuljahr Schuljahr { get; set; }
         public virtual Schueler Schueler { get; set; }
+
+        public override string ToString()
+        {            
+            return "Schüler: " + Schueler.ID + ", Klasse: " + Klasse.ToString() + ": " + (Text.Length > 20 ? Text.Substring(0,20) + "..." : Text);
+        }
+
+        public Klasse Klasse
+        {
+            get
+            {
+                return Schueler.GetKlasse(SchuljahrId);
+            }
+        }
     }
 }
+

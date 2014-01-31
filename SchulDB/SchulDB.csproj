@@ -63,7 +63,10 @@
     </ApplicationDefinition>
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Reports\BeobachtungenExport.cs" />
-    <Compile Include="ViewModels\RibbonVM.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonButtonVM.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonTabVM.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonTabBeobachtungenVM.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonVM.cs" />
     <Compile Include="Settings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
