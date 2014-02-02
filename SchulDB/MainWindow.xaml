@@ -2,15 +2,18 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
         xmlns:comm="clr-namespace:Groll.Schule.SchulDB.Commands"
-        xmlns:ViewModels="clr-namespace:Groll.Schule.SchulDB.ViewModels" x:Class="Groll.Schule.SchulDB.MainWindow"
+        xmlns:ViewModels="clr-namespace:Groll.Schule.SchulDB.ViewModels"
         xmlns:local="clr-namespace:Groll.Schule.SchulDB"
+        xmlns:Primitives="clr-namespace:System.Windows.Controls.Ribbon.Primitives;assembly=System.Windows.Controls.Ribbon" x:Class="Groll.Schule.SchulDB.MainWindow"
         Title="SchulDB"
         x:Name="RibbonWindow"
         Width="1024" Height="800">
-    
+
     <RibbonWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <ViewModels:RibbonVM x:Key="RibbonVM" UnitOfWork="{StaticResource UnitOfWork}"  />
+
+     
     </RibbonWindow.Resources>
 
     <Grid x:Name="LayoutRoot">
@@ -23,20 +26,20 @@
             <Ribbon.HelpPaneContent>
                 <RibbonButton SmallImageSource="Images/i1.bmp" />
             </Ribbon.HelpPaneContent>
-            
+
             <Ribbon.QuickAccessToolBar>
                 <RibbonQuickAccessToolBar>
                     <RibbonButton Content="Save"  SmallImageSource="Images/i1.bmp" Command="Save" />
                     <RibbonButton Content="Text2"  SmallImageSource="Images/i1.bmp" />
                 </RibbonQuickAccessToolBar>
             </Ribbon.QuickAccessToolBar>
-            
-            <Ribbon.ApplicationMenu>                
+
+            <Ribbon.ApplicationMenu>
                 <RibbonApplicationMenu Label="File" LargeImageSource="Images/DB.ico" SmallImageSource="Images/DB.ico" >
                     <RibbonApplicationMenu.AuxiliaryPaneContent>
                         <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center">
                             <TextBlock Text="SchulDB v1.1" FontSize="32" HorizontalAlignment="Center" />
-                            <TextBlock Text="(c) 2014 by Christian Groll" FontSize="12" HorizontalAlignment="Center"/>                                                        
+                            <TextBlock Text="(c) 2014 by Christian Groll" FontSize="12" HorizontalAlignment="Center"/>
                             <TextBlock Margin="10" Text="" FontSize="12" HorizontalAlignment="Center"/>
                             <TextBlock Text="Aktuelle Datenbank: " FontSize="14" FontWeight="Bold" HorizontalAlignment="Center"/>
                             <TextBlock Text="{Binding CurrentDbType}" FontSize="12" FontStyle="Italic" HorizontalAlignment="Center"/>
@@ -45,21 +48,21 @@
                             <TextBlock Text="{Binding CurrentDbFile}" FontSize="12" FontStyle="Italic" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </RibbonApplicationMenu.AuxiliaryPaneContent>
-           
+
                     <RibbonApplicationMenuItem Header="Datenbank wechseln" ImageSource="Images\DB.ico" >
                         <RibbonApplicationMenuItem Header="Standard" ImageSource="Images\DB.ico" Command="comm:BasicCommands.ChangeDatabase" />
                         <RibbonApplicationMenuItem Header="Test-Daten" ImageSource="Images\DB_Test.ico" Command="comm:BasicCommands.ChangeDatabase" CommandParameter="dev" />
                         <RibbonApplicationMenuItem Header="Datei öffnen" ImageSource="Images\DB_Search.ico" Command="comm:BasicCommands.ChangeDatabase" CommandParameter="custom" />
-                    </RibbonApplicationMenuItem>    
-             
+                    </RibbonApplicationMenuItem>
+
                     <RibbonSeparator />
-                    
+
                     <RibbonApplicationMenuItem Header="Konfiguration" ImageSource="Images\i1.bmp" />
                     <RibbonApplicationMenuItem IsEnabled="False"  />
                     <RibbonApplicationMenuItem IsEnabled="False"  />
                     <RibbonApplicationMenuItem IsEnabled="False"  />
                     <RibbonApplicationMenuItem IsEnabled="False"  />
-                    <RibbonApplicationMenuItem IsEnabled="False"  />                      
+                    <RibbonApplicationMenuItem IsEnabled="False"  />
                 </RibbonApplicationMenu>
             </Ribbon.ApplicationMenu>
 
@@ -67,7 +70,7 @@
                 <RibbonContextualTabGroup Header="Beobachtungen" Visibility="{Binding BeobachtungenTabVM.IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#FFFFE800" />
             </Ribbon.ContextualTabGroups>
 
-           
+
             <RibbonTab Header="Standard" Selector.IsSelected="False" >
                 <RibbonGroup Header="Stammdaten">
                     <RibbonButton Label="Schüler" SmallImageSource="Images/Schüler.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="schuelerdetails" LargeImageSource="Images/Schüler.ico"  />
@@ -111,33 +114,33 @@
                     </RibbonComboBox>
 
                 </RibbonGroup>
-              
+
                 <RibbonGroup Header="Eingabe" >
-                    <RibbonButton Label="Eingabe löschen" Command="comm:BeobachtungenCommands.ClearInput" LargeImageSource="Images/Trash.ico"  />                                                           
+                    <RibbonButton Label="Eingabe löschen" Command="comm:BeobachtungenCommands.ClearInput" LargeImageSource="Images/Trash.ico"  />
                     <RibbonSplitButton Label="Beobachtung speichern" Command="comm:BeobachtungenCommands.Add" LargeImageSource="Images/Add_Comment.ico"  >
                         <RibbonMenuItem Header="Speichern" Command="comm:BeobachtungenCommands.Add" ImageSource="Images/Add_Comment.ico" />
-                        <RibbonMenuItem Header="Speichern ohne Löschen" Command="comm:BeobachtungenCommands.Add" CommandParameter="noClear" ImageSource="Images/Add_Comment.ico" />                    
+                        <RibbonMenuItem Header="Speichern ohne Löschen" Command="comm:BeobachtungenCommands.Add" CommandParameter="noClear" ImageSource="Images/Add_Comment.ico" />
                     </RibbonSplitButton>
                 </RibbonGroup>
-              
+
                 <RibbonGroup Header="Einfügen" >
                     <RibbonMenuButton Label="Letzte Kommentare" LargeImageSource="Images/Aktenschrank.ico" ItemsSource="{Binding Last10Beobachtungen}" >
                         <RibbonMenuButton.ItemContainerStyle>
                             <Style TargetType="{x:Type RibbonMenuItem}">
                                 <Setter Property="Header" Value="{Binding Text}" />
-                                <Setter Property="Command" Value="{x:Static comm:BeobachtungenCommands.InsertText }" />
+                                <Setter Property="Command" Value="{x:Static comm:BeobachtungenCommands.InsertText}" />
                                 <Setter Property="CommandParameter" Value="{Binding Text}" />
                                 <Setter Property="ImageSource" Value="Images/Notiz2.ico" />
                             </Style>
                         </RibbonMenuButton.ItemContainerStyle>
                     </RibbonMenuButton>
-                    
+
                     <RibbonButton Label="Gespeicherte Sätze" LargeImageSource="Images/Add_Document.ico" />
                 </RibbonGroup>
-                
+
                 <RibbonGroup Header="Exportieren" >
                     <RibbonButton Label="Exportieren" LargeImageSource="Images/Word_Doc2.ico"  Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" />
-                   
+
                     <RibbonMenuButton MinWidth="100" LargeImageSource="{Binding ExportFilterSelected.LargeImageSource, Mode=OneWay}" Label="{Binding ExportFilterSelected.Header}"  >
                         <RibbonGallery SelectedItem="{Binding ExportFilterSelected}" >
                             <RibbonGalleryCategory Header="Beobachtungen einschränken" ItemsSource="{Binding ExportFilterItemSource}" >
@@ -145,17 +148,55 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" >
                                             <Image Margin="3" Source="{Binding LargeImageSource, Mode=OneWay}" Height="64" Width="64" Stretch="Uniform" HorizontalAlignment="Center" StretchDirection="DownOnly"  />
-                                            <TextBlock Margin="3" Text="{Binding Header}" VerticalAlignment="Center"  />
-                                        </StackPanel>                                        
+                                            <TextBlock Margin="3" Text="{Binding LongHeader}" VerticalAlignment="Center"  />
+                                        </StackPanel>
                                     </DataTemplate>
-                                </RibbonGalleryCategory.ItemTemplate>                                
+                                </RibbonGalleryCategory.ItemTemplate>
                             </RibbonGalleryCategory>
-                        </RibbonGallery>                        
+                        </RibbonGallery>
                     </RibbonMenuButton>
+                    <RibbonMenuButton Label="Einstellungen">
+                        <RibbonMenuItem Header="Gruppieren" >
+                            <RibbonRadioButton Label="Gruppieren nach Schüler" IsChecked="True" LargeImageSource="Images/Schüler.ico" />
+                            <RibbonRadioButton Label="Gruppieren nach Datum" LargeImageSource="Images/neues-jahr-2012.jpg" />
+                        </RibbonMenuItem>
+
+                        <RibbonMenuItem Header="Sortierung" >
+                            <RibbonRadioButton Label="von neu nach alt" IsChecked="True" />
+                            <RibbonRadioButton Label="von alt nach neu" />
+                        </RibbonMenuItem>
+
+                        <RibbonMenuItem Header="Formatierung" >
+                            <RibbonMenuItem Header="Klassen" ImageSource="Images/Klasse.ico"  >
+                                <RibbonMenuItem Header="Seitenumbruch bei jeder Klasse" IsCheckable="True" IsChecked="True" />
+                                <RibbonMenuItem Header="Neuer Absatz bei jeder Klasse" IsCheckable="true" />
+                            </RibbonMenuItem>
+                            <RibbonMenuItem Header="Schüler" ImageSource="Images/Schüler.ico" >
+                                <RibbonMenuItem Header="Seitenumbruch bei jedem Schüler" IsCheckable="True" IsChecked="True" />
+                                <RibbonMenuItem Header="Neuer Absatz bei jedem Schüler" IsCheckable="true" />
+                            </RibbonMenuItem>
+                            <RibbonMenuItem Header="Datum" ImageSource="Images/neues-jahr-2012.jpg" >
+                                
+                            </RibbonMenuItem>
+                        </RibbonMenuItem>
+
+
+                        <RibbonMenuItem Header="Sortierung" >
+                            <RibbonRadioButton Label="von neu nach alt" IsChecked="True" />
+                            <RibbonRadioButton Label="von alt nach neu" />
+                        </RibbonMenuItem>
+
+
+                        <RibbonMenuItem Header="Sortierung" >
+                            <RibbonRadioButton Label="von neu nach alt" IsChecked="True" />
+                            <RibbonRadioButton Label="von alt nach neu" />
+                        </RibbonMenuItem>
+                    </RibbonMenuButton>
+
                     <RibbonRadioButton Label="Gruppieren nach Schülern"  SmallImageSource="Images/Schüler.ico" IsChecked="{Binding GroupBySchüler}" />
                     <RibbonRadioButton Label="Gruppieren nach Datum" SmallImageSource="Images/Kalender.bmp" />
-                    
-                  
+
+
 
                 </RibbonGroup>
 

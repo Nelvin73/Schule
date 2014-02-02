@@ -72,6 +72,8 @@ namespace Groll.Schule.SchulDB.ViewModels
        
         #endregion
 
+        
+
         #endregion
 
         #region Konstruktor
@@ -89,37 +91,48 @@ namespace Groll.Schule.SchulDB.ViewModels
                 new RibbonButtonVM()
                 {
                     Header = "Alles",
+                    LongHeader = "Alles Beobachtungen\nexportieren",
                     Tag = "ALL",
                     LargeImageSourceFile = "Aktenschrank.ico",                    
                     IsSelected = true
                 },
                 new RibbonButtonVM()
                 {
-                    Header = "Aktuelles Schuljahr", 
+                    Header = "Schuljahr", 
+                    LongHeader = "Beobachtungen aus dem\naktuellen Schuljahr\nexportieren",
                     Tag = "SJ",
                     LargeImageSourceFile = "neues-jahr-2012.jpg",                                       
                 },
                 new RibbonButtonVM()
                 {
-                    Header = "Ausgewählte Klasse",   
+                    Header = "Klasse",   
+                    LongHeader = "Beobachtungen von Schülern\nder ausgewählten Klasse\nexportieren",
                     Tag = "KL",
                     LargeImageSourceFile = "Klasse.ico",                                        
                 },
                 new RibbonButtonVM()
                 {
-                    Header = "Ausgewählter Schüler",  
+                    Header = "Schüler",  
+                    LongHeader = "Alle Beobachtungen des\nmarkierten Schülers\nexportieren",
                     Tag = "SCH",
                     LargeImageSourceFile = "Schüler.ico",                                        
                 },
                 new RibbonButtonVM()
                 {
-                    Header = "Ausgewählter Schüler\n(nur dieses Schuljahr)",  
+                    Header = "Schüler (Schuljahr)", 
+                    LongHeader = "Beobachtungen des\nmarkierten Schülers aus\ndiesem Schuljahr",
                     Tag = "SSJ",
                     LargeImageSourceFile = "Schüler.ico",                                        
                 }
             };
 
             ExportFilterSelected = ExportFilterItemSource[0];
+
+        
+
+
+            
+
             GroupBySchüler = true;
                       
         }

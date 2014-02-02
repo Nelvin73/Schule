@@ -8,6 +8,7 @@ using Groll.Schule.DataManager;
 using Groll.Schule.Model;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
+using System.Windows.Input;
 
 
 namespace Groll.Schule.SchulDB.ViewModels
@@ -20,15 +21,23 @@ namespace Groll.Schule.SchulDB.ViewModels
         private bool isSelected = false;
         private bool isVisible = true;
         private string header = "";
+        private string longHeader = "";
         private string largeImageSourceFile = null;
         private string smallImageSourceFile = null;
-
         private object tag;
 
         public object Tag
         {
             get { return tag; }
             set { tag = value; OnPropertyChanged();}
+        }
+
+        private ICommand command;
+
+        public ICommand Command
+        {
+            get { return command; }
+            set { command = value; }
         }
         
 
@@ -48,6 +57,15 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             get { return header; }
             set { header = value; OnPropertyChanged(); }
+        }
+
+        /// <summary>
+        /// Längerer Text, z.B. für Gallery
+        /// </summary>
+        public string LongHeader
+        {
+            get { return longHeader; }
+            set { longHeader = value; OnPropertyChanged(); }
         }
 
         public ImageSource LargeImageSource
@@ -82,9 +100,9 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-        private List<object> itemsSource;
+        private List<RibbonButtonVM> itemsSource;
 
-        public List<object> ItemsSource
+        public List<RibbonButtonVM> ItemsSource
         {
             get { return itemsSource; }
             set { itemsSource = value; }
