@@ -64,7 +64,8 @@
     </ApplicationDefinition>
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Reports\BeobachtungenExport.cs" />
-    <Compile Include="ViewModels\Ribbon\RibbonButtonVM.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonBaseVM.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonMenuEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonTabVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonTabBeobachtungenVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonVM.cs" />
@@ -111,6 +112,10 @@
     <Page Include="Resources\GlobalObjects.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\RibbonStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

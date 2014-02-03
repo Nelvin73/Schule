@@ -11,38 +11,40 @@ using System.Collections.ObjectModel;
 
 namespace Groll.Schule.SchulDB.ViewModels
 {
-    public class RibbonTabVM : ObservableObject
+    public class RibbonTabVM : RibbonBaseVM
     {        
-        private RibbonVM ribbonVM;                
-        private bool isSelected = false;
-        private bool isVisible = true;
-        private string header = "";
+        private RibbonVM ribbonVM;
+        private string contextualTabGroupHeader;
+        protected Dictionary<string, RibbonBaseVM> elementCache = new Dictionary<string,RibbonBaseVM>();
+
+        protected RibbonBaseVM GetElement(string Key)
+        {
+            if (Key != null && elementCache.ContainsKey(Key))
+                return elementCache[Key];
+            else
+                return null;            
+        }
 
         protected UowSchuleDB UnitOfWork
         {
             get { return ribbonVM.UnitOfWork; }
          }
-                
 
-        public bool IsSelected
+        protected string ContextualTabGroupHeader
         {
-            get { return isSelected; }
-            set { isSelected = value; OnPropertyChanged(); }
+            get
+            {
+                return contextualTabGroupHeader;
+            }
+            set
+            {
+                if (contextualTabGroupHeader != value)
+                {
+                    contextualTabGroupHeader = value;
+                    OnPropertyChanged();
+                }
+            }
         }
-        
-        public bool IsVisible
-        {
-            get { return isVisible; }
-            set { isVisible = value; OnPropertyChanged(); }
-        }
-
-        public string Header
-        {
-            get { return header; }
-            set { header = value; OnPropertyChanged(); }
-        }
-
-
 
         public RibbonTabVM(RibbonVM RibbonVM)
         {

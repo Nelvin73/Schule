@@ -12,7 +12,6 @@
     <RibbonWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <ViewModels:RibbonVM x:Key="RibbonVM" UnitOfWork="{StaticResource UnitOfWork}"  />
-
      
     </RibbonWindow.Resources>
 
@@ -98,7 +97,7 @@
             </RibbonTab>
 
             <!-- RibbonTab Beobachtungen -->
-            <RibbonTab DataContext="{Binding BeobachtungenTabVM}" Header="{Binding Header}" ContextualTabGroupHeader="Beobachtungen" IsSelected="{Binding IsSelected}" Visibility="{Binding IsVisible}"  >
+            <RibbonTab DataContext="{Binding BeobachtungenTabVM}" ContextualTabGroupHeader="Beobachtungen" >
                 <RibbonGroup Header="Ansicht" >
                     <RibbonComboBox Label="History"  >
                         <RibbonGallery SelectedValue="Green"
@@ -139,27 +138,38 @@
                 </RibbonGroup>
 
                 <RibbonGroup Header="Exportieren" >
-                    <RibbonButton Label="Exportieren" LargeImageSource="Images/Word_Doc2.ico"  Command="{x:Static comm:BeobachtungenCommands.ExportBeobachtungen}" />
+                    <RibbonButton DataContext="{Binding ExportButton}"  />
 
-                    <RibbonMenuButton MinWidth="100" LargeImageSource="{Binding ExportFilterSelected.LargeImageSource, Mode=OneWay}" Label="{Binding ExportFilterSelected.Header}"  >
-                        <RibbonGallery SelectedItem="{Binding ExportFilterSelected}" >
+                    <RibbonMenuButton MinWidth="100" LargeImageSource="{Binding SelectedExportFilter.LargeImageSource}" Label="{Binding SelectedExportFilter.Label}" 
+                        ToolTipTitle="{Binding SelectedExportFilter.ToolTipTitle}"  ToolTipDescription="{Binding SelectedExportFilter.ToolTipDescription}" 
+                        ToolTipImageSource="{Binding SelectedExportFilter.ToolTipImage}" ToolTipFooterTitle="Bitte Filter auswählen">
+                        
+                        <RibbonGallery SelectedItem="{Binding SelectedExportFilter}" >
                             <RibbonGalleryCategory Header="Beobachtungen einschränken" ItemsSource="{Binding ExportFilterItemSource}" >
                                 <RibbonGalleryCategory.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" >
                                             <Image Margin="3" Source="{Binding LargeImageSource, Mode=OneWay}" Height="64" Width="64" Stretch="Uniform" HorizontalAlignment="Center" StretchDirection="DownOnly"  />
-                                            <TextBlock Margin="3" Text="{Binding LongHeader}" VerticalAlignment="Center"  />
+                                            <TextBlock Margin="3" Text="{Binding LongHeader}" VerticalAlignment="Center" TextWrapping="Wrap"  />
                                         </StackPanel>
                                     </DataTemplate>
                                 </RibbonGalleryCategory.ItemTemplate>
                             </RibbonGalleryCategory>
                         </RibbonGallery>
                     </RibbonMenuButton>
+                    
                     <RibbonMenuButton Label="Einstellungen">
                         <RibbonMenuItem Header="Gruppieren" >
                             <RibbonRadioButton Label="Gruppieren nach Schüler" IsChecked="True" LargeImageSource="Images/Schüler.ico" />
                             <RibbonRadioButton Label="Gruppieren nach Datum" LargeImageSource="Images/neues-jahr-2012.jpg" />
                         </RibbonMenuItem>
+                        <RibbonMenuItem Header="Gruppieren" >
+                            <RibbonGallery >
+                                <ViewModels:RibbonMenuEntryVM Label="Gruppieren nach Schüler" IsSelected="True" />
+                                <RibbonGalleryItem Content="Gruppieren nach Schüler" IsSelected="True" />
+                                <RibbonGalleryItem Content="Gruppieren nach Datum"  />
+                            </RibbonGallery>
+                              </RibbonMenuItem>
 
                         <RibbonMenuItem Header="Sortierung" >
                             <RibbonRadioButton Label="von neu nach alt" IsChecked="True" />

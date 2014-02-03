@@ -1,0 +1,56 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:data="clr-namespace:Groll.Schule.DataManager;assembly=DataManager"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic">
+
+    <!-- Base -->
+    <Style x:Key="RibbonControlStyle">
+        <Setter Property="RibbonControlService.Label" Value="{Binding Label}" />
+        <Setter Property="RibbonControlService.LargeImageSource" Value="{Binding LargeImageSource}" />
+        <Setter Property="RibbonControlService.SmallImageSource" Value="{Binding SmallImageSource}" />
+        <Setter Property="RibbonControlService.ToolTipTitle" Value="{Binding ToolTipTitle}" />
+        <Setter Property="RibbonControlService.ToolTipDescription" Value="{Binding ToolTipDescription}" />
+        <Setter Property="RibbonControlService.ToolTipImageSource" Value="{Binding ToolTipImage}" />
+        <Setter Property="RibbonControlService.ToolTipFooterTitle" Value="{Binding ToolTipFooterTitle}" />
+        <Setter Property="RibbonControlService.ToolTipFooterDescription" Value="{Binding ToolTipFooterDescription}" />
+        <Setter Property="RibbonControlService.ToolTipFooterImageSource" Value="{Binding ToolTipFooterImage}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding LargeImageSource}" Value="{x:Null}">
+                <Setter Property="RibbonControlService.LargeImageSource" Value="{x:Null}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding SmallImageSource}" Value="{x:Null}">
+                <Setter Property="RibbonControlService.SmallImageSource" Value="{x:Null}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding ToolTipImage}" Value="{x:Null}">
+                <Setter Property="RibbonControlService.ToolTipImageSource" Value="{x:Null}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding ToolTipFooterImage}" Value="{x:Null}">
+                <Setter Property="RibbonControlService.ToolTipFooterImageSource" Value="{x:Null}" />
+            </DataTrigger>
+            <Trigger Property="RibbonControlService.IsInQuickAccessToolBar" Value="False">
+                <Setter Property="KeyTipService.KeyTip" Value="{Binding KeyTip}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- RibbonTab -->
+    <Style TargetType="{x:Type RibbonTab}">
+        <Setter Property="Header" Value="{Binding Label}" />
+        <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+        <Setter Property="ContextualTabGroupHeader" Value="{Binding ContextualTabGroupHeader}" />
+    </Style>
+
+    <!-- RibbonButton -->
+    <Style TargetType="{x:Type RibbonButton}" BasedOn="{StaticResource RibbonControlStyle}">
+        <Setter Property="Command" Value="{Binding Command}" />
+    </Style>
+    
+    <!-- RibbonMenuButton -->
+    <Style TargetType="{x:Type RibbonMenuButton}" BasedOn="{StaticResource RibbonControlStyle}">
+        <Setter Property="QuickAccessToolBarId" Value="{Binding Command}" />
+        <Setter Property="CanUserResizeVertically" Value="{Binding IsVerticallyResizable}" />
+        <Setter Property="CanUserResizeHorizontally" Value="{Binding IsHorizontallyResizable}" />
+    </Style>
+
+
+</ResourceDictionary>

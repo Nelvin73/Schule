@@ -98,8 +98,8 @@ namespace Groll.Schule.SchulDB.Pages
             var exp = new Reports.BeobachtungenExport();
 
             exp.GroupBy = vm.GroupBySchüler ? Reports.BeobachtungenExport.GroupByType.GroupBySchüler : Reports.BeobachtungenExport.GroupByType.GroupByDatum;
-            
-            switch (vm.ExportFilterSelected.Tag.ToString())
+
+            switch (vm.SelectedExportFilter.Tag.ToString())
             {
                 case "ALL":   // Alle
                     exp.ExportToWord();
