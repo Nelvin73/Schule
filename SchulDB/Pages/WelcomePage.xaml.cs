@@ -26,14 +26,7 @@ namespace Groll.Schule.SchulDB.Pages
             txtVersion.Text = "Version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ((MainWindow)Window.GetWindow(this)).ShowPage("schuelerdetails");
-         }
-
-
-
-
+       
         
         public void SetMainWindow(MainWindow x)
         {
