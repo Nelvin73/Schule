@@ -25,30 +25,33 @@ namespace Groll.Schule.SchulDB.ViewModels
                 return null;            
         }
 
-        protected UowSchuleDB UnitOfWork
+        protected RibbonBaseVM SetElement(string Key, RibbonBaseVM Element, bool Overwrite = true)
         {
-            get { return ribbonVM.UnitOfWork; }
-         }
+            if (string.IsNullOrEmpty(Key) || Element == null)
+                return null;
 
-        protected string ContextualTabGroupHeader
+            if (Overwrite || !elementCache.ContainsKey(Key))
+                elementCache.Add(Key, Element);
+
+            return Element;
+        }
+
+        protected UowSchuleDB UnitOfWork
         {
             get
             {
-                return contextualTabGroupHeader;
+                if (ribbonVM != null)
+                    return ribbonVM.UnitOfWork;
+                else return null;
             }
-            set
-            {
-                if (contextualTabGroupHeader != value)
-                {
-                    contextualTabGroupHeader = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+         }
 
-        public RibbonTabVM(RibbonVM RibbonVM)
+        
+
+        public RibbonTabVM(RibbonVM RibbonVM = null)
         {
-            ribbonVM = RibbonVM;
+            // Set RibbonVM to Default, if it is null
+            ribbonVM = RibbonVM ?? RibbonVM.Default;
             
             // Im Designermode anzeigen
             if (App.Current.MainWindow == null)
@@ -64,6 +67,24 @@ namespace Groll.Schule.SchulDB.ViewModels
         public virtual void OnDatabaseChanged()
         {
 
-        }      
+        }
+
+        #region Binding Properties
+        public string ContextualTabGroupHeader
+        {
+            get
+            {
+                return contextualTabGroupHeader;
+            }
+            set
+            {
+                if (contextualTabGroupHeader != value)
+                {
+                    contextualTabGroupHeader = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        #endregion
     }
 }

@@ -1,19 +1,22 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:data="clr-namespace:Groll.Schule.DataManager;assembly=DataManager"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-                    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic">
+                    xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic"
+                    xmlns:VM="clr-namespace:Groll.Schule.SchulDB.ViewModels">
 
     <!-- Base -->
+
+    
     <Style x:Key="RibbonControlStyle">
         <Setter Property="RibbonControlService.Label" Value="{Binding Label}" />
         <Setter Property="RibbonControlService.LargeImageSource" Value="{Binding LargeImageSource}" />
         <Setter Property="RibbonControlService.SmallImageSource" Value="{Binding SmallImageSource}" />
         <Setter Property="RibbonControlService.ToolTipTitle" Value="{Binding ToolTipTitle}" />
         <Setter Property="RibbonControlService.ToolTipDescription" Value="{Binding ToolTipDescription}" />
-        <Setter Property="RibbonControlService.ToolTipImageSource" Value="{Binding ToolTipImage}" />
+        <Setter Property="RibbonControlService.ToolTipImageSource" Value="{Binding ToolTipImageSource}" />
         <Setter Property="RibbonControlService.ToolTipFooterTitle" Value="{Binding ToolTipFooterTitle}" />
         <Setter Property="RibbonControlService.ToolTipFooterDescription" Value="{Binding ToolTipFooterDescription}" />
-        <Setter Property="RibbonControlService.ToolTipFooterImageSource" Value="{Binding ToolTipFooterImage}" />
+        <Setter Property="RibbonControlService.ToolTipFooterImageSource" Value="{Binding ToolTipFooterImageSource}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding LargeImageSource}" Value="{x:Null}">
                 <Setter Property="RibbonControlService.LargeImageSource" Value="{x:Null}" />
@@ -21,10 +24,10 @@
             <DataTrigger Binding="{Binding SmallImageSource}" Value="{x:Null}">
                 <Setter Property="RibbonControlService.SmallImageSource" Value="{x:Null}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding ToolTipImage}" Value="{x:Null}">
+            <DataTrigger Binding="{Binding ToolTipImageSource}" Value="{x:Null}">
                 <Setter Property="RibbonControlService.ToolTipImageSource" Value="{x:Null}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding ToolTipFooterImage}" Value="{x:Null}">
+            <DataTrigger Binding="{Binding ToolTipFooterImageSource}" Value="{x:Null}">
                 <Setter Property="RibbonControlService.ToolTipFooterImageSource" Value="{x:Null}" />
             </DataTrigger>
             <Trigger Property="RibbonControlService.IsInQuickAccessToolBar" Value="False">
@@ -33,11 +36,21 @@
         </Style.Triggers>
     </Style>
 
+
+    <!-- RibbonApplicationMenu -->
+    <Style TargetType="{x:Type RibbonApplicationMenu}">
+        <Setter Property="Label" Value="{Binding Label}" />
+        <Setter Property="LargeImageSource" Value="{Binding LargeImageSource}" />
+        <Setter Property="SmallImageSource" Value="{Binding SmallImageSource}" />
+    </Style>
+              
+    
     <!-- RibbonTab -->
     <Style TargetType="{x:Type RibbonTab}">
         <Setter Property="Header" Value="{Binding Label}" />
         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
         <Setter Property="ContextualTabGroupHeader" Value="{Binding ContextualTabGroupHeader}" />
+        <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Style>
 
     <!-- RibbonButton -->
@@ -52,5 +65,46 @@
         <Setter Property="CanUserResizeHorizontally" Value="{Binding IsHorizontallyResizable}" />
     </Style>
 
+    <!-- RibbonMenuItem -->
+    <Style TargetType="{x:Type RibbonMenuItem}" BasedOn="{StaticResource RibbonControlStyle}">
+        <Setter Property="Header" Value="{Binding Label}" />
+        <Setter Property="ImageSource" Value="{Binding ImageSource}" />
+        <Setter Property="KeyTipService.KeyTip" Value="{Binding KeyTip}" />
+        <Setter Property="Command" Value="{Binding Command}" />
+        <Setter Property="ItemsSource" Value="{Binding ItemsSource}" />
+   <!--     <Setter Property="IsCheckable" Value="{Binding IsCheckable}" />
+        <Setter Property="IsChecked" Value="{Binding IsChecked}" />
+        <Setter Property="CanUserResizeVertically" Value="{Binding IsVerticallyResizable}" />
+        <Setter Property="CanUserResizeHorizontally" Value="{Binding IsHorizontallyResizable}" />  -->
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding ImageSource}" Value="{x:Null}">
+                <Setter Property="ImageSource" Value="{x:Null}" />
+            </DataTrigger>            
+        </Style.Triggers>
+    </Style>
+
+
+
+
+
+    <DataTemplate x:Key="CheckmarkDataTemplate">
+        <StackPanel Orientation="Horizontal">
+            <Path x:Name="CheckMark"
+                Visibility="Hidden"
+                Margin="4,0,6,0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Fill="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}"
+                FlowDirection="LeftToRight"
+                Data="M 0,5.1 L 1.7,5.2 L 3.4,7.1 L 8,0.4 L 9.2,0 L 3.3,10.8 Z" />
+            <Image  Source="{Binding SmallImageSource, Mode=OneWay}"  Margin="4,0,6,0" Height="64" Width="64" Stretch="Uniform" HorizontalAlignment="Center" StretchDirection="DownOnly"   />
+            <TextBlock Text="{Binding LongHeader}" />
+        </StackPanel>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
 
 </ResourceDictionary>

@@ -15,19 +15,17 @@ using Groll.Schule.SchulDB.Commands;
 namespace Groll.Schule.SchulDB.ViewModels
 {
     public class ApplicationMenuVM : RibbonTabVM
-    {
-        UowSchuleDB uow;
-
+    {        
         #region Properties für Bindings
 
         public string CurrentDbType
         {
             get
             {
-                if (uow == null)
+                if (UnitOfWork == null)
                     return "";
 
-                return uow.CurrentDbType.ToString();
+                return UnitOfWork.CurrentDbType.ToString();
             }
         }
 
@@ -35,10 +33,10 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             get
             {
-                if (uow == null)
+                if (UnitOfWork == null)
                     return "";
 
-                return uow.CurrentDbFilename.ToString();
+                return UnitOfWork.CurrentDbFilename.ToString();
             }
         }
         #endregion
@@ -48,7 +46,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// Konstruktor
         /// </summary>
         /// <param name="ribbonVM">Root Element</param>
-        public ApplicationMenuVM()          
+        public ApplicationMenuVM(RibbonVM RibbonVM = null) : base (RibbonVM)         
         {
             Label = "";
             SmallImageSourceFile = LargeImageSourceFile = "Images/DB.ico";
@@ -59,8 +57,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         #region Database-Handling
         public override void OnDatabaseChanged()
         {
-            // invalidate all database relevant properties
-            uow = RibbonVM.UnitOfWork;
+            // invalidate all database relevant properties            
             OnPropertyChanged("CurrentDbType");
             OnPropertyChanged("CurrentDbFile");            
             base.OnDatabaseChanged();

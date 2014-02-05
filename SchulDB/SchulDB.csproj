@@ -64,6 +64,9 @@
     </ApplicationDefinition>
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Reports\BeobachtungenExport.cs" />
+    <Compile Include="ViewModels\Ribbon\ApplicationMenuVM.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonMenuSelectedItemEntryVM.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonTabStandardVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonBaseVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonMenuEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonTabVM.cs" />
@@ -279,6 +282,8 @@
     <Resource Include="Images\Word_Doc2.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\Settings1.ico" />
+    <Resource Include="Images\Settings2.ico" />
     <Content Include="Schule.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -10,8 +10,7 @@
         Width="1024" Height="800">
 
     <RibbonWindow.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <ViewModels:RibbonVM x:Key="RibbonVM" UnitOfWork="{StaticResource UnitOfWork}"  />
+        <!--<ViewModels:RibbonVM x:Key="RibbonVM" UnitOfWork="{StaticResource UnitOfWork}"  /> -->
      
     </RibbonWindow.Resources>
 
@@ -21,7 +20,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Ribbon x:Name="Ribbon" Title="Ribbon Title" DataContext="{DynamicResource RibbonVM}"  >
+        <Ribbon x:Name="Ribbon" Title="Ribbon Title" DataContext="{x:Static ViewModels:RibbonVM.Default}" >
             <Ribbon.HelpPaneContent>
                 <RibbonButton SmallImageSource="Images/i1.bmp" />
             </Ribbon.HelpPaneContent>
@@ -34,7 +33,7 @@
             </Ribbon.QuickAccessToolBar>
 
             <Ribbon.ApplicationMenu>
-                <RibbonApplicationMenu Label="File" LargeImageSource="Images/DB.ico" SmallImageSource="Images/DB.ico" >
+                <RibbonApplicationMenu DataContext="{Binding ApplicationMenu}" >
                     <RibbonApplicationMenu.AuxiliaryPaneContent>
                         <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center">
                             <TextBlock Text="SchulDB v1.1" FontSize="32" HorizontalAlignment="Center" />
@@ -66,11 +65,11 @@
             </Ribbon.ApplicationMenu>
 
             <Ribbon.ContextualTabGroups>
-                <RibbonContextualTabGroup Header="Beobachtungen" Visibility="{Binding BeobachtungenTabVM.IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#FFFFE800" />
+                <RibbonContextualTabGroup Header="Beobachtungen" Visibility="{Binding TabBeobachtungen.IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#FFFFE800" />
             </Ribbon.ContextualTabGroups>
 
 
-            <RibbonTab Header="Standard" Selector.IsSelected="False" >
+            <RibbonTab DataContext="{Binding TabStandard}"  >
                 <RibbonGroup Header="Stammdaten">
                     <RibbonButton Label="Schüler" SmallImageSource="Images/Schüler.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="schuelerdetails" LargeImageSource="Images/Schüler.ico"  />
                     <RibbonButton Label="Klassen" SmallImageSource="Images/Klasse.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="klassendetails" LargeImageSource="Images/Klasse.ico" />
@@ -97,7 +96,7 @@
             </RibbonTab>
 
             <!-- RibbonTab Beobachtungen -->
-            <RibbonTab DataContext="{Binding BeobachtungenTabVM}" ContextualTabGroupHeader="Beobachtungen" >
+            <RibbonTab DataContext="{Binding TabBeobachtungen}" >
                 <RibbonGroup Header="Ansicht" >
                     <RibbonComboBox Label="History"  >
                         <RibbonGallery SelectedValue="Green"
@@ -138,14 +137,12 @@
                 </RibbonGroup>
 
                 <RibbonGroup Header="Exportieren" >
+                    <!-- Export Button-->
                     <RibbonButton DataContext="{Binding ExportButton}"  />
-
-                    <RibbonMenuButton MinWidth="100" LargeImageSource="{Binding SelectedExportFilter.LargeImageSource}" Label="{Binding SelectedExportFilter.Label}" 
-                        ToolTipTitle="{Binding SelectedExportFilter.ToolTipTitle}"  ToolTipDescription="{Binding SelectedExportFilter.ToolTipDescription}" 
-                        ToolTipImageSource="{Binding SelectedExportFilter.ToolTipImage}" ToolTipFooterTitle="Bitte Filter auswählen">
-                        
-                        <RibbonGallery SelectedItem="{Binding SelectedExportFilter}" >
-                            <RibbonGalleryCategory Header="Beobachtungen einschränken" ItemsSource="{Binding ExportFilterItemSource}" >
+                    <!-- Filterauswahl Button-->
+                    <RibbonMenuButton MinWidth="55"  DataContext="{Binding FilterMenuButton}" >                    
+                        <RibbonGallery SelectedItem="{Binding SelectedItem}" >
+                            <RibbonGalleryCategory Header="Beobachtungen einschränken" ItemsSource="{Binding ItemsSource}" >
                                 <RibbonGalleryCategory.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" >
@@ -156,20 +153,48 @@
                                 </RibbonGalleryCategory.ItemTemplate>
                             </RibbonGalleryCategory>
                         </RibbonGallery>
-                    </RibbonMenuButton>
+                    </RibbonMenuButton>                                        
                     
-                    <RibbonMenuButton Label="Einstellungen">
-                        <RibbonMenuItem Header="Gruppieren" >
+                    <RibbonMenuButton Label="Einstellungen" LargeImageSource="Images/Settings1.ico">
+                        <RibbonMenuItem Header="Gruppieren" >                            
                             <RibbonRadioButton Label="Gruppieren nach Schüler" IsChecked="True" LargeImageSource="Images/Schüler.ico" />
                             <RibbonRadioButton Label="Gruppieren nach Datum" LargeImageSource="Images/neues-jahr-2012.jpg" />
                         </RibbonMenuItem>
-                        <RibbonMenuItem Header="Gruppieren" >
-                            <RibbonGallery >
-                                <ViewModels:RibbonMenuEntryVM Label="Gruppieren nach Schüler" IsSelected="True" />
-                                <RibbonGalleryItem Content="Gruppieren nach Schüler" IsSelected="True" />
-                                <RibbonGalleryItem Content="Gruppieren nach Datum"  />
+                        <RibbonMenuItem  DataContext="{Binding GroupingSettingsMenuButton}" ItemsSource="{x:Null}">
+                            <RibbonGallery   SelectedItem="{Binding SelectedGrouping}"  >
+                                <RibbonGallery.GalleryItemStyle>
+                                    <Style TargetType="RibbonGalleryItem" >
+                                        <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                                    </Style>
+                                </RibbonGallery.GalleryItemStyle>
+                                <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}" >
+                                    <RibbonGalleryCategory.ItemTemplate>
+                                        <DataTemplate >
+                                            <StackPanel Orientation="Horizontal">
+                                                <Path x:Name="CheckMark"
+                Visibility="Hidden"
+                Margin="4,0,6,0"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Fill="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}"
+                FlowDirection="LeftToRight"
+                Data="M 0,5.1 L 1.7,5.2 L 3.4,7.1 L 8,0.4 L 9.2,0 L 3.3,10.8 Z" />
+                                                <Image  Source="{Binding SmallImageSource, Mode=OneWay}"  Margin="4,0,6,0" Height="64" Width="64" Stretch="Uniform" HorizontalAlignment="Center" StretchDirection="DownOnly"   />
+                                                <TextBlock Text="{Binding LongHeader}" />
+                                            </StackPanel>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                    <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </RibbonGalleryCategory.ItemTemplate>
+                                </RibbonGalleryCategory>
                             </RibbonGallery>
-                              </RibbonMenuItem>
+
+
+
+                        </RibbonMenuItem>
 
                         <RibbonMenuItem Header="Sortierung" >
                             <RibbonRadioButton Label="von neu nach alt" IsChecked="True" />
@@ -185,28 +210,13 @@
                                 <RibbonMenuItem Header="Seitenumbruch bei jedem Schüler" IsCheckable="True" IsChecked="True" />
                                 <RibbonMenuItem Header="Neuer Absatz bei jedem Schüler" IsCheckable="true" />
                             </RibbonMenuItem>
-                            <RibbonMenuItem Header="Datum" ImageSource="Images/neues-jahr-2012.jpg" >
-                                
+                            <RibbonMenuItem Header="Datum" ImageSource="Images/neues-jahr-2012.jpg" >                                
                             </RibbonMenuItem>
                         </RibbonMenuItem>
 
 
-                        <RibbonMenuItem Header="Sortierung" >
-                            <RibbonRadioButton Label="von neu nach alt" IsChecked="True" />
-                            <RibbonRadioButton Label="von alt nach neu" />
-                        </RibbonMenuItem>
-
-
-                        <RibbonMenuItem Header="Sortierung" >
-                            <RibbonRadioButton Label="von neu nach alt" IsChecked="True" />
-                            <RibbonRadioButton Label="von alt nach neu" />
-                        </RibbonMenuItem>
-                    </RibbonMenuButton>
-
-                    <RibbonRadioButton Label="Gruppieren nach Schülern"  SmallImageSource="Images/Schüler.ico" IsChecked="{Binding GroupBySchüler}" />
-                    <RibbonRadioButton Label="Gruppieren nach Datum" SmallImageSource="Images/Kalender.bmp" />
-
-
+                       
+                    </RibbonMenuButton>                 
 
                 </RibbonGroup>
 

@@ -19,6 +19,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         private ObservableCollection<Beobachtung> beobachtungenCollection;
         private RibbonBaseVM selectedExportFilter;
         private List<RibbonMenuEntryVM> exportFilterItemSource;
+        private RibbonMenuEntryVM selectedGrouping;
 
         #region Properties für Bindings
 
@@ -32,33 +33,153 @@ namespace Groll.Schule.SchulDB.ViewModels
                 string Key = "ExportButton";
                 RibbonBaseVM t = GetElement(Key);
 
-                if (t == null)
-                {
-                    t = new RibbonBaseVM()
+                return t ?? SetElement(Key, 
+                    new RibbonBaseVM()
                     {
                         Label = "Exportieren",
                         LargeImageSourceFile = "Images/Word_Doc2.ico",
                         Command = BeobachtungenCommands.ExportBeobachtungen,
                         ToolTipTitle = "Startet den Exportvorgang",
                         ToolTipDescription = "Exportiert die Beobachtungen nach Word,\nentsprechend der eingestellten Vorgaben.",
-                        ToolTipImage = new Uri("Images/Word_Doc1.ico", UriKind.Relative)
-                    };
-                }
-                return t;
-            }
-        }       
-
-
-        public RibbonBaseVM SelectedExportFilter
-        {
-            get { return selectedExportFilter; }
-            set
-            {
-                if (selectedExportFilter != value)
-                { selectedExportFilter = value; OnPropertyChanged(); }
+                        ToolTipImageSourceFile = "Images/Word_Doc1.ico"
+                    });                               
             }
         }
-        
+
+        /// <summary>
+        /// Menu zum Setzen des Filters
+        /// </summary>
+        public RibbonMenuSelectedItemEntryVM FilterMenuButton
+        {
+            get
+            {
+                string Key = "FilterMenuButton";
+                RibbonMenuSelectedItemEntryVM t = GetElement(Key) as RibbonMenuSelectedItemEntryVM;
+                if (t == null)
+                {
+                    t = new RibbonMenuSelectedItemEntryVM()
+                    {
+                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        {
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Alles",
+                                LongHeader = "Alle Beobachtungen exportieren",
+                                Tag = "ALL",
+                                LargeImageSourceFile = "Images/Aktenschrank.ico",                    
+                                IsSelected = true,              
+                                ToolTipTitle = "Alle Beobachtungen",
+                                ToolTipDescription = "Exportiert alle vorhandenen Schülerbeobachtungen.",
+                                ToolTipImageSourceFile = "Images/Word_Doc1.ico"                  
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Schuljahr", 
+                                LongHeader = "Alle Beobachtungen des aktuellen Schuljahrs",
+                                Tag = "SJ",
+                                LargeImageSourceFile = "Images/neues-jahr-2012.jpg",   
+                                ToolTipTitle = "Aktuelles Schuljahr",
+                                ToolTipDescription = "Alle Beobachtungen aus dem aktuellen Schuljahr werden exportiert.",
+                                ToolTipImageSourceFile = "Images/Word_Doc1.ico"                          
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Klasse",   
+                                LongHeader = "Beobachtungen von Schülern der ausgewählten \nKlasse exportieren",
+                                Tag = "KL",
+                                LargeImageSourceFile = "Images/Klasse.ico",   
+                                ToolTipTitle = "Ausgewählte Klasse",
+                                ToolTipDescription = "Nur Beobachtungen der ausgewählten Klasse werden exportiert.",
+                                ToolTipImageSourceFile = "Images/Word_Doc1.ico"                   
+                            },                
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Schüler", 
+                                LongHeader = "Beobachtungen des markierten Schülers\n aus diesem Schuljahr",
+                                Tag = "SSJ",
+                                LargeImageSourceFile = "Images/Schüler.ico",                       
+                                ToolTipTitle = "Ausgewählter Schüler (nur aktuelles Schuljahr)",
+                                ToolTipDescription = "Aktuelle Beobachtungen des ausgewählten Schülers werden exportiert.\n\nNur aktuelles Schuljahr!",
+                                ToolTipImageSourceFile = "Images/Word_Doc1.ico"     
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Schüler",  
+                                LongHeader = "Beobachtungen des markierten Schülers",
+                                Tag = "SCH",
+                                LargeImageSourceFile = "Images/Schüler.ico",  
+                                ToolTipTitle = "Ausgewählter Schüler",
+                                ToolTipDescription = "Beobachtungen des ausgewählten Schülers werden exportiert.\n\nAlle Schuljahre!",
+                                ToolTipImageSourceFile = "Images/Word_Doc1.ico"                                 
+                            }
+                        }
+                    };
+                    t.SelectedItem = t.ItemsSource[0];
+                    SetElement(Key, (RibbonBaseVM)t);
+                }
+
+                return t;
+            }
+        }
+
+        public RibbonMenuEntryVM GroupingSettingsMenuButton
+        {
+            get
+            {
+                string Key = "GroupingSettingsMenuButton";
+                RibbonMenuEntryVM t = GetElement(Key) as RibbonMenuEntryVM;
+                if (t == null)
+                {
+                    t = new RibbonMenuEntryVM()
+                    {
+                        Label = "Gruppierung",
+                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        {
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Schüler",
+                                LongHeader = "Gruppiert nach Schüler",
+                                Tag = "S",
+                                LargeImageSourceFile = "Images/Schüler.ico",                    
+                                SmallImageSourceFile = "Images/Schüler.ico",                    
+                                IsSelected = true,              
+                               // ToolTipTitle = "Alle Beobachtungen",
+                               // ToolTipDescription = "Exportiert alle vorhandenen Schülerbeobachtungen.",
+                               // ToolTipImageSourceFile = "Images/Word_Doc1.ico"                  
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Datum",
+                                LongHeader = "Gruppiert nach Datum",
+                                Tag = "D",
+                                LargeImageSourceFile = "Images/Aktenschrank.ico",                    
+                                SmallImageSourceFile = "Images/Aktenschrank.ico",                              
+                            }
+                        }
+                    };
+                    t.SelectedItem = t.ItemsSource[0];
+                    SetElement(Key, (RibbonBaseVM)t);
+                }
+
+                return t;
+            }
+        }
+
+
+        public RibbonMenuEntryVM SelectedGrouping
+        {
+            get
+            {
+                return selectedGrouping;
+            }
+            set
+            {
+                if (selectedGrouping != value)
+                {
+                    selectedGrouping = value; OnPropertyChanged();
+                }
+            }
+        }
 
         /// <summary>
         /// Liste der 10 letzten Beobachtungen
@@ -85,73 +206,7 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         #region Properties für den ExportFilter Button       
 
-
-        public List<RibbonMenuEntryVM> ExportFilterItemSource
-        {
-            get
-            {
-                if (exportFilterItemSource == null)
-                {
-                    exportFilterItemSource = new List<RibbonMenuEntryVM>()
-                    {
-                    new RibbonMenuEntryVM()
-                    {
-                        Label = "Alles",
-                        LongHeader = "Alle Beobachtungen exportieren",
-                        Tag = "ALL",
-                        LargeImageSourceFile = "Images/Aktenschrank.ico",                    
-                        IsSelected = true,              
-                        ToolTipTitle = "Alle Beobachtungen",
-                        ToolTipDescription = "Exportiert alle vorhandenen Schülerbeobachtungen.",
-                        ToolTipImage = new Uri("Images/Word_Doc1.ico", UriKind.Relative)                    
-                    },
-                    new RibbonMenuEntryVM()
-                    {
-                        Label = "Schuljahr", 
-                        LongHeader = "Alle Beobachtungen des aktuellen Schuljahrs",
-                        Tag = "SJ",
-                        LargeImageSourceFile = "Images/neues-jahr-2012.jpg",   
-                        ToolTipTitle = "Aktuelles Schuljahr",
-                        ToolTipDescription = "Alle Beobachtungen aus dem aktuellen Schuljahr werden exportiert.",
-                        ToolTipImage = new Uri("Images/Word_Doc1.ico", UriKind.Relative)                              
-                    },
-                    new RibbonMenuEntryVM()
-                    {
-                        Label = "Klasse",   
-                        LongHeader = "Beobachtungen von Schülern der ausgewählten \nKlasse exportieren",
-                        Tag = "KL",
-                        LargeImageSourceFile = "Images/Klasse.ico",   
-                        ToolTipTitle = "Ausgewählte Klasse",
-                        ToolTipDescription = "Nur Beobachtungen der ausgewählten Klasse werden exportiert.",
-                        ToolTipImage = new Uri("Images/Word_Doc1.ico", UriKind.Relative)                      
-                    },                
-                    new RibbonMenuEntryVM()
-                    {
-                        Label = "Schüler", 
-                        LongHeader = "Beobachtungen des markierten Schülers\n aus diesem Schuljahr",
-                        Tag = "SSJ",
-                        LargeImageSourceFile = "Images/Schüler.ico",                       
-                        ToolTipTitle = "Ausgewählter Schüler (nur aktuelles Schuljahr)",
-                        ToolTipDescription = "Aktuelle Beobachtungen des ausgewählten Schülers werden exportiert.\n\nNur aktuelles Schuljahr!",
-                        ToolTipImage = new Uri("Images/Word_Doc1.ico", UriKind.Relative)     
-                    },
-                    new RibbonMenuEntryVM()
-                    {
-                        Label = "Schüler",  
-                        LongHeader = "Beobachtungen des markierten Schülers",
-                        Tag = "SCH",
-                        LargeImageSourceFile = "Images/Schüler.ico",  
-                        ToolTipTitle = "Ausgewählter Schüler",
-                        ToolTipDescription = "Beobachtungen des ausgewählten Schülers werden exportiert.\n\nAlle Schuljahre!",
-                        ToolTipImage = new Uri("Images/Word_Doc1.ico", UriKind.Relative)                                 
-                    }};
-                }
-                SelectedExportFilter = exportFilterItemSource[0];
-                return exportFilterItemSource;
-            }
-        }
-
-       
+  
         private bool groupBySchüler;
 
         public bool GroupBySchüler
@@ -173,7 +228,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// Konstruktor
         /// </summary>
         /// <param name="ribbonVM">Root Element</param>
-        public RibbonTabBeobachtungenVM(RibbonVM ribbonVM) : base(ribbonVM)
+        public RibbonTabBeobachtungenVM(RibbonVM ribbonVM = null) : base(ribbonVM)
         {
             Label = "Beobachtungen";
             IsVisible = false;  // per Default unsichtbar

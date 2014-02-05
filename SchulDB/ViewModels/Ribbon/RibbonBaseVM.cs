@@ -15,19 +15,18 @@ namespace Groll.Schule.SchulDB.ViewModels
 {
     public class RibbonBaseVM : ObservableObject
     {
-        #region Private Fields
-        private RibbonVM ribbonVM;                
+        #region Private Fields        
         private bool isSelected = false;
         private bool isVisible = true;
-        private string label = "";
+        private string label = null;
         private string largeImageSourceFile = "";
         private string smallImageSourceFile = "";
         private string toolTipTitle = "";
         private string toolTipDescription = "";
-        private Uri toolTipImage;
+        private string toolTipImageSourceFile = "";
         private string toolTipFooterTitle = "";
         private string toolTipFooterDescription = "";
-        private Uri toolTipFooterImage;
+        private string toolTipFooterImageSourceFile = "";
         private ICommand command;
         private string keyTip = "";
         private object tag;
@@ -69,25 +68,42 @@ namespace Groll.Schule.SchulDB.ViewModels
         #endregion
 
         #region Images-Sources
+
         // Properties for Binding
-        public ImageSource LargeImageSource
+        public Uri LargeImageSource
         {
             get
             {
-                return GetImageSourceFromRessourceString(largeImageSourceFile);
+                return new Uri(largeImageSourceFile, UriKind.Relative);
             }
         }
 
-        public ImageSource SmallImageSource
+        public Uri SmallImageSource
         {
-            get { return GetImageSourceFromRessourceString(smallImageSourceFile); }
+            get { return new Uri(smallImageSourceFile, UriKind.Relative); }
         }
 
-        public ImageSource ImageSource  // Link to SmallImageSource
+        public Uri ImageSource  // Link to SmallImageSource
         {
             get
             {
-                return GetImageSourceFromRessourceString(smallImageSourceFile);
+                return new Uri(smallImageSourceFile, UriKind.Relative);
+            }
+        }
+
+        public Uri ToolTipFooterImageSource
+        {
+            get
+            {
+                return new Uri(toolTipFooterImageSourceFile, UriKind.Relative);
+            }            
+        }
+
+        public Uri ToolTipImageSource
+        {
+            get
+            {
+                return new Uri(toolTipImageSourceFile, UriKind.Relative);
             }
         }
 
@@ -121,9 +137,39 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
+        public string ToolTipImageSourceFile
+        {
+            get { return toolTipImageSourceFile; }
+            set
+            {
+                if (toolTipImageSourceFile != value)
+                {
+                    toolTipImageSourceFile = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged("ToolTipImageSourceFile");
+                }
+            }
+        }
+
+        public string ToolTipFooterImageSourceFile
+        {
+            get { return toolTipFooterImageSourceFile; }
+            set
+            {
+                if (toolTipFooterImageSourceFile != value)
+                {
+                    toolTipFooterImageSourceFile = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged("ToolTipImageSourceFile");
+                }
+            }
+        }
+       
         // Hilfsfunktion
         private ImageSource GetImageSourceFromRessourceString(string URI)
         {
+            if (string.IsNullOrEmpty(URI))
+                return null;
             return new System.Windows.Media.Imaging.BitmapImage(new Uri( URI, UriKind.Relative));
         }
 
@@ -164,24 +210,6 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-        public Uri ToolTipImage
-        {
-            get
-            {
-                return toolTipImage;
-            }
-
-            set
-            {
-                if (toolTipImage != value)
-                {
-                    toolTipImage = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        
-
         public string ToolTipFooterTitle
         {
             get
@@ -215,23 +243,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                 }
             }
         }
-      
-        public Uri ToolTipFooterImage
-        {
-            get
-            {
-                return toolTipFooterImage;
-            }
-
-            set
-            {
-                if (toolTipFooterImage != value)
-                {
-                    toolTipFooterImage = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+       
         #endregion
 
         public ICommand Command

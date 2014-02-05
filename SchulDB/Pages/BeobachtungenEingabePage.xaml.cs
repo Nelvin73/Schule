@@ -93,13 +93,13 @@ namespace Groll.Schule.SchulDB.Pages
             var mw = Tag as MainWindow;
             if (mw == null || mw.RibbonVM == null)            
                 throw new InvalidOperationException("RibbonVM existiert nicht");
-            
-            var vm = mw.RibbonVM.BeobachtungenTabVM;
+
+            var vm = mw.RibbonVM.TabBeobachtungen;
             var exp = new Reports.BeobachtungenExport();
 
             exp.GroupBy = vm.GroupBySchüler ? Reports.BeobachtungenExport.GroupByType.GroupBySchüler : Reports.BeobachtungenExport.GroupByType.GroupByDatum;
 
-            switch (vm.SelectedExportFilter.Tag.ToString())
+            switch (vm.FilterMenuButton.Tag.ToString())
             {
                 case "ALL":   // Alle
                     exp.ExportToWord();
@@ -172,7 +172,7 @@ namespace Groll.Schule.SchulDB.Pages
             // Hide Context Tab
             var mw = Tag as MainWindow;
             if (mw != null && mw.RibbonVM != null)            
-                mw.RibbonVM.BeobachtungenTabVM.IsVisible = false;                                       
+                mw.RibbonVM.TabBeobachtungen.IsVisible = false;                                       
         }
 
         private void Page_Initialized(object sender, EventArgs e)
@@ -187,7 +187,8 @@ namespace Groll.Schule.SchulDB.Pages
             var mw = Tag as MainWindow;
             if (mw != null && mw.RibbonVM != null)
             {
-                mw.RibbonVM.BeobachtungenTabVM.IsSelected = mw.RibbonVM.BeobachtungenTabVM.IsVisible = true;
+                ViewModels.RibbonVM.Default.TabBeobachtungen.IsSelected = ViewModels.RibbonVM.Default.TabBeobachtungen.IsVisible = true;
+                mw.RibbonVM.TabBeobachtungen.IsSelected = mw.RibbonVM.TabBeobachtungen.IsVisible = true;
                 txtBeoText.Focus();
             }
         }

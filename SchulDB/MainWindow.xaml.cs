@@ -27,16 +27,12 @@ namespace Groll.Schule.SchulDB
         private Dictionary<string, ISchulDBPage> pages = new Dictionary<string, ISchulDBPage>();
         private Groll.Schule.DataManager.UowSchuleDB UnitOfWork;
         private string currentPage;
-        private RibbonVM ribbonVM;
         
         public RibbonVM RibbonVM
         {
             get
-            {
-                if (ribbonVM == null)
-                    ribbonVM = FindResource("RibbonVM") as RibbonVM;
-
-                return ribbonVM;
+            {                
+                return RibbonVM.Default;
             }
         }
         public MainWindow()

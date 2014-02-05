@@ -13,19 +13,91 @@ namespace Groll.Schule.SchulDB.ViewModels
 {
     public class RibbonVM : ObservableObject
     {
+        #region Static Instance
+        static RibbonVM staticInstance;
+
+        public static RibbonVM Default
+        {
+            get
+            {
+                if (staticInstance == null)
+                    staticInstance = new RibbonVM();
+                return staticInstance;
+            }
+        }
+        #endregion
+        
         #region Unit of Work
         private UowSchuleDB unitOfWork;
         public UowSchuleDB UnitOfWork
         {
-            get { return unitOfWork; }
+            get {
+                if (unitOfWork == null)                
+                    // Try to get UnitOfWork Global Ressource; if not successful, it stays <null>
+                    UnitOfWork = System.Windows.Application.Current.TryFindResource("UnitOfWork") as UowSchuleDB;                    
+                
+                return unitOfWork; }
+
             set { unitOfWork = value; OnPropertyChanged(); OnUnitOfWorkChanged(); }
         }
         #endregion
 
         #region Tabs
 
+        private Dictionary<string, RibbonTabVM> tabs = new Dictionary<string, RibbonTabVM>();
+
+        public ApplicationMenuVM ApplicationMenu
+        {
+            get
+            {
+                string Key = "ApplicationMenu";
+                ApplicationMenuVM t = GetElement(Key) as ApplicationMenuVM;
+                return t ?? SetElement(Key, new ApplicationMenuVM(this)) as ApplicationMenuVM;
+            }
+        }
+
+        public RibbonTabStandardVM TabStandard
+        {
+            get
+            {
+                string Key = "TabStandard";
+                RibbonTabStandardVM t = GetElement(Key) as RibbonTabStandardVM;
+                return t ?? SetElement(Key, new RibbonTabStandardVM(this)) as RibbonTabStandardVM;
+            }
+        }
+
+        public RibbonTabBeobachtungenVM TabBeobachtungen
+        {
+            get
+            {
+                string Key = "TabBeobachtungen";
+                RibbonTabBeobachtungenVM t = GetElement(Key) as RibbonTabBeobachtungenVM;
+                return t ?? SetElement(Key, new RibbonTabBeobachtungenVM(this)) as RibbonTabBeobachtungenVM;
+            }
+        }
+
+        private RibbonTabVM GetElement(string Key)
+        {
+            if (Key != null && tabs.ContainsKey(Key))
+                return tabs[Key];
+            else
+                return null;
+        }
+
+        private RibbonTabVM SetElement(string Key, RibbonTabVM Element, bool Overwrite = true)
+        {
+            if (string.IsNullOrEmpty(Key) || Element == null)
+                return null;
+
+            if (Overwrite || !tabs.ContainsKey(Key))
+                tabs.Add(Key, Element);
+
+            return Element;
+        }
+
+
         private RibbonTabBeobachtungenVM beobachtungenTabVM;
-        public RibbonTabBeobachtungenVM BeobachtungenTabVM
+        public RibbonTabBeobachtungenVM aBeobachtungenTabVM
         {
             get { return beobachtungenTabVM; }
             set { beobachtungenTabVM = value; }
@@ -34,35 +106,10 @@ namespace Groll.Schule.SchulDB.ViewModels
         #endregion
 
 
-        #region CurrentDB info properties
-        public string CurrentDbType
-        {
-            get
-            {
-                if (unitOfWork == null)
-                    return "";
-
-                return unitOfWork.CurrentDbType.ToString();
-            }           
-        }
-
-        public string CurrentDbFile
-        {
-            get
-            {
-                if (unitOfWork == null)
-                    return "";
-
-                return unitOfWork.CurrentDbFilename.ToString();
-            }
-        }
-        #endregion
-      
-          
+    
         public RibbonVM()
         {
-            // Initialization
-            BeobachtungenTabVM = new RibbonTabBeobachtungenVM(this);
+            // Initialization            
         }
 
 
@@ -76,11 +123,11 @@ namespace Groll.Schule.SchulDB.ViewModels
         void unitOfWork_DatabaseChanged(object sender, EventArgs e)
         {
             // Invalidate database dependent properties
-            OnPropertyChanged("CurrentDbType");
-            OnPropertyChanged("CurrentDbFile");
             
             // Inform RibbonTabs
-            BeobachtungenTabVM.OnDatabaseChanged();
+            foreach (RibbonTabVM tab in tabs.Values)
+                tab.OnDatabaseChanged();
+          
         }      
     }
 }
