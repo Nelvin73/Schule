@@ -86,25 +86,31 @@
 
 
 
-
-    <DataTemplate x:Key="CheckmarkDataTemplate">
-        <StackPanel Orientation="Horizontal">
-            <Path x:Name="CheckMark"
-                Visibility="Hidden"
-                Margin="4,0,6,0"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Fill="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}"
-                FlowDirection="LeftToRight"
-                Data="M 0,5.1 L 1.7,5.2 L 3.4,7.1 L 8,0.4 L 9.2,0 L 3.3,10.8 Z" />
-            <Image  Source="{Binding SmallImageSource, Mode=OneWay}"  Margin="4,0,6,0" Height="64" Width="64" Stretch="Uniform" HorizontalAlignment="Center" StretchDirection="DownOnly"   />
-            <TextBlock Text="{Binding LongHeader}" />
-        </StackPanel>
-        <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
-            </DataTrigger>
-        </DataTemplate.Triggers>
-    </DataTemplate>
+    <Style TargetType="RibbonGalleryItem" x:Key="MenuItemsDataWithCheckmark" >
+            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+            <Setter Property="ContentTemplate" >
+                <Setter.Value>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Path x:Name="CheckMark"
+                                Visibility="Hidden"
+                                Margin="4,0,6,0"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Fill="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}"
+                                FlowDirection="LeftToRight"
+                                Data="M 0,5.1 L 1.7,5.2 L 3.4,7.1 L 8,0.4 L 9.2,0 L 3.3,10.8 Z" />
+                            <Image  Source="{Binding SmallImageSource, Mode=OneWay}"  Margin="4,0,6,0" Height="32" Width="32" Stretch="Uniform" HorizontalAlignment="Center" StretchDirection="DownOnly"  VerticalAlignment="Center"  />
+                            <TextBlock Text="{Binding LongHeader}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+            </Setter.Value>
+        </Setter>        
+    </Style>    
 
 </ResourceDictionary>

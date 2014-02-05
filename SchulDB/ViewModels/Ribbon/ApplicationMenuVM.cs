@@ -49,7 +49,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         public ApplicationMenuVM(RibbonVM RibbonVM = null) : base (RibbonVM)         
         {
             Label = "";
-            SmallImageSourceFile = LargeImageSourceFile = "Images/DB.ico";
+            SmallImageSourceFile = LargeImageSourceFile = "DB.ico";
             OnDatabaseChanged();             
         }
         #endregion

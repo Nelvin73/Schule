@@ -37,11 +37,11 @@ namespace Groll.Schule.SchulDB.ViewModels
                     new RibbonBaseVM()
                     {
                         Label = "Exportieren",
-                        LargeImageSourceFile = "Images/Word_Doc2.ico",
+                        LargeImageSourceFile = "Word_Doc2.ico",
                         Command = BeobachtungenCommands.ExportBeobachtungen,
                         ToolTipTitle = "Startet den Exportvorgang",
                         ToolTipDescription = "Exportiert die Beobachtungen nach Word,\nentsprechend der eingestellten Vorgaben.",
-                        ToolTipImageSourceFile = "Images/Word_Doc1.ico"
+                        ToolTipImageSourceFile = "Word_Doc1.ico"
                     });                               
             }
         }
@@ -66,51 +66,51 @@ namespace Groll.Schule.SchulDB.ViewModels
                                 Label = "Alles",
                                 LongHeader = "Alle Beobachtungen exportieren",
                                 Tag = "ALL",
-                                LargeImageSourceFile = "Images/Aktenschrank.ico",                    
+                                LargeImageSourceFile = "Aktenschrank.ico",                    
                                 IsSelected = true,              
                                 ToolTipTitle = "Alle Beobachtungen",
                                 ToolTipDescription = "Exportiert alle vorhandenen Schülerbeobachtungen.",
-                                ToolTipImageSourceFile = "Images/Word_Doc1.ico"                  
+                                ToolTipImageSourceFile = "Word_Doc1.ico"                  
                             },
                             new RibbonMenuEntryVM()
                             {
                                 Label = "Schuljahr", 
                                 LongHeader = "Alle Beobachtungen des aktuellen Schuljahrs",
                                 Tag = "SJ",
-                                LargeImageSourceFile = "Images/neues-jahr-2012.jpg",   
+                                LargeImageSourceFile = "neues-jahr-2012.jpg",   
                                 ToolTipTitle = "Aktuelles Schuljahr",
                                 ToolTipDescription = "Alle Beobachtungen aus dem aktuellen Schuljahr werden exportiert.",
-                                ToolTipImageSourceFile = "Images/Word_Doc1.ico"                          
+                                ToolTipImageSourceFile = "Word_Doc1.ico"                          
                             },
                             new RibbonMenuEntryVM()
                             {
                                 Label = "Klasse",   
                                 LongHeader = "Beobachtungen von Schülern der ausgewählten \nKlasse exportieren",
                                 Tag = "KL",
-                                LargeImageSourceFile = "Images/Klasse.ico",   
+                                LargeImageSourceFile = "Klasse.ico",   
                                 ToolTipTitle = "Ausgewählte Klasse",
                                 ToolTipDescription = "Nur Beobachtungen der ausgewählten Klasse werden exportiert.",
-                                ToolTipImageSourceFile = "Images/Word_Doc1.ico"                   
+                                ToolTipImageSourceFile = "Word_Doc1.ico"                   
                             },                
                             new RibbonMenuEntryVM()
                             {
                                 Label = "Schüler", 
                                 LongHeader = "Beobachtungen des markierten Schülers\n aus diesem Schuljahr",
                                 Tag = "SSJ",
-                                LargeImageSourceFile = "Images/Schüler.ico",                       
+                                LargeImageSourceFile = "Schüler.ico",                       
                                 ToolTipTitle = "Ausgewählter Schüler (nur aktuelles Schuljahr)",
                                 ToolTipDescription = "Aktuelle Beobachtungen des ausgewählten Schülers werden exportiert.\n\nNur aktuelles Schuljahr!",
-                                ToolTipImageSourceFile = "Images/Word_Doc1.ico"     
+                                ToolTipImageSourceFile = "Word_Doc1.ico"     
                             },
                             new RibbonMenuEntryVM()
                             {
                                 Label = "Schüler",  
                                 LongHeader = "Beobachtungen des markierten Schülers",
                                 Tag = "SCH",
-                                LargeImageSourceFile = "Images/Schüler.ico",  
+                                LargeImageSourceFile = "Schüler.ico",  
                                 ToolTipTitle = "Ausgewählter Schüler",
                                 ToolTipDescription = "Beobachtungen des ausgewählten Schülers werden exportiert.\n\nAlle Schuljahre!",
-                                ToolTipImageSourceFile = "Images/Word_Doc1.ico"                                 
+                                ToolTipImageSourceFile = "Word_Doc1.ico"                                 
                             }
                         }
                     };
@@ -140,20 +140,20 @@ namespace Groll.Schule.SchulDB.ViewModels
                                 Label = "Schüler",
                                 LongHeader = "Gruppiert nach Schüler",
                                 Tag = "S",
-                                LargeImageSourceFile = "Images/Schüler.ico",                    
-                                SmallImageSourceFile = "Images/Schüler.ico",                    
+                                LargeImageSourceFile = "Schüler.ico",                    
+                                SmallImageSourceFile = "Schüler.ico",                    
                                 IsSelected = true,              
                                // ToolTipTitle = "Alle Beobachtungen",
                                // ToolTipDescription = "Exportiert alle vorhandenen Schülerbeobachtungen.",
-                               // ToolTipImageSourceFile = "Images/Word_Doc1.ico"                  
+                               // ToolTipImageSourceFile = "Word_Doc1.ico"                  
                             },
                             new RibbonMenuEntryVM()
                             {
                                 Label = "Datum",
                                 LongHeader = "Gruppiert nach Datum",
                                 Tag = "D",
-                                LargeImageSourceFile = "Images/Aktenschrank.ico",                    
-                                SmallImageSourceFile = "Images/Aktenschrank.ico",                              
+                                LargeImageSourceFile = "Kalender3.png",                    
+                                SmallImageSourceFile = "Kalender3.png",                              
                             }
                         }
                     };

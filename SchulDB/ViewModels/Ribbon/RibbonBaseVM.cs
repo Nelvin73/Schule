@@ -74,20 +74,23 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             get
             {
-                return new Uri(largeImageSourceFile, UriKind.Relative);
+                return CreateUri(largeImageSourceFile);
             }
         }
 
         public Uri SmallImageSource
         {
-            get { return new Uri(smallImageSourceFile, UriKind.Relative); }
+            get
+            {
+                return CreateUri(smallImageSourceFile);
+            }
         }
 
         public Uri ImageSource  // Link to SmallImageSource
         {
             get
             {
-                return new Uri(smallImageSourceFile, UriKind.Relative);
+                return CreateUri(smallImageSourceFile);
             }
         }
 
@@ -95,7 +98,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             get
             {
-                return new Uri(toolTipFooterImageSourceFile, UriKind.Relative);
+                return CreateUri(toolTipFooterImageSourceFile);
             }            
         }
 
@@ -103,7 +106,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             get
             {
-                return new Uri(toolTipImageSourceFile, UriKind.Relative);
+                return CreateUri(toolTipImageSourceFile);
             }
         }
 
@@ -166,6 +169,11 @@ namespace Groll.Schule.SchulDB.ViewModels
         }
        
         // Hilfsfunktion
+        private Uri CreateUri(string Filename)
+        {
+            return string.IsNullOrWhiteSpace(Filename) ? null : new Uri("/Images/" + Filename, UriKind.Relative);
+        }
+
         private ImageSource GetImageSourceFromRessourceString(string URI)
         {
             if (string.IsNullOrEmpty(URI))

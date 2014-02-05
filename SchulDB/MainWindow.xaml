@@ -22,13 +22,13 @@
 
         <Ribbon x:Name="Ribbon" Title="Ribbon Title" DataContext="{x:Static ViewModels:RibbonVM.Default}" >
             <Ribbon.HelpPaneContent>
-                <RibbonButton SmallImageSource="Images/i1.bmp" />
+                <RibbonButton SmallImageSource="/Images/i1.bmp" />
             </Ribbon.HelpPaneContent>
 
             <Ribbon.QuickAccessToolBar>
                 <RibbonQuickAccessToolBar>
-                    <RibbonButton Content="Save"  SmallImageSource="Images/i1.bmp" Command="Save" />
-                    <RibbonButton Content="Text2"  SmallImageSource="Images/i1.bmp" />
+                    <RibbonButton Content="Save"  SmallImageSource="/Images/i1.bmp" Command="Save" />
+                    <RibbonButton Content="Text2"  SmallImageSource="/Images/i1.bmp" />
                 </RibbonQuickAccessToolBar>
             </Ribbon.QuickAccessToolBar>
 
@@ -71,15 +71,15 @@
 
             <RibbonTab DataContext="{Binding TabStandard}"  >
                 <RibbonGroup Header="Stammdaten">
-                    <RibbonButton Label="Schüler" SmallImageSource="Images/Schüler.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="schuelerdetails" LargeImageSource="Images/Schüler.ico"  />
-                    <RibbonButton Label="Klassen" SmallImageSource="Images/Klasse.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="klassendetails" LargeImageSource="Images/Klasse.ico" />
-                    <RibbonButton Label="Fächer" SmallImageSource="Images/Schultafel_Schulfaecher_320986.jpg" Command="comm:BasicCommands.NavigateTo" CommandParameter="faecherdetails" LargeImageSource="Images/Mappe.ico" />
-                    <RibbonButton Label="Schuljahre" SmallImageSource="Images/neues-jahr-2012.jpg" Command="comm:BasicCommands.NavigateTo" CommandParameter="schuljahredetails" LargeImageSource="Images/neues-jahr-2012.jpg" />
+                    <RibbonButton Label="Schüler" SmallImageSource="/Images/Schüler.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="schuelerdetails" LargeImageSource="/Images/Schüler.ico"  />
+                    <RibbonButton Label="Klassen" SmallImageSource="/Images/Klasse.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="klassendetails" LargeImageSource="/Images/Klasse.ico" />
+                    <RibbonButton Label="Fächer" SmallImageSource="/Images/Schultafel_Schulfaecher_320986.jpg" Command="comm:BasicCommands.NavigateTo" CommandParameter="faecherdetails" LargeImageSource="/Images/Mappe.ico" />
+                    <RibbonButton Label="Schuljahre" SmallImageSource="/Images/neues-jahr-2012.jpg" Command="comm:BasicCommands.NavigateTo" CommandParameter="schuljahredetails" LargeImageSource="/Images/neues-jahr-2012.jpg" />
                 </RibbonGroup>
                 <RibbonGroup Header="Beobachtungen">
-                    <RibbonButton Label="Eingeben" SmallImageSource="Images/Schüler.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe" LargeImageSource="Images/Schultafel_Schulfaecher_320986.jpg"  />
-                    <RibbonButton Label="Exportieren" SmallImageSource="Images/Klasse.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe"  />
-                    <RibbonButton Label="Korrigieren" SmallImageSource="Images/Mappe.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe"  />
+                    <RibbonButton Label="Eingeben" SmallImageSource="/Images/Schüler.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe" LargeImageSource="/Images/Schultafel_Schulfaecher_320986.jpg"  />
+                    <RibbonButton Label="Exportieren" SmallImageSource="/Images/Klasse.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe"  />
+                    <RibbonButton Label="Korrigieren" SmallImageSource="/Images/Mappe.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe"  />
                 </RibbonGroup>
             </RibbonTab>
 
@@ -114,34 +114,35 @@
                 </RibbonGroup>
 
                 <RibbonGroup Header="Eingabe" >
-                    <RibbonButton Label="Eingabe löschen" Command="comm:BeobachtungenCommands.ClearInput" LargeImageSource="Images/Trash.ico"  />
-                    <RibbonSplitButton Label="Beobachtung speichern" Command="comm:BeobachtungenCommands.Add" LargeImageSource="Images/Add_Comment.ico"  >
-                        <RibbonMenuItem Header="Speichern" Command="comm:BeobachtungenCommands.Add" ImageSource="Images/Add_Comment.ico" />
-                        <RibbonMenuItem Header="Speichern ohne Löschen" Command="comm:BeobachtungenCommands.Add" CommandParameter="noClear" ImageSource="Images/Add_Comment.ico" />
+                    <RibbonButton Label="Eingabe löschen" Command="comm:BeobachtungenCommands.ClearInput" LargeImageSource="/Images/Trash.ico"  />
+                    <RibbonSplitButton Label="Beobachtung speichern" Command="comm:BeobachtungenCommands.Add" LargeImageSource="/Images/Add_Comment.ico"  >
+                        <RibbonMenuItem Header="Speichern" Command="comm:BeobachtungenCommands.Add" ImageSource="/Images/Add_Comment.ico" />
+                        <RibbonMenuItem Header="Speichern ohne Löschen" Command="comm:BeobachtungenCommands.Add" CommandParameter="noClear" ImageSource="/Images/Add_Comment.ico" />
                     </RibbonSplitButton>
                 </RibbonGroup>
 
                 <RibbonGroup Header="Einfügen" >
-                    <RibbonMenuButton Label="Letzte Kommentare" LargeImageSource="Images/Aktenschrank.ico" ItemsSource="{Binding Last10Beobachtungen}" >
+                    <RibbonMenuButton Label="Letzte Kommentare" LargeImageSource="/Images/Aktenschrank.ico" ItemsSource="{Binding Last10Beobachtungen}" >
                         <RibbonMenuButton.ItemContainerStyle>
                             <Style TargetType="{x:Type RibbonMenuItem}">
                                 <Setter Property="Header" Value="{Binding Text}" />
                                 <Setter Property="Command" Value="{x:Static comm:BeobachtungenCommands.InsertText}" />
                                 <Setter Property="CommandParameter" Value="{Binding Text}" />
-                                <Setter Property="ImageSource" Value="Images/Notiz2.ico" />
+                                <Setter Property="ImageSource" Value="/Images/Notiz2.ico" />
                             </Style>
                         </RibbonMenuButton.ItemContainerStyle>
                     </RibbonMenuButton>
 
-                    <RibbonButton Label="Gespeicherte Sätze" LargeImageSource="Images/Add_Document.ico" />
+                    <RibbonButton Label="Gespeicherte Sätze" LargeImageSource="/Images/Add_Document.ico" />
                 </RibbonGroup>
 
                 <RibbonGroup Header="Exportieren" >
                     <!-- Export Button-->
                     <RibbonButton DataContext="{Binding ExportButton}"  />
+                    
                     <!-- Filterauswahl Button-->
-                    <RibbonMenuButton MinWidth="55"  DataContext="{Binding FilterMenuButton}" >                    
-                        <RibbonGallery SelectedItem="{Binding SelectedItem}" >
+                    <RibbonMenuButton MinWidth="55"  DataContext="{Binding FilterMenuButton}" >
+                        <RibbonGallery SelectedItem="{Binding SelectedItem}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                             <RibbonGalleryCategory Header="Beobachtungen einschränken" ItemsSource="{Binding ItemsSource}" >
                                 <RibbonGalleryCategory.ItemTemplate>
                                     <DataTemplate>
@@ -155,45 +156,12 @@
                         </RibbonGallery>
                     </RibbonMenuButton>                                        
                     
-                    <RibbonMenuButton Label="Einstellungen" LargeImageSource="Images/Settings1.ico">
-                        <RibbonMenuItem Header="Gruppieren" >                            
-                            <RibbonRadioButton Label="Gruppieren nach Schüler" IsChecked="True" LargeImageSource="Images/Schüler.ico" />
-                            <RibbonRadioButton Label="Gruppieren nach Datum" LargeImageSource="Images/neues-jahr-2012.jpg" />
-                        </RibbonMenuItem>
+                    <RibbonMenuButton Label="Einstellungen" LargeImageSource="/Images/Settings1.ico">
+                                                
                         <RibbonMenuItem  DataContext="{Binding GroupingSettingsMenuButton}" ItemsSource="{x:Null}">
-                            <RibbonGallery   SelectedItem="{Binding SelectedGrouping}"  >
-                                <RibbonGallery.GalleryItemStyle>
-                                    <Style TargetType="RibbonGalleryItem" >
-                                        <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                                    </Style>
-                                </RibbonGallery.GalleryItemStyle>
-                                <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}" >
-                                    <RibbonGalleryCategory.ItemTemplate>
-                                        <DataTemplate >
-                                            <StackPanel Orientation="Horizontal">
-                                                <Path x:Name="CheckMark"
-                Visibility="Hidden"
-                Margin="4,0,6,0"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Fill="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}"
-                FlowDirection="LeftToRight"
-                Data="M 0,5.1 L 1.7,5.2 L 3.4,7.1 L 8,0.4 L 9.2,0 L 3.3,10.8 Z" />
-                                                <Image  Source="{Binding SmallImageSource, Mode=OneWay}"  Margin="4,0,6,0" Height="64" Width="64" Stretch="Uniform" HorizontalAlignment="Center" StretchDirection="DownOnly"   />
-                                                <TextBlock Text="{Binding LongHeader}" />
-                                            </StackPanel>
-                                            <DataTemplate.Triggers>
-                                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                                    <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                            </DataTemplate.Triggers>
-                                        </DataTemplate>
-                                    </RibbonGalleryCategory.ItemTemplate>
-                                </RibbonGalleryCategory>
+                            <RibbonGallery  SelectedItem="{Binding SelectedGrouping}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />                                
                             </RibbonGallery>
-
-
-
                         </RibbonMenuItem>
 
                         <RibbonMenuItem Header="Sortierung" >
@@ -202,15 +170,15 @@
                         </RibbonMenuItem>
 
                         <RibbonMenuItem Header="Formatierung" >
-                            <RibbonMenuItem Header="Klassen" ImageSource="Images/Klasse.ico"  >
+                            <RibbonMenuItem Header="Klassen" ImageSource="/Images/Klasse.ico"  >
                                 <RibbonMenuItem Header="Seitenumbruch bei jeder Klasse" IsCheckable="True" IsChecked="True" />
                                 <RibbonMenuItem Header="Neuer Absatz bei jeder Klasse" IsCheckable="true" />
                             </RibbonMenuItem>
-                            <RibbonMenuItem Header="Schüler" ImageSource="Images/Schüler.ico" >
+                            <RibbonMenuItem Header="Schüler" ImageSource="/Images/Schüler.ico" >
                                 <RibbonMenuItem Header="Seitenumbruch bei jedem Schüler" IsCheckable="True" IsChecked="True" />
                                 <RibbonMenuItem Header="Neuer Absatz bei jedem Schüler" IsCheckable="true" />
                             </RibbonMenuItem>
-                            <RibbonMenuItem Header="Datum" ImageSource="Images/neues-jahr-2012.jpg" >                                
+                            <RibbonMenuItem Header="Datum" ImageSource="/Images/neues-jahr-2012.jpg" >                                
                             </RibbonMenuItem>
                         </RibbonMenuItem>
 

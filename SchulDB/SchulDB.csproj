@@ -284,6 +284,9 @@
   <ItemGroup>
     <Resource Include="Images\Settings1.ico" />
     <Resource Include="Images\Settings2.ico" />
+    <Resource Include="Images\Kalender1.jpg" />
+    <Resource Include="Images\Kalender2.jpg" />
+    <Resource Include="Images\Kalender3.png" />
     <Content Include="Schule.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
