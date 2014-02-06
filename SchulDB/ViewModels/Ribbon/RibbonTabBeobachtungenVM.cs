@@ -67,7 +67,6 @@ namespace Groll.Schule.SchulDB.ViewModels
                                 LongHeader = "Alle Beobachtungen exportieren",
                                 Tag = "ALL",
                                 LargeImageSourceFile = "Aktenschrank.ico",                    
-                                IsSelected = true,              
                                 ToolTipTitle = "Alle Beobachtungen",
                                 ToolTipDescription = "Exportiert alle vorhandenen Schülerbeobachtungen.",
                                 ToolTipImageSourceFile = "Word_Doc1.ico"                  
@@ -142,10 +141,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                                 Tag = "S",
                                 LargeImageSourceFile = "Schüler.ico",                    
                                 SmallImageSourceFile = "Schüler.ico",                    
-                                IsSelected = true,              
-                               // ToolTipTitle = "Alle Beobachtungen",
-                               // ToolTipDescription = "Exportiert alle vorhandenen Schülerbeobachtungen.",
-                               // ToolTipImageSourceFile = "Word_Doc1.ico"                  
+                                IsSelected = true,                                                 
                             },
                             new RibbonMenuEntryVM()
                             {
@@ -164,6 +160,64 @@ namespace Groll.Schule.SchulDB.ViewModels
                 return t;
             }
         }
+
+        /// <summary>
+        /// Menu zum Setzen des Filters
+        /// </summary>
+        public RibbonMenuSelectedItemEntryVM HistoryViewMenuButton
+        {
+            get
+            {
+                string Key = "HistoryViewMenuButton";
+                RibbonMenuSelectedItemEntryVM t = GetElement(Key) as RibbonMenuSelectedItemEntryVM;
+                if (t == null)
+                {
+                    t = new RibbonMenuSelectedItemEntryVM()
+                    {
+                        
+                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        {
+                            new RibbonMenuEntryVM()
+                            {                                
+                                Tag = "ID",
+                                LongHeader = "Die zuletzt eingegebenen Beobachtungen",                                                                
+                                SmallImageSourceFile = "Keys.ico",
+                                LargeImageSourceFile = "Keys.ico",                    
+                                IsSelected = true,              
+                                ToolTipTitle = "Die zuletzt eingegebenen Beobachtungen",
+                                ToolTipDescription = "Zeigt die zuletzt eingegebenen Beobachtungen an.",
+                                ToolTipImageSourceFile = "Keys.ico"                  
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Tag = "Schüler",
+                                LongHeader = "Die letzten Beobachtungen des ausgewählten Schülers",                                
+                                SmallImageSourceFile = "Schüler.ico",
+                                LargeImageSourceFile = "Schüler.ico",   
+                                ToolTipTitle = "Ausgewählter Schüler",
+                                ToolTipDescription = "Zeigt die letzten Beobachtungen des ausgewählten Schülers an.",
+                                //ToolTipImageSourceFile = "Schüler.ico"                          
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Tag = "Datum",                                
+                                LongHeader = "Aktuellste Beobachtungen nach Datum",
+                                SmallImageSourceFile = "Kalender3.png",
+                                LargeImageSourceFile = "Kalender3.png",   
+                                ToolTipTitle = "Anzeige nach Datum",
+                                ToolTipDescription = "Die aktuellsten Beobachtungen werden nach Datum sortiert angezeigt.",
+                                //ToolTipImageSourceFile = "Kalender3.png"                   
+                            }
+                        }
+                    };
+                    t.SelectedItem = t.ItemsSource[0];
+                    SetElement(Key, (RibbonBaseVM)t);
+                }
+
+                return t;
+            }
+        }
+
 
 
         public RibbonMenuEntryVM SelectedGrouping

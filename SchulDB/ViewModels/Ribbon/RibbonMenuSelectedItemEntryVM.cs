@@ -17,7 +17,7 @@ namespace Groll.Schule.SchulDB.ViewModels
     public class RibbonMenuSelectedItemEntryVM : RibbonMenuEntryVM
     {
 
-        new private RibbonMenuEntryVM selectedItem;
+        private RibbonMenuEntryVM selectedItem;
 
         new public string LongHeader
         {

@@ -51,9 +51,9 @@ namespace Groll.Schule.DataManager
         private SchuleContext context;
         private DatabaseType currentDBtype = DatabaseType.None;
 
-        private RepositoryBase<Schueler> repSchueler;
+        private SchuelerRepository repSchueler;
         private RepositoryBase<Klasse> repKlassen;
-        private RepositoryBase<Fach> repFächer;
+        private FaecherRepository repFächer;
         private RepositoryBase<Beobachtung> repBeobachtungen;
         private RepositoryBase<Schuljahr> repSchuljahre;
         private SettingsRepository repSettings;
@@ -91,25 +91,25 @@ namespace Groll.Schule.DataManager
 
                 return repSchuljahre; ;
             }
-        } 
-      
-        public RepositoryBase<Fach> Fächer
+        }
+
+        public FaecherRepository Fächer
         {
             get
             {
                 if (repFächer == null && context != null)
-                    repFächer = new RepositoryBase<Fach>(context);
+                    repFächer = new FaecherRepository(context);
 
                 return repFächer; ;
             }           
         }
         
-        public RepositoryBase<Schueler> Schueler
+        public SchuelerRepository Schueler
         {
             get
             {
                 if (repSchueler == null && context != null)
-                    repSchueler = new RepositoryBase<Schueler>(context);
+                    repSchueler = new SchuelerRepository(context);
 
                 return repSchueler;
             }
@@ -219,7 +219,8 @@ namespace Groll.Schule.DataManager
             context.Schueler.Load();
             context.Fächer.Load();
             context.Klassen.Load();
-            context.Schuljahre.Load();                        
+            context.Schuljahre.Load();
+            context.Beobachtungen.Load(); 
         }
 
         private void ResetRepositories()

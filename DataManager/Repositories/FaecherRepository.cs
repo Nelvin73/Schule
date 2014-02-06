@@ -13,13 +13,13 @@ using Groll.Schule.DataAccess;
 namespace Groll.Schule.DataManager.Repositories
 {
     // Öffentliche Schnittstelle zu der Schüler-Tabelle
-    public class SchuelerRepository : RepositoryBase<Schueler>
+    public class FaecherRepository : RepositoryBase<Fach>
     {
-        public SchuelerRepository(SchuleContext context) : base(context) { }
+        public FaecherRepository(SchuleContext context) : base(context) { }
 
-        public Schueler Get(string Nachname, string Vorname)
+        public Fach Get(string Name)
         {
-            return Get(x => x.Nachname == Nachname && x.Vorname == Vorname);
+            return Get(x => x.Name == Name);
         }
 
         

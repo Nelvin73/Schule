@@ -16,6 +16,12 @@ namespace Groll.Schule.Model
         public virtual Schuljahr Schuljahr { get; set; }
         public virtual Schueler Schueler { get; set; }
 
+        public Beobachtung()
+        {
+            Text = "";
+
+        }
+
         public override string ToString()
         {            
             return "Schüler: " + Schueler.ID + ", Klasse: " + Klasse.ToString() + ": " + (Text.Length > 20 ? Text.Substring(0,20) + "..." : Text);
@@ -25,7 +31,10 @@ namespace Groll.Schule.Model
         {
             get
             {
-                return Schueler.GetKlasse(SchuljahrId);
+                if (Schueler != null)
+                    return Schueler.GetKlasse(SchuljahrId);
+                else
+                    return null;
             }
         }
     }

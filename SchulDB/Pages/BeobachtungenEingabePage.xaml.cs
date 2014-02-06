@@ -52,10 +52,12 @@ namespace Groll.Schule.SchulDB.Pages
                     new CommandBinding(BeobachtungenCommands.ClearInput, Executed_ClearInput, BasicCommands.CanExecute_TRUE),
                     new CommandBinding(BeobachtungenCommands.Add, Executed_Add, CanExecute_Add),
                     new CommandBinding(BeobachtungenCommands.InsertText, Executed_InsertText, BasicCommands.CanExecute_TRUE),
-                    new CommandBinding(BeobachtungenCommands.ExportBeobachtungen, Executed_Export, BasicCommands.CanExecute_TRUE)
+                    new CommandBinding(BeobachtungenCommands.ExportBeobachtungen, Executed_Export, BasicCommands.CanExecute_TRUE),
+                    new CommandBinding(BeobachtungenCommands.HistoryViewChanged, Executed_HistoryViewChanged, BasicCommands.CanExecute_TRUE)
                 });
         }
 
+        
        
        
        
@@ -63,6 +65,24 @@ namespace Groll.Schule.SchulDB.Pages
 
 
         #region ICommand implementierungen
+        private void Executed_HistoryViewChanged(object sender, ExecutedRoutedEventArgs e)
+        {
+            var type = ViewModels.BeobachtungenEingabeVM.BeoHistoryMode.LastEntered;
+            switch (e.Parameter.ToString())
+            {
+                case "Schüler":
+                    type = ViewModels.BeobachtungenEingabeVM.BeoHistoryMode.CurrentSchueler;
+                    break;
+                case "Datum":
+                    type = ViewModels.BeobachtungenEingabeVM.BeoHistoryMode.SortDate;
+                    break;
+                default: // "ID"
+                    break;
+            }
+            ViewModel.BeobachtungenHistoryType = type;
+        }
+
+
         private void Executed_InsertText(object sender, ExecutedRoutedEventArgs e)
         {
             // Text aus History einfügen
@@ -89,6 +109,9 @@ namespace Groll.Schule.SchulDB.Pages
 
         private void Executed_Export(object sender, ExecutedRoutedEventArgs e)
         {
+            // Temp
+            // new Import().ImportData();
+
             // Get parameters             
             var mw = Tag as MainWindow;
             if (mw == null || mw.RibbonVM == null)            

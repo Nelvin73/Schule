@@ -9,13 +9,18 @@ namespace Groll.Schule.SchulDB.Commands
 {
     public class BeobachtungenCommands
     {
+
+        private static RoutedUICommand historyViewChanged = new RoutedUICommand("HistoryViewChanged", "ChangeHistoryView", typeof(BeobachtungenCommands));
         private static RoutedUICommand clearInput = new RoutedUICommand("ClearInput", "ClearInput", typeof(BeobachtungenCommands));
         private static RoutedUICommand add = new RoutedUICommand("Add", "Add", typeof(BeobachtungenCommands));
         private static RoutedUICommand insertText = new RoutedUICommand("InsertText", "InsertText", typeof(BeobachtungenCommands));
         private static RoutedUICommand export = new RoutedUICommand("ExportBeobachtungen", "ExportBeobachtungen", typeof(BeobachtungenCommands));
 
 
-
+        public static RoutedUICommand HistoryViewChanged
+        {
+            get { return historyViewChanged; }
+        }
         public static RoutedUICommand ClearInput
         {
             get { return clearInput; }

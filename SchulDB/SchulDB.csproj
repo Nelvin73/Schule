@@ -63,7 +63,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helper\Extensions.cs" />
+    <Compile Include="Import.cs" />
     <Compile Include="Reports\BeobachtungenExport.cs" />
+    <Compile Include="Schule_BEDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Schule_BEDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Ribbon\ApplicationMenuVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonMenuSelectedItemEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonTabStandardVM.cs" />
@@ -173,6 +179,17 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Schule_BEDataSet.xsc">
+      <DependentUpon>Schule_BEDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Schule_BEDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Schule_BEDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schule_BEDataSet.xss">
+      <DependentUpon>Schule_BEDataSet.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -287,6 +304,8 @@
     <Resource Include="Images\Kalender1.jpg" />
     <Resource Include="Images\Kalender2.jpg" />
     <Resource Include="Images\Kalender3.png" />
+    <Resource Include="Images\Keyboard1.ico" />
+    <Resource Include="Images\Keys.ico" />
     <Content Include="Schule.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -9,8 +9,7 @@
         x:Name="RibbonWindow"
         Width="1024" Height="800">
 
-    <RibbonWindow.Resources>
-        <!--<ViewModels:RibbonVM x:Key="RibbonVM" UnitOfWork="{StaticResource UnitOfWork}"  /> -->
+    <RibbonWindow.Resources>        
      
     </RibbonWindow.Resources>
 
@@ -98,18 +97,14 @@
             <!-- RibbonTab Beobachtungen -->
             <RibbonTab DataContext="{Binding TabBeobachtungen}" >
                 <RibbonGroup Header="Ansicht" >
-                    <RibbonComboBox Label="History"  >
-                        <RibbonGallery SelectedValue="Green"
-							SelectedValuePath="Content"
-							MaxColumnCount="1">
-                            <RibbonGalleryCategory>
-                                <RibbonGalleryItem Content="Letzte Beobachtungen anzeigen" Foreground="Green" />
-                                <RibbonGalleryItem Content="Beobachtungen nach Datum anzeigen" Foreground="Blue" />
-                                <RibbonGalleryItem Content="Beobachtungen des aktuellen Schülers anzeigen" Foreground="Orange" />
-                            </RibbonGalleryCategory>
+                   
+                    <!-- Change History-View Button-->
+                    <RibbonMenuButton Label="History" DataContext="{Binding HistoryViewMenuButton }"  >
+                        <RibbonGallery SelectedItem="{Binding SelectedItem}" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                       Command="comm:BeobachtungenCommands.HistoryViewChanged" CommandParameter="{Binding Tag}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}">
+                            <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}" />                            
                         </RibbonGallery>
-
-                    </RibbonComboBox>
+                    </RibbonMenuButton>
 
                 </RibbonGroup>
 

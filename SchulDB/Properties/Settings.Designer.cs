@@ -34,5 +34,16 @@ namespace Groll.Schule.SchulDB.Properties {
                 this["UsedDatabase"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\\Schule_BE.mdb;Persis" +
+            "t Security Info=True")]
+        public string Schule_BEConnectionString {
+            get {
+                return ((string)(this["Schule_BEConnectionString"]));
+            }
+        }
     }
 }

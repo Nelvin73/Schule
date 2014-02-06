@@ -28,6 +28,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         private string toolTipFooterDescription = "";
         private string toolTipFooterImageSourceFile = "";
         private ICommand command;
+        private object commandParameter;
         private string keyTip = "";
         private object tag;
         #endregion
@@ -269,8 +270,25 @@ namespace Groll.Schule.SchulDB.ViewModels
                     OnPropertyChanged();
                 }
             }
-        }       
+        }   
+    
+        public object CommandParameter
+        {
+            get
+            {
+                return commandParameter;
+            }
 
+            set
+            {
+                if (commandParameter != value)
+                {
+                    commandParameter = value;
+                    OnPropertyChanged();
+                }
+            }
+        }     
+  
         public string KeyTip
         {
             get

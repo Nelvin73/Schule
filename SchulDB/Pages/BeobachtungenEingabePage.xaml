@@ -25,20 +25,20 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"  />
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <GroupBox Header="Schüler auswählen" Margin="3" Grid.Row="0">
-            <StackPanel Margin="3">
+            <StackPanel Margin="3" >
                 <StackPanel Orientation="Horizontal" Margin="3">
                     <TextBlock Text="Klasse:" Margin="3" />
                     <ComboBox x:Name="cbKlassenListe" Margin="3" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" MinWidth="200"/>
                 </StackPanel>
                 <TextBox x:Name="Filter" TextChanged="Filter_TextChanged" Margin="3" />
-                <ListBox x:Name="cbSchülerListe" Margin="3"  ItemsSource="{Binding Mode=OneWay, Source={StaticResource SchülerListeViewSource}}" MinWidth="200" MinHeight="100"  SelectedItem="{Binding SelectedSchüler}" SelectionMode="Extended" />
+                <ListBox x:Name="cbSchülerListe" Margin="3"  MaxHeight="200" ItemsSource="{Binding Mode=OneWay, Source={StaticResource SchülerListeViewSource}}" MinWidth="200" MinHeight="100"  SelectedItem="{Binding SelectedSchüler}" SelectionMode="Extended" />
             </StackPanel>
 
         </GroupBox>
