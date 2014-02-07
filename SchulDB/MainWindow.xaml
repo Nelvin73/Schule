@@ -84,13 +84,13 @@
 
             <RibbonTab Header="Listen" >
                 <RibbonGroup Header="Schüler-Listen">
-                    <RibbonButton Label="Klassenliste" SmallImageSource="Images\i1.bmp" />
-                    <RibbonButton Label="Notenliste" SmallImageSource="Images\i1.bmp" />
+                    <RibbonButton Label="Klassenliste" SmallImageSource="/Images/i1.bmp" />
+                    <RibbonButton Label="Notenliste" SmallImageSource="/Images/i1.bmp" />
                     <RibbonButton Label="Dump Context" Command="comm:BasicCommands.DumpContext" />
 
                 </RibbonGroup>
                 <RibbonGroup Header="Reports" >
-                    <RibbonButton Label="Beobachtungen" SmallImageSource="Images\i1.bmp" />
+                    <RibbonButton Label="Beobachtungen" SmallImageSource="/Images/Word_Doc1.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungenansicht" />
                 </RibbonGroup>
             </RibbonTab>
 
@@ -154,17 +154,34 @@
                     <RibbonMenuButton Label="Einstellungen" LargeImageSource="/Images/Settings1.ico">
                                                 
                         <RibbonMenuItem  DataContext="{Binding GroupingSettingsMenuButton}" ItemsSource="{x:Null}">
-                            <RibbonGallery  SelectedItem="{Binding SelectedGrouping}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedGrouping}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                 <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />                                
                             </RibbonGallery>
                         </RibbonMenuItem>
 
-                        <RibbonMenuItem Header="Sortierung" >
-                            <RibbonRadioButton Label="von neu nach alt" IsChecked="True" />
-                            <RibbonRadioButton Label="von alt nach neu" />
-                        </RibbonMenuItem>
+                        <RibbonMenuItem DataContext="{Binding SortSettingsMenuButton}" ItemsSource="{x:Null}" >
+                            <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedSorting}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
+                            </RibbonGallery>
+                         </RibbonMenuItem>
 
                         <RibbonMenuItem Header="Formatierung" >
+                            <RibbonMenuItem DataContext="{Binding TextBreakKlasseMenuButton}" ItemsSource="{x:Null}" >
+                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedTextBreakKlasse}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
+                                </RibbonGallery>
+                            </RibbonMenuItem>
+                            <RibbonMenuItem DataContext="{Binding TextBreakSchuelerMenuButton}" ItemsSource="{x:Null}" >
+                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedTextBreakSchueler}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
+                                </RibbonGallery>
+                            </RibbonMenuItem>
+                            <RibbonMenuItem DataContext="{Binding TextBreakDatumMenuButton}" ItemsSource="{x:Null}" >
+                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedTextBreakDatum}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
+                                </RibbonGallery>
+                            </RibbonMenuItem>
+                            
                             <RibbonMenuItem Header="Klassen" ImageSource="/Images/Klasse.ico"  >
                                 <RibbonMenuItem Header="Seitenumbruch bei jeder Klasse" IsCheckable="True" IsChecked="True" />
                                 <RibbonMenuItem Header="Neuer Absatz bei jeder Klasse" IsCheckable="true" />
@@ -175,6 +192,9 @@
                             </RibbonMenuItem>
                             <RibbonMenuItem Header="Datum" ImageSource="/Images/neues-jahr-2012.jpg" >                                
                             </RibbonMenuItem>
+                            <RibbonSeparator />
+                            <RibbonMenuItem Header="Absatz nach jedem Eintrag" IsCheckable="True" IsChecked="{Binding ParagraphAfterEveryEntry}" />
+                            <RibbonMenuItem Header="Gleichen Namen / Datum wiederholen" IsCheckable="True" IsChecked="{Binding RepeatSameName}" />
                         </RibbonMenuItem>
 
 

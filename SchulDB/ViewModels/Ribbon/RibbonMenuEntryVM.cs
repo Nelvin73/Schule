@@ -19,21 +19,21 @@ namespace Groll.Schule.SchulDB.ViewModels
         private string longHeader = "";
         private List<RibbonMenuEntryVM> itemsSource;
         private RibbonMenuEntryVM selectedItem;
-
+        private bool staysOpenOnClick = false;
         /// <summary>
         /// Längerer Text, z.B. für Gallery
         /// </summary>
         public string LongHeader
         {
             get { return longHeader; }
-            set { longHeader = value; OnPropertyChanged(); }
+            set { if (longHeader != value) { longHeader = value; OnPropertyChanged(); } }
         }
 
         
         public List<RibbonMenuEntryVM> ItemsSource
         {
             get { return itemsSource; }
-            set { itemsSource = value; }
+            set { if (itemsSource != value) { itemsSource = value; OnPropertyChanged(); } }
         }
 
         public RibbonMenuEntryVM SelectedItem
@@ -47,6 +47,16 @@ namespace Groll.Schule.SchulDB.ViewModels
                 }
             }
         }
-      
+        public bool StaysOpenOnClick
+        {
+            get { return staysOpenOnClick; }
+            set
+            {
+                if (staysOpenOnClick != value)
+                {
+                    staysOpenOnClick = value; OnPropertyChanged();
+                }
+            }
+        }
     }
 }

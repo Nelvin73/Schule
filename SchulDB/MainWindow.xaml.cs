@@ -123,6 +123,10 @@ namespace Groll.Schule.SchulDB
                     case "beobachtungeneingabe":
                         page = new BeobachtungenEingabePage();
                         break;
+
+                    case "beobachtungenansicht":
+                        page = new BeobachtungenAnsichtPage();
+                        break;
                 }
 
                 // Save page in cache

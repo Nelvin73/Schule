@@ -247,7 +247,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         private void OnSelectedSchülerChanged()
         {
             // Ein Schüler wurde ausgewählt 
-            int i = 0;  // Dummy
+            UpdateHistory();            
         }
 
         private void UpdateHistory()

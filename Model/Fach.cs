@@ -17,7 +17,7 @@ namespace Groll.Schule.Model
 
         public override string ToString()
         {
-            return Name;
+            return Name ?? "";
         }
     }
 }

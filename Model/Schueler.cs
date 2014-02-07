@@ -39,8 +39,10 @@ namespace Groll.Schule.Model
 
         public Klasse GetKlasse(int SchuljahrId)
         {
-            return Klassen.FirstOrDefault(x => x.SchuljahrId == SchuljahrId);
+            if (Klassen == null)
+                return null;
 
+            return Klassen.FirstOrDefault(x => x.SchuljahrId == SchuljahrId);
         }
 
         public string DisplayName { get { return GetDisplayName(); } }

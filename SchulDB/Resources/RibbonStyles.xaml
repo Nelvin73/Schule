@@ -6,7 +6,7 @@
 
     <!-- Base -->
 
-    
+
     <Style x:Key="RibbonControlStyle">
         <Setter Property="RibbonControlService.Label" Value="{Binding Label}" />
         <Setter Property="RibbonControlService.LargeImageSource" Value="{Binding LargeImageSource}" />
@@ -43,8 +43,8 @@
         <Setter Property="LargeImageSource" Value="{Binding LargeImageSource}" />
         <Setter Property="SmallImageSource" Value="{Binding SmallImageSource}" />
     </Style>
-              
-    
+
+
     <!-- RibbonTab -->
     <Style TargetType="{x:Type RibbonTab}">
         <Setter Property="Header" Value="{Binding Label}" />
@@ -57,7 +57,7 @@
     <Style TargetType="{x:Type RibbonButton}" BasedOn="{StaticResource RibbonControlStyle}">
         <Setter Property="Command" Value="{Binding Command}" />
     </Style>
-    
+
     <!-- RibbonMenuButton -->
     <Style TargetType="{x:Type RibbonMenuButton}" BasedOn="{StaticResource RibbonControlStyle}">
         <Setter Property="QuickAccessToolBarId" Value="{Binding Command}" />
@@ -72,14 +72,15 @@
         <Setter Property="KeyTipService.KeyTip" Value="{Binding KeyTip}" />
         <Setter Property="Command" Value="{Binding Command}" />
         <Setter Property="ItemsSource" Value="{Binding ItemsSource}" />
-   <!--     <Setter Property="IsCheckable" Value="{Binding IsCheckable}" />
+        <Setter Property="StaysOpenOnClick" Value="{Binding StaysOpenOnClick}" />
+        <!--     <Setter Property="IsCheckable" Value="{Binding IsCheckable}" />
         <Setter Property="IsChecked" Value="{Binding IsChecked}" />
         <Setter Property="CanUserResizeVertically" Value="{Binding IsVerticallyResizable}" />
         <Setter Property="CanUserResizeHorizontally" Value="{Binding IsHorizontallyResizable}" />  -->
         <Style.Triggers>
             <DataTrigger Binding="{Binding ImageSource}" Value="{x:Null}">
                 <Setter Property="ImageSource" Value="{x:Null}" />
-            </DataTrigger>            
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 
@@ -87,12 +88,12 @@
 
 
     <Style TargetType="RibbonGalleryItem" x:Key="MenuItemsDataWithCheckmark" >
-            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-            <Setter Property="ContentTemplate" >
-                <Setter.Value>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Path x:Name="CheckMark"
+        <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+        <Setter Property="ContentTemplate" >
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" >
+                        <Path x:Name="CheckMark"
                                 Visibility="Hidden"
                                 Margin="4,0,6,0"
                                 VerticalAlignment="Center"
@@ -100,17 +101,20 @@
                                 Fill="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}"
                                 FlowDirection="LeftToRight"
                                 Data="M 0,5.1 L 1.7,5.2 L 3.4,7.1 L 8,0.4 L 9.2,0 L 3.3,10.8 Z" />
-                            <Image  Source="{Binding SmallImageSource, Mode=OneWay}"  Margin="4,0,6,0" Height="32" Width="32" Stretch="Uniform" HorizontalAlignment="Center" StretchDirection="DownOnly"  VerticalAlignment="Center"  />
-                            <TextBlock Text="{Binding LongHeader}" VerticalAlignment="Center" />
-                        </StackPanel>
-                        <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </DataTemplate.Triggers>
-                    </DataTemplate>
+                        <Image  x:Name="Image" Source="{Binding SmallImageSource, Mode=OneWay}"  Margin="4,0,6,0" Height="32" Width="32" Stretch="Uniform" HorizontalAlignment="Center" StretchDirection="DownOnly"  VerticalAlignment="Center"  />
+                        <TextBlock Text="{Binding LongHeader}" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SmallImageSource}" Value="{x:Null}">
+                            <Setter TargetName="Image" Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
             </Setter.Value>
-        </Setter>        
-    </Style>    
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

@@ -20,6 +20,13 @@ namespace Groll.Schule.SchulDB.ViewModels
         private RibbonBaseVM selectedExportFilter;
         private List<RibbonMenuEntryVM> exportFilterItemSource;
         private RibbonMenuEntryVM selectedGrouping;
+        private RibbonMenuEntryVM selectedSorting;
+        private RibbonMenuEntryVM selectedTextBreakKlasse;
+        private RibbonMenuEntryVM selectedTextBreakSchueler;
+        private RibbonMenuEntryVM selectedTextBreakDatum;
+        private bool paragraphAfterEveryEntry = false;
+        private bool repeatSameName = false;
+
 
         #region Properties für Bindings
 
@@ -131,7 +138,8 @@ namespace Groll.Schule.SchulDB.ViewModels
                 {
                     t = new RibbonMenuEntryVM()
                     {
-                        Label = "Gruppierung",
+                        Label = "Gruppieren",
+                     //   StaysOpenOnClick = true,
                         ItemsSource = new List<RibbonMenuEntryVM>()
                         {
                             new RibbonMenuEntryVM()
@@ -160,10 +168,49 @@ namespace Groll.Schule.SchulDB.ViewModels
                 return t;
             }
         }
+  
+        public RibbonMenuEntryVM SortSettingsMenuButton
+        {
+            get
+            {
+                string Key = "SortSettingsMenuButton";
+                RibbonMenuEntryVM t = GetElement(Key) as RibbonMenuEntryVM;
+                if (t == null)
+                {
+                    t = new RibbonMenuEntryVM()
+                    {
+                        Label = "Sortieren",
+                        StaysOpenOnClick = true,
+                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        {
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Absteigend",
+                                LongHeader = "Absteigend- Neueste Einträge zuerst",
+                                Tag = "DESC",
+                        //        LargeImageSourceFile = "SortDesc.ico",                    
+                         //       SmallImageSourceFile = "SortDesc.ico",                    
+                                IsSelected = true,                                                 
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Aufsteigend",
+                                LongHeader = "Aufsteigend - Älteste Einträge zuerst",
+                                Tag = "ASC",
+                        //        LargeImageSourceFile = "SortAsc.ico",                    
+                         //       SmallImageSourceFile = "SortAsc.ico",                              
+                            }
+                        }
+                    };
 
-        /// <summary>
-        /// Menu zum Setzen des Filters
-        /// </summary>
+                    t.SelectedItem = t.ItemsSource[0];
+                    SetElement(Key, (RibbonBaseVM)t);
+                }
+
+                return t;
+            }
+        }
+       
         public RibbonMenuSelectedItemEntryVM HistoryViewMenuButton
         {
             get
@@ -218,8 +265,6 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-
-
         public RibbonMenuEntryVM SelectedGrouping
         {
             get
@@ -231,7 +276,236 @@ namespace Groll.Schule.SchulDB.ViewModels
                 if (selectedGrouping != value)
                 {
                     selectedGrouping = value; OnPropertyChanged();
+                    if (selectedGrouping.Tag.ToString() == "S")
+                    {
+                        TextBreakSchuelerMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
+                        TextBreakDatumMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
+                        SelectedTextBreakSchueler = TextBreakSchuelerMenuButton.ItemsSource[0];
+                        SelectedTextBreakDatum = TextBreakDatumMenuButton.ItemsSource[2];
+                    }else
+                    {
+                       TextBreakSchuelerMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
+                        TextBreakDatumMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
+                        SelectedTextBreakSchueler = TextBreakSchuelerMenuButton.ItemsSource[2];
+                        SelectedTextBreakDatum = TextBreakDatumMenuButton.ItemsSource[0];
+
+                    }
+                    OnPropertyChanged("TextBreakSchuelerMenuButton");
+                    OnPropertyChanged("SelectedTextBreakDatum");
                 }
+            }
+        }
+
+        public RibbonMenuEntryVM SelectedSorting
+        {
+            get
+            {
+                return selectedSorting;
+            }
+            set
+            {
+                if (selectedSorting != value)
+                {
+                    selectedSorting = value; OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool ParagraphAfterEveryEntry
+        {
+            get
+            {
+                return paragraphAfterEveryEntry;
+            }
+            set
+            {
+                if (paragraphAfterEveryEntry != value)
+                {
+                    paragraphAfterEveryEntry = value; OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool RepeatSameName
+        {
+            get
+            {
+                return repeatSameName;
+            }
+            set
+            {
+                if (repeatSameName != value)
+                {
+                    repeatSameName = value; OnPropertyChanged();
+                }
+            }
+        }
+        
+        public RibbonMenuEntryVM SelectedTextBreakKlasse
+        {
+            get
+            {
+                return selectedTextBreakKlasse;
+            }
+            set
+            {
+                if (selectedTextBreakKlasse != value)
+                {
+                    selectedTextBreakKlasse = value; OnPropertyChanged();
+                }
+            }
+        }
+
+        public RibbonMenuEntryVM SelectedTextBreakSchueler
+        {
+            get
+            {
+                return selectedTextBreakSchueler;
+            }
+            set
+            {
+                if (selectedTextBreakSchueler != value)
+                {
+                    selectedTextBreakSchueler = value; OnPropertyChanged();
+                }
+            }
+        }
+
+        public RibbonMenuEntryVM SelectedTextBreakDatum
+        {
+            get
+            {
+                return selectedTextBreakDatum;
+            }
+            set
+            {
+                if (selectedTextBreakDatum != value)
+                {
+                    selectedTextBreakDatum = value; OnPropertyChanged();
+                }
+            }
+        }
+
+
+        public RibbonMenuEntryVM TextBreakKlasseMenuButton
+        {
+            get
+            {
+                string Key = "TextBreakKlasseMenuButton";
+                RibbonMenuEntryVM t = GetElement(Key) as RibbonMenuEntryVM;
+                if (t == null)
+                {
+                    t = new RibbonMenuEntryVM()
+                    {
+                        Label = "Klasse",
+                        StaysOpenOnClick = true,
+                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        {
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Seite",
+                                LongHeader = "Jede Klasse auf einer neuen Seite\nanfangen lassen",
+                                Tag = "Seite",
+                                IsSelected = true,                                                 
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Absatz",
+                                LongHeader = "Fortlaufend\n(neuer Absatz)",
+                                Tag = "Absatz",
+                            }
+                        }
+                    };
+                    t.SelectedItem = t.ItemsSource[0];
+                    SetElement(Key, (RibbonBaseVM)t);
+                }
+
+                return t;
+            }
+        }
+
+        public RibbonMenuEntryVM TextBreakSchuelerMenuButton
+        {
+            get
+            {
+                string Key = "TextBreakSchuelerMenuButton";
+                RibbonMenuEntryVM t = GetElement(Key) as RibbonMenuEntryVM;
+                if (t == null)
+                {
+                    t = new RibbonMenuEntryVM()
+                    {
+                        Label = "Schueler",
+                        StaysOpenOnClick = true,
+                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        {
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Seite",
+                                LongHeader = "Jeden Schüler auf einer neuen Seite\nanfangen lassen",
+                                Tag = "Seite",
+                                IsSelected = true,                                                 
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Absatz",
+                                LongHeader = "Fortlaufend\n(neuer Absatz)",
+                                Tag = "Absatz",
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Fortlaufend",
+                                LongHeader = "Fortlaufend\n (ohne Trennung)",
+                                Tag = "None",
+                            }}};
+
+                    t.SelectedItem = t.ItemsSource[0];
+                    SetElement(Key, (RibbonBaseVM)t);
+                }
+
+                return t;
+            }
+        }
+  
+        public RibbonMenuEntryVM TextBreakDatumMenuButton
+        {
+            get
+            {
+                string Key = "TextBreakDatumMenuButton";
+                RibbonMenuEntryVM t = GetElement(Key) as RibbonMenuEntryVM;
+                if (t == null)
+                {
+                    t = new RibbonMenuEntryVM()
+                    {
+                        Label = "Datum",
+                        StaysOpenOnClick = true,
+                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        {                      
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Seite",
+                                LongHeader = "Neues Datum in einer neuen Seite\nanfangen lassen",
+                                Tag = "Seite",                                                                              
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Absatz",
+                                LongHeader = "Neuer Absatz nach neuem Datum",
+                                Tag = "Absatz",                                
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Label = "Fortlaufend",
+                                LongHeader = "Fortlaufend\n (ohne Trennung)",
+                                Tag = "None",
+                                IsSelected = true
+                            }
+                        }
+                    };
+                    t.SelectedItem = t.ItemsSource[0];
+                    SetElement(Key, (RibbonBaseVM)t);
+                }
+
+                return t;
             }
         }
 
@@ -258,21 +532,10 @@ namespace Groll.Schule.SchulDB.ViewModels
         }
        
 
-        #region Properties für den ExportFilter Button       
-
+      
   
-        private bool groupBySchüler;
-
-        public bool GroupBySchüler
-        {
-            get { return groupBySchüler; }
-            set { groupBySchüler = value; }
-        }
-
-        System.Windows.Input.RoutedCommand s = Commands.BeobachtungenCommands.ExportBeobachtungen;
+               
        
-        #endregion
-
         
 
         #endregion
@@ -290,10 +553,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             
            
            // SelectedExportFilter = ExportFilterItemSource[0];
-
-        
-
-            GroupBySchüler = true;
+                
                       
         }
         #endregion
@@ -302,14 +562,14 @@ namespace Groll.Schule.SchulDB.ViewModels
         public override void OnDatabaseChanged()
         {
             // invalidate all database relevant properties
-            beo_CollectionChanged(null, null);
+            beobachtungenCollection = null;
+            OnPropertyChanged("Last10Beobachtungen");
             base.OnDatabaseChanged();
         }
 
         void beo_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            // Beobachtungen changed
-            beobachtungenCollection = null;
+            // Beobachtungen changed            
             OnPropertyChanged("Last10Beobachtungen");
         }
         #endregion

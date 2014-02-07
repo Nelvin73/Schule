@@ -63,13 +63,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helper\Extensions.cs" />
-    <Compile Include="Import.cs" />
-    <Compile Include="Reports\BeobachtungenExport.cs" />
-    <Compile Include="Schule_BEDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Schule_BEDataSet.xsd</DependentUpon>
+    <Compile Include="Import\Import.cs" />
+    <Compile Include="Pages\BeobachtungenAnsichtPage.xaml.cs">
+      <DependentUpon>BeobachtungenAnsichtPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Reports\BeobachtungenExport.cs" />
     <Compile Include="ViewModels\Ribbon\ApplicationMenuVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonMenuSelectedItemEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonTabStandardVM.cs" />
@@ -106,6 +104,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\BeobachtungenAnsichtPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\SchuljahreDetailsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -128,7 +130,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Pages\DatePickerWatermarkBehaviour.cs" />
     <Compile Include="Pages\ISchulDBPage.cs" />
     <Compile Include="Pages\FaecherDetailsPage.xaml.cs">
       <DependentUpon>FaecherDetailsPage.xaml</DependentUpon>
@@ -179,17 +180,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Schule_BEDataSet.xsc">
-      <DependentUpon>Schule_BEDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Schule_BEDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>Schule_BEDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Schule_BEDataSet.xss">
-      <DependentUpon>Schule_BEDataSet.xsd</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -306,12 +296,10 @@
     <Resource Include="Images\Kalender3.png" />
     <Resource Include="Images\Keyboard1.ico" />
     <Resource Include="Images\Keys.ico" />
-    <Content Include="Schule.mdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Schule_BE.mdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SortAsc.ico" />
+    <Resource Include="Images\SortDesc.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

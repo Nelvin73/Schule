@@ -31,7 +31,9 @@ namespace Groll.Schule.SchulDB.Reports
         private ListSortDirection dateSortDirection = ListSortDirection.Ascending;
         private string reportHeader = "Schülerbeobachtungen";
         private GroupByType groupBy = GroupByType.GroupBySchüler;
-
+        private bool paragraphAfterEveryEntry = false;
+        private bool repeatSameName = false;
+       
        
         
 
@@ -106,7 +108,33 @@ namespace Groll.Schule.SchulDB.Reports
             get { return groupBy; }
             set { groupBy = value; }
         }
-        
+
+        /// <summary>
+        /// Legt fest, ob nach jedem Eintrag auf jeden Fall ein Absatz gemacht werden soll
+        /// </summary>
+        public bool ParagraphAfterEveryEntry
+        {
+            get
+            {
+                return paragraphAfterEveryEntry;
+            }
+            set
+            {
+                paragraphAfterEveryEntry = value;
+            }
+        }
+
+        public bool RepeatSameName
+        {
+            get
+            {
+                return repeatSameName;
+            }
+            set
+            {              
+                repeatSameName = value;                
+            }
+        }
 
 
         public BeobachtungenExport()
@@ -221,9 +249,10 @@ namespace Groll.Schule.SchulDB.Reports
                 s.Font.Name = "Calibri";
                 s.Font.Size = 10;
                 s.Font.Bold = 0;
-                s.ParagraphFormat.TabStops.Add(70F);
-                s.ParagraphFormat.LeftIndent = 70F;
-                s.ParagraphFormat.FirstLineIndent = -70F;
+                float Indent = groupBy == GroupByType.GroupBySchüler ? 70F : 120F;
+                s.ParagraphFormat.TabStops.Add(Indent);
+                s.ParagraphFormat.LeftIndent = Indent;
+                s.ParagraphFormat.FirstLineIndent = -Indent;
             }
             catch
             { }
@@ -284,6 +313,7 @@ namespace Groll.Schule.SchulDB.Reports
 
                 if (currKlasse != lastKlasse)
                 {
+                    // Neue Klasse
                     if (lastKlasse != null && breakNewKlasse != TextBreakType.None && breakNewKlasse > breakDone)
                     {
                         // Umbruch nach jeder folgenden Klasse (außer der ersten)
@@ -302,8 +332,9 @@ namespace Groll.Schule.SchulDB.Reports
                 }                               
                
                 // Neuer Schüler ? --> Header bzw. neue Seite 
-                if (lastSchueler != beo.Schueler && groupBy == GroupByType.GroupBySchüler)
+                if (lastSchueler != beo.Schueler) // && groupBy == GroupByType.GroupBySchüler)
                 {
+                    // Neuer Schüler
                     if (lastSchueler != null && breakNewSchüler != TextBreakType.None && breakNewSchüler > breakDone)
                     {
                         // Umbruch Bei jedem weiteren Schüler (außer dem ersten)
@@ -316,15 +347,19 @@ namespace Groll.Schule.SchulDB.Reports
                     }
 
                     // Schülername ausgeben
-                    app.Selection.set_Style(FormatGruppenHeader);
-                    app.Selection.TypeText(beo.Schueler.DisplayName);
-                    app.Selection.TypeParagraph();
-
+                    if (groupBy == GroupByType.GroupBySchüler)
+                    {
+                        app.Selection.set_Style(FormatGruppenHeader);
+                        app.Selection.TypeText(beo.Schueler.DisplayName);
+                        app.Selection.TypeParagraph();
+                        lastDatum = null;
+                    }
                 }
 
                 // Neues Datum? --> Header bzw. neue Seite 
-                if ((lastDatum == null || lastDatum.Value.Date != beo.Datum.Value.Date) && groupBy == GroupByType.GroupByDatum)
+                if ((lastDatum == null || lastDatum.Value.Date != beo.Datum.Value.Date)) // && groupBy == GroupByType.GroupByDatum)
                 {
+                    // Neues Datum
                     if (lastDatum != null && breakNewDate != TextBreakType.None && breakNewDate > breakDone)
                     {
                         // Umbruch Bei jedem weiteren Datum (außer dem ersten)
@@ -337,10 +372,18 @@ namespace Groll.Schule.SchulDB.Reports
                     }
 
                     // Datum ausgeben
-                    app.Selection.set_Style(FormatGruppenHeader);
-                    app.Selection.TypeText(beo.Datum == null ? "Allgemein" : beo.Datum.Value.ToString("dd.mm.yyyy"));
-                    app.Selection.TypeParagraph();
+                    if (groupBy == GroupByType.GroupByDatum)
+                    {
+                        app.Selection.set_Style(FormatGruppenHeader);
+                        app.Selection.TypeText(beo.Datum == null ? "Allgemein" : beo.Datum.Value.ToString("dd.MM.yyyy"));
+                        app.Selection.TypeParagraph();
+                        lastSchueler = null;
+                    }
                 }
+
+                // Absatz auf jeden Fall nach Eintrag ?
+                if (paragraphAfterEveryEntry && breakDone == TextBreakType.None)
+                    app.Selection.TypeParagraph();
                
                 // Kopfzeile anpassen, wenn auf neuer Seite
                 if ((int)app.Selection.get_Information(Word.WdInformation.wdActiveEndPageNumber) != lastPageNumber &&
@@ -357,9 +400,6 @@ namespace Groll.Schule.SchulDB.Reports
                     lastPageNumber = (int)app.Selection.get_Information(Word.WdInformation.wdActiveEndPageNumber);
                 }
  #endregion
-                lastKlasse = currKlasse;
-                    lastSchueler = beo.Schueler;
-                    lastDatum = beo.Datum;
                 // Format je nach Beobachtungsart
                 if (beo.Datum == null && groupBy == GroupByType.GroupBySchüler)
                     app.Selection.set_Style(FormatDataListe);
@@ -367,8 +407,19 @@ namespace Groll.Schule.SchulDB.Reports
                 else
                 {
                     app.Selection.set_Style(FormatData2Spalten);
-                    app.Selection.TypeText((groupBy == GroupByType.GroupBySchüler ? beo.Datum.Value.ToShortDateString() : beo.Schueler.DisplayName) + "\t");
-                }
+                    if (groupBy == GroupByType.GroupBySchüler)
+                    {
+                        if (lastDatum.Value.Date != beo.Datum.Value.Date || repeatSameName)
+                            app.Selection.TypeText(beo.Datum.Value.ToString("dd.MM.yyyy"));
+                        app.Selection.TypeText("\t");
+                    }
+                    else
+                    {
+                        if (lastSchueler != beo.Schueler || repeatSameName)
+                            app.Selection.TypeText(beo.Schueler.DisplayName);
+                        app.Selection.TypeText("\t");
+                    }
+                 }
 
                 // Beobachtung ausgeben
                 string beoText = beo.Text;
@@ -376,6 +427,10 @@ namespace Groll.Schule.SchulDB.Reports
                 beoText = beoText.Replace("\n", "\v") + "\r";
                 app.Selection.TypeText(beoText);
 
+                lastKlasse = currKlasse;
+                lastSchueler = beo.Schueler;
+                lastDatum = beo.Datum;
+               
             }
             #endregion
         }

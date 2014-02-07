@@ -52,7 +52,7 @@ namespace Groll.Schule.DataManager
         private DatabaseType currentDBtype = DatabaseType.None;
 
         private SchuelerRepository repSchueler;
-        private RepositoryBase<Klasse> repKlassen;
+        private KlassenRepository repKlassen;
         private FaecherRepository repFächer;
         private RepositoryBase<Beobachtung> repBeobachtungen;
         private RepositoryBase<Schuljahr> repSchuljahre;
@@ -115,12 +115,12 @@ namespace Groll.Schule.DataManager
             }
         }
 
-        public RepositoryBase<Klasse> Klassen
+        public KlassenRepository Klassen
         {
             get
             {
                 if (repKlassen == null && context != null)
-                    repKlassen = new RepositoryBase<Klasse>(context);
+                    repKlassen = new KlassenRepository(context);
 
                 return repKlassen;
             }
@@ -152,34 +152,50 @@ namespace Groll.Schule.DataManager
                 context.Dispose();
         }
 
-        public void DumpContext()
+        public enum DumpData { All, Schüler, Fächer, Klassen, Beobachtungen }
+
+        public void DumpContext(DumpData Filter = DumpData.All)
         {
             if (context == null)
                 return;
 
             System.Diagnostics.Debug.WriteLine("Dumping Context\n===========================\n");
-            System.Diagnostics.Debug.WriteLine("Schueler\n===========================");
-            foreach (var s in context.ChangeTracker.Entries<Schueler>())
+
+            if (Filter == DumpData.Schüler || Filter == DumpData.All)
             {
-                System.Diagnostics.Debug.WriteLine("[{0}] {1} ({2})", s.Entity.ID, s.Entity.DisplayName, s.State.ToString());
+                System.Diagnostics.Debug.WriteLine("Schueler\n===========================");
+                foreach (var s in context.ChangeTracker.Entries<Schueler>())
+                {
+                    System.Diagnostics.Debug.WriteLine("[{0}] {1} ({2})", s.Entity.ID, s.Entity.DisplayName, s.State.ToString());
+                }
             }
 
-            System.Diagnostics.Debug.WriteLine("\n\nFächer\n===========================");
-            foreach (var s in context.ChangeTracker.Entries<Fach>())
+            if (Filter == DumpData.Fächer || Filter == DumpData.All)
             {
-                System.Diagnostics.Debug.WriteLine("[{0}] {1} ({2})", s.Entity.FachId, s.Entity.Name, s.State.ToString());
+                System.Diagnostics.Debug.WriteLine("\n\nFächer\n===========================");
+                foreach (var s in context.ChangeTracker.Entries<Fach>())
+                {
+                    System.Diagnostics.Debug.WriteLine("[{0}] {1} ({2})", s.Entity.FachId, s.Entity.Name, s.State.ToString());
+                }
             }
 
-            System.Diagnostics.Debug.WriteLine("\n\nKlassen\n===========================");
-            foreach (var s in context.ChangeTracker.Entries<Klasse>())
+            if (Filter == DumpData.Klassen || Filter == DumpData.All)
             {
-                System.Diagnostics.Debug.WriteLine("[{0}] {1} - {2} ({3})", s.Entity.KlasseId, s.Entity.Name, s.Entity.Schuljahr.ToString(), s.State.ToString());
+
+                System.Diagnostics.Debug.WriteLine("\n\nKlassen\n===========================");
+                foreach (var s in context.ChangeTracker.Entries<Klasse>())
+                {
+                    System.Diagnostics.Debug.WriteLine("[{0}] {1} - {2} ({3})", s.Entity.KlasseId, s.Entity.Name, s.Entity.Schuljahr.ToString(), s.State.ToString());
+                }
             }
 
-            System.Diagnostics.Debug.WriteLine("\n\nBeobachtungen\n===========================");
-            foreach (var s in context.ChangeTracker.Entries<Beobachtung>())
+            if (Filter == DumpData.Beobachtungen || Filter == DumpData.All)
             {
-                System.Diagnostics.Debug.WriteLine("[{0}] {1} - {2} ({3})", s.Entity.BeobachtungId, s.Entity.Text, s.Entity.Schueler.DisplayName, s.State.ToString());
+                System.Diagnostics.Debug.WriteLine("\n\nBeobachtungen\n===========================");
+                foreach (var s in context.ChangeTracker.Entries<Beobachtung>())
+                {
+                    System.Diagnostics.Debug.WriteLine("[{0}] {1} ({2})", s.Entity.BeobachtungId, s.Entity.ToString(), s.State.ToString());
+                }
             }
         }
         

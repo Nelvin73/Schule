@@ -23,8 +23,11 @@ namespace Groll.Schule.Model
         }
 
         public override string ToString()
-        {            
-            return "Schüler: " + Schueler.ID + ", Klasse: " + Klasse.ToString() + ": " + (Text.Length > 20 ? Text.Substring(0,20) + "..." : Text);
+        {
+            return string.Format("Schüler: {0}, Klasse: {1} - {2}",
+                Schueler == null ? "???" : Schueler.ToString(),
+                Klasse == null ? "???" : Klasse.ToString(),
+                Text.Length > 20 ? Text.Substring(0, 20) + "..." : Text);
         }
 
         public Klasse Klasse

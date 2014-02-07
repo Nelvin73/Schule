@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Groll.Schule.SchulDB.Commands;
+using Groll.Schule.SchulDB.ViewModels;
 
 namespace Groll.Schule.SchulDB.Pages
 {
@@ -107,20 +108,38 @@ namespace Groll.Schule.SchulDB.Pages
                 txtBeoText.Text = "";
         }
 
-        private void Executed_Export(object sender, ExecutedRoutedEventArgs e)
+        private Reports.BeobachtungenExport.TextBreakType ConvertToTextBreakType(object o)
         {
-            // Temp
-            // new Import().ImportData();
+            string tag = "";
+            if (o is RibbonBaseVM)
+                tag = ((RibbonBaseVM)o).Tag.ToString();
+            else
+                tag = o.ToString();
 
-            // Get parameters             
-            var mw = Tag as MainWindow;
-            if (mw == null || mw.RibbonVM == null)            
-                throw new InvalidOperationException("RibbonVM existiert nicht");
+            switch (tag)
+            {
+                case "Seite":
+                    return Reports.BeobachtungenExport.TextBreakType.Page;                    
+                case "Absatz":
+                    return Reports.BeobachtungenExport.TextBreakType.Paragraph;                   
+                default:
+                    return Reports.BeobachtungenExport.TextBreakType.None;
+            }
+        }
 
-            var vm = mw.RibbonVM.TabBeobachtungen;
+        private void Executed_Export(object sender, ExecutedRoutedEventArgs e)
+        {          
+            // Get settings from Ribbon               
+            var vm = RibbonVM.Default.TabBeobachtungen;
             var exp = new Reports.BeobachtungenExport();
 
-            exp.GroupBy = vm.GroupBySchüler ? Reports.BeobachtungenExport.GroupByType.GroupBySchüler : Reports.BeobachtungenExport.GroupByType.GroupByDatum;
+            exp.DateSortDirection = vm.SelectedSorting.Tag == null || vm.SelectedSorting.Tag.ToString() == "ASC" ? System.ComponentModel.ListSortDirection.Ascending : System.ComponentModel.ListSortDirection.Descending;
+            exp.BreakOnNewKlasse = ConvertToTextBreakType(vm.SelectedTextBreakKlasse);
+            exp.BreakOnNewSchüler = ConvertToTextBreakType(vm.SelectedTextBreakSchueler);
+            exp.BreakOnNewDate = ConvertToTextBreakType(vm.SelectedTextBreakDatum);
+            exp.GroupBy = vm.SelectedSorting.Tag == null || vm.SelectedGrouping.Tag.ToString() == "S" ? Reports.BeobachtungenExport.GroupByType.GroupBySchüler : Reports.BeobachtungenExport.GroupByType.GroupByDatum;
+            exp.ParagraphAfterEveryEntry = vm.ParagraphAfterEveryEntry;
+            exp.RepeatSameName = vm.RepeatSameName;
 
             switch (vm.FilterMenuButton.Tag.ToString())
             {

@@ -22,23 +22,29 @@ namespace Groll.Schule.DataManager.Repositories
             }
 
             public T GetById(int Id)
-            {
-              //  Type t = typeof(T);
-              //  if (t.GetProperty("Id") == null)
-               //     throw new ArgumentException(t.Name + " has no property 'Id'");
-
+            {              
                 T data = context.Set<T>().Find(Id);
                 return data;
             }
 
             public T Create()
             {
+                return context.Set<T>().Create();
                 return context.Set<T>().Add(new T());
             }
 
             public T Add(T t)
             {
-                return context.Set<T>().Add(t);
+                try
+                { 
+                    return context.Set<T>().Add(t);
+                }
+                catch (Exception e)
+                {
+                    
+                    throw;
+                }
+               
             }
 
             public List<T> GetList()
