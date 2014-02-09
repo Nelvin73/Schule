@@ -26,15 +26,15 @@ namespace Groll.Schule.SchulDB.Pages
     {
 
         #region ViewModel
-        private Groll.Schule.SchulDB.ViewModels.BeobachtungenEingabeVM viewModel;
+        private Groll.Schule.SchulDB.ViewModels.BeobachtungenAnsichtVM viewModel;
 
-        public Groll.Schule.SchulDB.ViewModels.BeobachtungenEingabeVM ViewModel
+        public Groll.Schule.SchulDB.ViewModels.BeobachtungenAnsichtVM ViewModel
         {
             get
             {
                 if (viewModel == null)
                 {
-                    viewModel = this.FindResource("ViewModel") as Groll.Schule.SchulDB.ViewModels.BeobachtungenEingabeVM;
+                    viewModel = this.FindResource("ViewModel") as Groll.Schule.SchulDB.ViewModels.BeobachtungenAnsichtVM;
                     if (viewModel == null)
                         throw new ResourceReferenceKeyNotFoundException();
                 }
@@ -99,10 +99,22 @@ namespace Groll.Schule.SchulDB.Pages
 
         private void LoadDocument()
         {
+            // Dokument konfigurieren
             FlowDocument doc = new FlowDocument();
+            doc.ColumnWidth = 600;
+            doc.ColumnGap = 50;
+            doc.ColumnRuleBrush = Brushes.Red;
+            doc.ColumnRuleWidth = 2;
+            doc.IsColumnWidthFlexible = true;
+            doc.FontSize = 10;
+            doc.FontFamily = new FontFamily("Verdana");            
 
-            List<Beobachtung> beos = RibbonVM.Default.UnitOfWork.Beobachtungen.GetList().OrderBy ( x=>x.Klasse.Schuljahr.Startjahr).
-                ThenBy(y => y.Klasse.Name).ThenBy(z => z.Schueler.DisplayName).ThenBy(zz => zz.Datum ?? DateTime.MinValue).ToList();
+            List<Beobachtung> beos = RibbonVM.Default.UnitOfWork.Beobachtungen.GetList().
+                OrderBy ( x=>x.SchuljahrId).
+                ThenBy(y => y.Klasse == null ? "" : y.Klasse.Name).
+                ThenBy(z => z.Schueler == null ? "" :  z.Schueler.DisplayName).
+                ThenBy(zz => zz.Datum ?? DateTime.MinValue).ToList();
+            
             Paragraph p;
                 
             // Datensätze durchgehen 
@@ -120,14 +132,11 @@ namespace Groll.Schule.SchulDB.Pages
                 if (currKlasse != lastKlasse)
                 {
                     // Neue Klasse
-                    if (lastKlasse != null)
-                    {
-                        // Umbruch nach jeder folgenden Klasse (außer der ersten)
-
-                        // TODO Umbruch ?????
-                    }
-
                     p = new Paragraph() { FontSize = 16, Foreground = Brushes.Red };
+                    
+                    if (lastKlasse != null)                    
+                        p.BreakPageBefore = true;                                            
+
                     p.Inlines.Add(new Bold(new Run(currKlasse.ToString())));
                     doc.Blocks.Add(p);
                 }
@@ -135,14 +144,10 @@ namespace Groll.Schule.SchulDB.Pages
                 if (lastSchueler != beo.Schueler)
                 {
                     // Neuer Schüler
-                    if (lastSchueler != null)
-                    {
-                        // Umbruch Bei jedem weiteren Schüler (außer dem ersten)
-
-                        // TODO: Umbruch ???
-                    }
-
                     p = new Paragraph() { FontSize = 14, Foreground = Brushes.Blue };
+                    if (lastSchueler != null)                    
+                        p.BreakPageBefore = true;                   
+
                     p.Inlines.Add(new Bold(new Run(beo.Schueler.DisplayName)));
                     doc.Blocks.Add(p);
                     lastDatum = null;
@@ -150,11 +155,16 @@ namespace Groll.Schule.SchulDB.Pages
 
                 // Text ausgeben
                 p = new Paragraph() { Tag = beo.BeobachtungId };
+                p.Margin = new Thickness(70F, 0, 0, 0);
                 
-                if (!lastDatum.HasValue || lastDatum.Value.Date != beo.Datum.Value.Date)
-                    p.Inlines.Add( new Run(beo.Datum.Value.ToString("dd.MM.yyyy")));
+                if (beo.Datum.HasValue && (!lastDatum.HasValue || lastDatum.Value.Date != beo.Datum.Value.Date))
+                {
+                    p.Inlines.Add(new Run(beo.Datum.Value.ToString("dd.MM.yyyy") + "\t"));
+                    p.TextIndent = -70F;
+                }
                 
-                p.Inlines.Add(new Run("\t" + beo.Text));                
+                
+                p.Inlines.Add(new Run(beo.Text));                
                 doc.Blocks.Add(p);
                 /*// Beobachtung ausgeben
                 
@@ -165,103 +175,42 @@ namespace Groll.Schule.SchulDB.Pages
                 lastKlasse = currKlasse;
                 lastSchueler = beo.Schueler;
                 lastDatum = beo.Datum;
-
-#region Müll
-                /*
-                TextBreakType breakDone = TextBreakType.None;
-
-               
-
-
-                // Neues Datum? --> Header bzw. neue Seite 
-                if ((lastDatum == null || lastDatum.Value.Date != beo.Datum.Value.Date)) // && groupBy == GroupByType.GroupByDatum)
-                {
-                    // Neues Datum
-                    if (lastDatum != null && breakNewDate != TextBreakType.None && breakNewDate > breakDone)
-                    {
-                        // Umbruch Bei jedem weiteren Datum (außer dem ersten)
-                        if (breakNewDate == TextBreakType.Page)
-                            app.Selection.InsertBreak(Word.WdBreakType.wdSectionBreakNextPage);
-                        else
-                            app.Selection.TypeParagraph();
-
-                        breakDone = breakNewDate;
-                    }
-
-                    // Datum ausgeben
-                    if (groupBy == GroupByType.GroupByDatum)
-                    {
-                        app.Selection.set_Style(FormatGruppenHeader);
-                        app.Selection.TypeText(beo.Datum == null ? "Allgemein" : beo.Datum.Value.ToString("dd.MM.yyyy"));
-                        app.Selection.TypeParagraph();
-                    }
-                }
-
-                // Absatz auf jeden Fall nach Eintrag ?
-                if (paragraphAfterEveryEntry && breakDone == TextBreakType.None)
-                    app.Selection.TypeParagraph();
-
-                // Kopfzeile anpassen, wenn auf neuer Seite
-                if ((int)app.Selection.get_Information(Word.WdInformation.wdActiveEndPageNumber) != lastPageNumber &&
-                    (lastKlasse != currKlasse || (groupBy == GroupByType.GroupBySchüler && lastSchueler != beo.Schueler) ||
-                    (groupBy == GroupByType.GroupByDatum && lastDatum != beo.Datum)))
-                {
-                    header = app.Selection.Sections[1].Headers[Word.WdHeaderFooterIndex.wdHeaderFooterPrimary];
-                    header.LinkToPrevious = false;
-                    r = header.Range;
-                    r.Text = "\t" + reportHeader + "\t" + DateTime.Now.ToShortDateString() + "\n\t" + currKlasse.ToString() + " - " +
-                        (groupBy == GroupByType.GroupBySchüler ? beo.Schueler.DisplayName : (beo.Datum == null ? "Allgemein" : beo.Datum.Value.ToShortDateString()));
-
-
-                    lastPageNumber = (int)app.Selection.get_Information(Word.WdInformation.wdActiveEndPageNumber);
-                }
-                #endregion
-                // Format je nach Beobachtungsart
-                if (beo.Datum == null && groupBy == GroupByType.GroupBySchüler)
-                    app.Selection.set_Style(FormatDataListe);
-
-                else
-                {
-                    app.Selection.set_Style(FormatData2Spalten);
-                    if (groupBy == GroupByType.GroupBySchüler)
-                    {
-                        if (lastDatum.Value.Date != beo.Datum.Value.Date || repeatSameName)
-                            app.Selection.TypeText(beo.Datum.Value.ToString("dd.MM.yyyy"));
-                        app.Selection.TypeText("\t");
-                    }
-                    else
-                    {
-                        if (lastSchueler != beo.Schueler || repeatSameName)
-                            app.Selection.TypeText(beo.Schueler.DisplayName);
-                        app.Selection.TypeText("\t");
-                    }
-                }
-
-                // Beobachtung ausgeben
-                string beoText = beo.Text;
-                beoText = beoText.Replace("\r", "");
-                beoText = beoText.Replace("\n", "\v") + "\r";
-                app.Selection.TypeText(beoText);
-
-                lastKlasse = currKlasse;
-                lastSchueler = beo.Schueler;
-                lastDatum = beo.Datum;
-
             }
-            #endregion
-                */
-#endregion
-            }
-
+            
             Reader.Document = doc;
         }
 
         private void Reader_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            // Get Beobachtungen ID from current Selection
             var i = Reader.Selection.Start.Paragraph as Paragraph;
-            if (i.Tag != null)
-                MessageBox.Show(i.Tag.ToString());
-            
+            if (i.Tag != null && i.Tag is int)
+            {
+                Beobachtung b = RibbonVM.Default.UnitOfWork.Beobachtungen.GetById((int) i.Tag);
+                if (b == null)
+                    return;
+                ViewModel.EditedBeobachtung = b;
+                EditBox.Tag = Reader.Selection.Start.Parent as Run;
+
+             }
         }
+
+        private void btChange_Click(object sender, RoutedEventArgs e)
+        {
+            Run i = EditBox.Tag as Run;
+            if (i != null && ViewModel.EditedBeobachtung != null)
+            {
+                i.Text = ViewModel.BeoText;
+                ViewModel.UpdateBeobachtung();
+                ViewModel.EditedBeobachtung = null;              
+            }          
+        }
+
+        private void btCancel_Click(object sender, RoutedEventArgs e)
+        {
+            EditBox.Tag = null;
+            ViewModel.EditedBeobachtung = null;              
+        }
+             
     }
 }

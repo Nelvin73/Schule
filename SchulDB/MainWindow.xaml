@@ -181,17 +181,7 @@
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>
-                            
-                            <RibbonMenuItem Header="Klassen" ImageSource="/Images/Klasse.ico"  >
-                                <RibbonMenuItem Header="Seitenumbruch bei jeder Klasse" IsCheckable="True" IsChecked="True" />
-                                <RibbonMenuItem Header="Neuer Absatz bei jeder Klasse" IsCheckable="true" />
-                            </RibbonMenuItem>
-                            <RibbonMenuItem Header="Schüler" ImageSource="/Images/Schüler.ico" >
-                                <RibbonMenuItem Header="Seitenumbruch bei jedem Schüler" IsCheckable="True" IsChecked="True" />
-                                <RibbonMenuItem Header="Neuer Absatz bei jedem Schüler" IsCheckable="true" />
-                            </RibbonMenuItem>
-                            <RibbonMenuItem Header="Datum" ImageSource="/Images/neues-jahr-2012.jpg" >                                
-                            </RibbonMenuItem>
+                                                      
                             <RibbonSeparator />
                             <RibbonMenuItem Header="Absatz nach jedem Eintrag" IsCheckable="True" IsChecked="{Binding ParagraphAfterEveryEntry}" />
                             <RibbonMenuItem Header="Gleichen Namen / Datum wiederholen" IsCheckable="True" IsChecked="{Binding RepeatSameName}" />

@@ -22,6 +22,10 @@ namespace Groll.Schule.DataManager.Repositories
             return Get(x => x.Name == Name);
         }
 
+        public List<Fach> GetActiveFächer()
+        {
+            return GetList(x => !x.Inaktiv);
+        }
         
       
       

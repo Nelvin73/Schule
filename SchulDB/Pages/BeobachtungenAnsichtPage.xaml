@@ -4,89 +4,98 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:Model="clr-namespace:Groll.Schule.Model;assembly=Model"
-        xmlns:UI="clr-namespace:Groll.UserControls;assembly=UserControls"
-        x:Class="Groll.Schule.SchulDB.Pages.BeobachtungenAnsichtPage" 
+        xmlns:UI="clr-namespace:Groll.UserControls;assembly=UserControls" 
         xmlns:VM="clr-namespace:Groll.Schule.SchulDB.ViewModels"
         xmlns:loc="clr-namespace:Groll.Schule.SchulDB.Pages"
+        xmlns:Helper="clr-namespace:Groll.Schule.SchulDB.Helper"
+        x:Class="Groll.Schule.SchulDB.Pages.BeobachtungenAnsichtPage"
         mc:Ignorable="d" 
         d:DesignHeight="460" d:DesignWidth="800"
 	    Title="" Loaded="Page_Loaded" Unloaded="Page_Unloaded" Initialized="Page_Initialized">
 
     <Page.Resources>
-     <!--
-        <VM:BeobachtungenEingabeVM x:Key="ViewModel" UnitOfWork="{StaticResource UnitOfWork}" />
-        <CollectionViewSource x:Key="SchülerListeViewSource" Source="{Binding SchülerListe, Source={StaticResource ViewModel}}" Filter="s_Filter"  />
-    -->
-        </Page.Resources>
+        
+        <VM:BeobachtungenAnsichtVM x:Key="ViewModel" UnitOfWork="{StaticResource UnitOfWork}" />
+    </Page.Resources>
 
 
-    <Grid x:Name="root" >
+    <Grid x:Name="root" DataContext="{StaticResource ViewModel}">
 
-        <Grid.ColumnDefinitions>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"  />
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="AliceBlue" >
+        <Border Grid.Row="0" Background="AliceBlue" CornerRadius="5" BorderThickness="1" BorderBrush="DarkBlue" >
             <TextBlock Text="Schülerbeobachtungen" FontSize="14" HorizontalAlignment="Center" />
         </Border>
-        <FlowDocumentReader Grid.Row="1" x:Name="Reader" MouseDoubleClick="Reader_MouseDoubleClick" IsManipulationEnabled="True" >
+        <FlowDocumentReader Grid.Row="1" x:Name="Reader" MouseDoubleClick="Reader_MouseDoubleClick">
             <FlowDocument >
-                <Paragraph>Das ist ein Test</Paragraph>
+                <Paragraph>
+                    <Run Text="Das ist ein Test"/>
+                </Paragraph>
             </FlowDocument>
         </FlowDocumentReader>
-        <!--
-        <GroupBox Header="Schüler auswählen" Margin="3" Grid.Row="0">
-            <StackPanel Margin="3" >
-                <StackPanel Orientation="Horizontal" Margin="3">
-                    <TextBlock Text="Klasse:" Margin="3" />
-                    <ComboBox x:Name="cbKlassenListe" Margin="3" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" MinWidth="200"/>
+        <Border Grid.Row="2"  Height="{Binding Height, ElementName=EditBox, Mode=OneWay}" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>    
+                <StackPanel Grid.Column="0" Grid.RowSpan="2" >
+                    <ComboBox Margin="3,3,3,3" ItemsSource="{Binding SchülerListe}" SelectedItem="{Binding SelectedSchüler}" />
+                    <ComboBox Margin="3" ItemsSource="{Binding Fächerliste}" SelectedItem="{Binding SelectedFach}" />
+                     <ComboBox Margin="3" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" />
+                    <ComboBox Margin="3" ItemsSource="{Binding SchuljahrListe}" SelectedItem="{Binding SelectedSchuljahr}" />
+                    <UI:DatePickerX Margin="6,3,3,3" SelectedDate="{Binding BeoDatum}" VerticalAlignment="Center"  />
+
                 </StackPanel>
-                <TextBox x:Name="Filter" TextChanged="Filter_TextChanged" Margin="3" />
-                <ListBox x:Name="cbSchülerListe" Margin="3"  MaxHeight="200" ItemsSource="{Binding Mode=OneWay, Source={StaticResource SchülerListeViewSource}}" MinWidth="200" MinHeight="100"  SelectedItem="{Binding SelectedSchüler}" SelectionMode="Extended" />
-            </StackPanel>
+                  <!--  <StackPanel  Orientation="Horizontal" Margin="3" >
+                        <TextBlock Margin="3,3,3,3" Text="Schüler:" VerticalAlignment="Center" />
+                        <ComboBox Margin="3,3,3,3" ItemsSource="{Binding SchülerListe}" SelectedItem="{Binding SelectedSchüler}" />                   
+                        <TextBlock Margin="6,3,3,3" Text="Fach:" VerticalAlignment="Center" />
+                        <ComboBox Margin="3" ItemsSource="{Binding Fächerliste}" SelectedItem="{Binding SelectedFach}" />
+                        <TextBlock  Margin="6,3,3,3" Text="Klasse:" VerticalAlignment="Center" />
+                        <ComboBox Margin="3" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" />
+                        <TextBlock Margin="6,3,3,3" Text="Schuljahr:" VerticalAlignment="Center"  />
+                        <ComboBox Margin="3" ItemsSource="{Binding SchuljahrListe}" SelectedItem="{Binding SelectedSchuljahr}" />
+                        <UI:DatePickerX Margin="6,3,3,3" SelectedDate="{Binding BeoDatum}" VerticalAlignment="Center"  />
+                </StackPanel>-->
+                    <Button Margin="10" Content="Speichern" Click="btChange_Click" Grid.Row="0" Grid.Column="2"  Width="100"  />
+                    <Button Margin="10"  Content="Abbrechen" Click="btCancel_Click" Grid.Row="1" Grid.Column="2" />                 
+                <TextBox Grid.RowSpan="2" Grid.Column="1" x:Name="EditBox" Text="{Binding BeoText}" Height="200"  SpellCheck.IsEnabled="True" TextWrapping="Wrap" >
+                    <TextBox.Style>
+                        <Style TargetType="TextBox"    >
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard >
+                                            <Storyboard >
+                                                <DoubleAnimation Storyboard.TargetProperty="Height" To="0" Duration="0:0:0.1" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard >
+                                            <Storyboard >
+                                                <DoubleAnimation  Storyboard.TargetProperty="Height" To="200" Duration="0:0:0.2" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
 
-        </GroupBox>
-        <GroupBox Header="Bezug auswählen" Margin="3" Grid.Column="1">
-            <StackPanel Margin="3" >
-                <TextBlock Text="Datum" Margin="3,3,3,3" />
-                <UI:DatePickerX  WatermarkText="kein Datum" SelectedDate="{Binding BeoDatum, Mode=TwoWay}" Margin="3" BorderBrush="{x:Null}" />
-                <TextBlock Text="Fach" Margin="3,10,3,3" />
-                <ListBox x:Name="lbFächer" ItemsSource="{Binding Fächerliste}" SelectedItem="{Binding SelectedFach}" MinHeight="80" Margin="3"  />
-
-            </StackPanel>
-        </GroupBox>
-        <GroupBox Header="Beobachtung eingeben" Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
-            <TextBox Text="{Binding BeoText, UpdateSourceTrigger=PropertyChanged}" Margin="3" x:Name="txtBeoText" SpellCheck.IsEnabled="True" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"/>
-        </GroupBox>
-        <GridSplitter Grid.Row="2" Grid.ColumnSpan="2" Height="10" ShowsPreview="True" HorizontalAlignment="Stretch" />
-        <GroupBox Header="Die letzten Beobachtungen" Grid.Row="3" Margin="3" Grid.ColumnSpan="2">
-
-            <ListBox Margin="3" ItemsSource="{Binding BeobachtungenHistoryListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" >
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="Gray" BorderThickness="1" HorizontalAlignment="Stretch">
-                            <StackPanel>
-                                <Border BorderBrush="Gray" Background="#FF2E2E2E" Margin="3">
-                                    <StackPanel Orientation="Horizontal" Margin="3">
-                                        <TextBlock Text="Fach: " Foreground="White" FontWeight="Bold" />
-                                        <TextBlock Text="{Binding Fach, TargetNullValue=Allgemein}" Foreground="Yellow" />
-                                        <TextBlock Text=",  Datum: " Foreground="White" FontWeight="Bold" />
-                                        <TextBlock Text="{Binding Datum, TargetNullValue=Allgemein}" Foreground="Yellow" />
-                                        <TextBlock Text=",  Schüler: " Foreground="White" FontWeight="Bold" />
-                                        <TextBlock Text="{Binding Schueler.DisplayName, Mode=OneWay}" Foreground="Yellow" />
-                                    </StackPanel>
-                                </Border>
-                                <TextBlock Text="{Binding Text}" Margin="3,3,3,10" />
-                            </StackPanel>                                
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </GroupBox>
-       
--->
+                    </TextBox.Style>
+                </TextBox>                
+            </Grid>
+        </Border>
+      
 
 
 
