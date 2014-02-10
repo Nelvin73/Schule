@@ -17,6 +17,8 @@ namespace Groll.Schule.Model
 
         public override string ToString()
         {
+            if ((Name ?? "") == "")
+                return "<Keine Klasse>";
             return "Klasse " + (Name ?? "")  + " in Schuljahr " + (Schuljahr == null ? "" : Schuljahr.ToString());
         }
     }
