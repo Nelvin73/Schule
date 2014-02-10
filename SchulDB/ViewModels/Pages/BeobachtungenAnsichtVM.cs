@@ -32,7 +32,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             else
             {
                 SelectedSchüler = editedBeobachtung.Schueler;
-                SelectedFach = editedBeobachtung.Fach;
+                SelectedFach = editedBeobachtung.Fach ?? Fächerliste.First(x => x.FachId == -1000) ;
                 SelectedSchuljahr = editedBeobachtung.Schuljahr;
                 SelectedKlasse = editedBeobachtung.Klasse;
                 BeoDatum = editedBeobachtung.Datum;
@@ -76,7 +76,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                 return false;
 
             b.Datum = BeoDatum;
-            b.Fach = SelectedFach;            
+            b.Fach = (SelectedFach.FachId == -1000) ? null : SelectedFach;            
             b.Schueler = SelectedSchüler;
             b.Schuljahr = SelectedSchuljahr;
             b.Text = BeoText;

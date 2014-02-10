@@ -128,7 +128,7 @@ namespace Groll.Schule.SchulDB.Pages
                     throw new ArgumentNullException("Schüler in der Beobachtung darf nicht null sein!");
 
                 // Neue Klasse ? --> Kopfzeile bzw. neue Seite 
-                var currKlasse = beo.Klasse ?? new Klasse() { Name = "In keiner Klasse" };
+                var currKlasse = beo.Klasse ?? new Klasse() { Name = "" };
                 if (currKlasse != lastKlasse)
                 {
                     // Neue Klasse

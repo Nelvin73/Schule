@@ -36,7 +36,29 @@
                 </Paragraph>
             </FlowDocument>
         </FlowDocumentReader>
-        <Border Grid.Row="2"  Height="{Binding Height, ElementName=EditBox, Mode=OneWay}" >
+        <Border Grid.Row="2" Height="0" >
+            <Border.Style>
+                 <Style TargetType="Border"    >
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=EditBox}" Value="">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard >
+                                    <Storyboard >
+                                        <DoubleAnimation Storyboard.TargetProperty="Height" To="0" Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard >
+                                    <Storyboard >
+                                        <DoubleAnimation  Storyboard.TargetProperty="Height" To="200" Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                 </Style>              
+            </Border.Style>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -52,47 +74,15 @@
                     <ComboBox Margin="3" ItemsSource="{Binding Fächerliste}" SelectedItem="{Binding SelectedFach}" />
                      <ComboBox Margin="3" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" />
                     <ComboBox Margin="3" ItemsSource="{Binding SchuljahrListe}" SelectedItem="{Binding SelectedSchuljahr}" />
-                    <UI:DatePickerX Margin="6,3,3,3" SelectedDate="{Binding BeoDatum}" VerticalAlignment="Center"  />
+                    <UI:DatePickerX Margin="6,3,3,3" WatermarkText="Kein Datum" SelectedDate="{Binding BeoDatum}" VerticalAlignment="Center"  />
 
                 </StackPanel>
-                  <!--  <StackPanel  Orientation="Horizontal" Margin="3" >
-                        <TextBlock Margin="3,3,3,3" Text="Schüler:" VerticalAlignment="Center" />
-                        <ComboBox Margin="3,3,3,3" ItemsSource="{Binding SchülerListe}" SelectedItem="{Binding SelectedSchüler}" />                   
-                        <TextBlock Margin="6,3,3,3" Text="Fach:" VerticalAlignment="Center" />
-                        <ComboBox Margin="3" ItemsSource="{Binding Fächerliste}" SelectedItem="{Binding SelectedFach}" />
-                        <TextBlock  Margin="6,3,3,3" Text="Klasse:" VerticalAlignment="Center" />
-                        <ComboBox Margin="3" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" />
-                        <TextBlock Margin="6,3,3,3" Text="Schuljahr:" VerticalAlignment="Center"  />
-                        <ComboBox Margin="3" ItemsSource="{Binding SchuljahrListe}" SelectedItem="{Binding SelectedSchuljahr}" />
-                        <UI:DatePickerX Margin="6,3,3,3" SelectedDate="{Binding BeoDatum}" VerticalAlignment="Center"  />
-                </StackPanel>-->
-                    <Button Margin="10" Content="Speichern" Click="btChange_Click" Grid.Row="0" Grid.Column="2"  Width="100"  />
-                    <Button Margin="10"  Content="Abbrechen" Click="btCancel_Click" Grid.Row="1" Grid.Column="2" />                 
-                <TextBox Grid.RowSpan="2" Grid.Column="1" x:Name="EditBox" Text="{Binding BeoText}" Height="200"  SpellCheck.IsEnabled="True" TextWrapping="Wrap" >
-                    <TextBox.Style>
-                        <Style TargetType="TextBox"    >
-                            <Style.Triggers>
-                                <Trigger Property="Text" Value="">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard >
-                                            <Storyboard >
-                                                <DoubleAnimation Storyboard.TargetProperty="Height" To="0" Duration="0:0:0.1" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard >
-                                            <Storyboard >
-                                                <DoubleAnimation  Storyboard.TargetProperty="Height" To="200" Duration="0:0:0.2" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-
-                    </TextBox.Style>
-                </TextBox>                
+                 
+                <Button Margin="10" Content="Speichern" Click="btChange_Click" Grid.Row="0" Grid.Column="2"  Width="100"  />
+                <Button Margin="10"  Content="Abbrechen" Click="btCancel_Click" Grid.Row="1" Grid.Column="2" />                 
+                <TextBox Grid.RowSpan="2" Grid.Column="1" x:Name="EditBox" Text="{Binding BeoText}"  SpellCheck.IsEnabled="True" TextWrapping="Wrap" />
+                  
+                          
             </Grid>
         </Border>
       
