@@ -13,37 +13,22 @@ namespace Groll.Schule.SchulDB.ViewModels
     /// <summary>
     /// ViewModel für die Beobachtungs-Eingabe-Seite
     /// </summary>
-    public class BeobachtungenEingabeVM : ObservableObject
+    public class BeobachtungenBaseVM : ObservableObject
     {
         // internal Member
-        private int currentSJ;
         private UowSchuleDB uow;
         private DateTime? beoDatum;
         private string beoText;
-        private ObservableCollection<Fach> fächerListe;
+        private Schuljahr selectedSchuljahr;
         private Klasse selectedKlasse;
         private Schueler selectedSchüler;
         private Fach selectedFach;
+        private ObservableCollection<Fach> fächerListe;        
         private ObservableCollection<Klasse> klassenListe;
         private ObservableCollection<Schueler> schülerListe;
-        private List<Beobachtung> beobachtungenHistoryListe;
-        private BeoHistoryMode beobachtungenHistoryMode;
-
-        public enum BeoHistoryMode { LastEntered, SortDate, CurrentSchueler }
-
+        private ObservableCollection<Schuljahr> schuljahrListe;
+              
         #region Properties
-
-        // CurrentSJ
-        public int CurrentSJ
-        {
-            get { return currentSJ; }
-            set
-            {
-                if (currentSJ == value)
-                    return;
-                currentSJ = value; OnUnitOfWorkChanged();
-            }
-        }
 
         // Unit of Work
         public UowSchuleDB UnitOfWork
@@ -57,6 +42,42 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
+        public Schuljahr SelectedSchuljahr
+        {
+            get { return selectedSchuljahr; }
+            set
+            {
+                if (selectedSchuljahr == value)
+                    return;
+                selectedSchuljahr = value; OnPropertyChanged(); OnSelectedSchuljahrChanged();
+            }
+        }
+
+        public ObservableCollection<Schuljahr> SchuljahrListe
+        {
+            get { return schuljahrListe; }
+            set
+            {
+                if (schuljahrListe == value)
+                    return;
+                schuljahrListe = value; OnPropertyChanged();
+                if (schuljahrListe.Count > 0)
+                {
+                    // Default = Aktuelles Schuljahr
+                    var sj = uow.Settings["Global.AktuellesSchuljahr"];
+                    if (sj != null)
+                    {
+                        SelectedSchuljahr = uow.Schuljahre.GetById(sj.GetInt(Schuljahr.GetCurrent().Startjahr));
+                    }
+                    if (selectedSchuljahr == null)
+                        SelectedSchuljahr = schuljahrListe[0];
+                }
+                else
+                    SelectedSchuljahr = null;
+            }
+        }
+           
+        
         // Datum der Beobachtungen (NULL = Allgemein)        
         public DateTime? BeoDatum
         {
@@ -92,6 +113,8 @@ namespace Groll.Schule.SchulDB.ViewModels
                 fächerListe = value; OnPropertyChanged();
                 if (fächerListe.Count > 0)
                     SelectedFach = fächerListe[0];
+                else
+                    SelectedFach = null;
             }
         }
 
@@ -106,6 +129,8 @@ namespace Groll.Schule.SchulDB.ViewModels
                 klassenListe = value; OnPropertyChanged();
                 if (klassenListe.Count > 0)
                     SelectedKlasse = klassenListe[0];
+                else
+                    SelectedKlasse = null;
             }
         }
 
@@ -120,34 +145,10 @@ namespace Groll.Schule.SchulDB.ViewModels
                 schülerListe = value; OnPropertyChanged();
                 if (schülerListe.Count > 0)
                     SelectedSchüler = schülerListe[0];
+                else
+                    SelectedSchüler = null;
             }
-        }
-
-        // Liste der Beobachtungen / z.B. für Dropdown oder Liste                       
-        public List<Beobachtung> BeobachtungenHistoryListe
-        {
-            get { return beobachtungenHistoryListe; }
-            set
-            {
-                if (beobachtungenHistoryListe == value)
-                    return;
-                beobachtungenHistoryListe = value; OnPropertyChanged();
-            }
-        }
-
-        // History-Modus
-        public BeoHistoryMode BeobachtungenHistoryType
-        {
-            get { return beobachtungenHistoryMode; }
-            set
-            {
-                if (beobachtungenHistoryMode == value)
-                    return;
-                beobachtungenHistoryMode = value; OnPropertyChanged(); UpdateHistory();
-            }
-        }
-
-
+        }              
 
         public Klasse SelectedKlasse
         {
@@ -185,7 +186,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         #endregion
 
         //  Konstructor
-        public BeobachtungenEingabeVM()
+        public BeobachtungenBaseVM()
         {
             BeoDatum = DateTime.Now;
             beoText = "";
@@ -193,7 +194,7 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         #region Verhalten bei Änderungen der Auswahl
 
-        private void OnUnitOfWorkChanged()
+        protected virtual void OnUnitOfWorkChanged()
         {
             uow.DatabaseChanged += uow_DatabaseChanged;
             RefreshData();
@@ -204,36 +205,38 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void uow_DatabaseChanged(object sender, EventArgs e)
+        protected virtual void uow_DatabaseChanged(object sender, EventArgs e)
         {
             RefreshData();
         }
 
-        private void RefreshData()
+        protected virtual void RefreshData()
         {
             // Initialisierung
             if (uow != null)
             {
-                // Aktuelles Schuljahr holen                               
-                var sj = uow.Settings["Global.AktuellesSchuljahr"];
-                if (sj == null)
-                    return;
-                currentSJ = sj.GetInt(Schuljahr.GetCurrent().Startjahr);
-
-                // Klassen des Schuljahres holen
-                KlassenListe = new ObservableCollection<Klasse>(uow.Klassen.GetList(k => k.Schuljahr.Startjahr == currentSJ));
-
                 // Aktuelle Fächer holen
-                var fl = new ObservableCollection<Fach>(uow.Fächer.GetList(f => f.Inaktiv == false));
+                var fl = new ObservableCollection<Fach>(uow.Fächer.GetActiveFächer());
                 fl.Insert(0, new Fach("<kein Fach>") { FachId = -1000 });
                 Fächerliste = fl;
 
-                UpdateHistory();
+                // SCHULJAHRE LISTE LADEN
+                SchuljahrListe = uow.Schuljahre.GetObservableCollection();                                               
             }
         }
 
+        protected virtual void OnSelectedSchuljahrChanged()
+        {
+            // Ein anderes Schuljahr wurde ausgewählt => Klassenliste aktualisieren
+            if (selectedSchuljahr == null)
+                KlassenListe = new ObservableCollection<Klasse>();
+            else
+                // Klassen des Schuljahres holen
+                KlassenListe = new ObservableCollection<Klasse>(uow.Klassen.GetList(k => k.Schuljahr.Startjahr == selectedSchuljahr.Startjahr));
 
-        private void OnSelectedKlasseChanged()
+        }
+
+        protected virtual void OnSelectedKlasseChanged()
         {
             // Eine Klasse wurde ausgewählt => Schülerliste aktualisieren
             if (selectedKlasse == null)
@@ -244,31 +247,12 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         }
 
-        private void OnSelectedSchülerChanged()
+        protected virtual void OnSelectedSchülerChanged()
         {
-            // Ein Schüler wurde ausgewählt 
-            UpdateHistory();            
+            // Ein Schüler wurde ausgewählt           
         }
 
-        private void UpdateHistory()
-        {
-            switch (beobachtungenHistoryMode)
-            {
-                case BeoHistoryMode.LastEntered:
-                    BeobachtungenHistoryListe = uow.Beobachtungen.GetObservableCollection().OrderByDescending(x => x.BeobachtungId).Take(10).ToList();
-                    break;
-
-                case BeoHistoryMode.SortDate:
-                    BeobachtungenHistoryListe = uow.Beobachtungen.GetObservableCollection().OrderByDescending(x => x.Datum).Take(10).ToList();                    
-                    break;
-
-                case BeoHistoryMode.CurrentSchueler:
-                    BeobachtungenHistoryListe = uow.Beobachtungen.GetObservableCollection().Where (s => s.Schueler == selectedSchüler).OrderByDescending(x => x.BeobachtungId).Take(10).ToList();                    
-                    break;
-            }
-
-        }
-
+       
 
 
         #endregion
@@ -277,37 +261,11 @@ namespace Groll.Schule.SchulDB.ViewModels
         // Commands
 
         #region Public Interface für Commands
-        public bool ValidateCurrent()
+        public virtual bool ValidateCurrent()
         {
-            return selectedSchüler != null && beoText.Length > 0 && currentSJ > 0;
-
-        }
-        public void AddCurrentComment(bool clear = true)
-        {
-            // Save current comment
-            Beobachtung b = new Beobachtung()
-            {
-                Datum = beoDatum,
-                Fach = (selectedFach == null || selectedFach.FachId == -1000) ? null : selectedFach,
-                Text = beoText,
-                SchuljahrId = currentSJ,
-                Schueler = selectedSchüler
-            };
-
-            uow.Beobachtungen.Add(b);
-            uow.Save();
-            UpdateHistory();
-
-            if (clear)
-                BeoText = "";
-        }
-
-        public void ClearInput()
-        {
-            BeoDatum = DateTime.Now;
-            BeoText = "";
-        }
-
+            return selectedSchüler != null && beoText.Length > 0 && selectedSchuljahr != null;
+        }     
+      
         public void Refresh()
         {
             OnUnitOfWorkChanged();

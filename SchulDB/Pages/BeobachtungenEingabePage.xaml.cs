@@ -147,13 +147,13 @@ namespace Groll.Schule.SchulDB.Pages
                     exp.ExportToWord();
                     break;
                 case "SJ": // Aktuelles Schuljahr
-                    exp.ExportToWord(ViewModel.CurrentSJ);
+                    exp.ExportToWord(ViewModel.SelectedSchuljahr);
                     break;
                 case "KL": // Aktuelle Klasse
                     exp.ExportToWord(ViewModel.SelectedKlasse);
                     break;
                 case "SSJ":  // Aktueller Schüler (nur dieses Schuljahr)
-                    exp.ExportToWord(ViewModel.SelectedSchüler, ViewModel.CurrentSJ);
+                    exp.ExportToWord(ViewModel.SelectedSchüler, ViewModel.SelectedSchuljahr);
                     break;
                 case "SCH":  // Aktueller Schüler (Komplett)                
                     exp.ExportToWord(ViewModel.SelectedSchüler);

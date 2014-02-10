@@ -77,12 +77,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helper\Converters.cs" />
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Import\Import.cs" />
     <Compile Include="Pages\BeobachtungenAnsichtPage.xaml.cs">
       <DependentUpon>BeobachtungenAnsichtPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reports\BeobachtungenExport.cs" />
+    <Compile Include="ViewModels\Pages\BeobachtungenBaseVM.cs" />
+    <Compile Include="ViewModels\Pages\BeobachtungenAnsichtVM.cs" />
     <Compile Include="ViewModels\Ribbon\ApplicationMenuVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonMenuSelectedItemEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonTabStandardVM.cs" />
@@ -161,7 +164,7 @@
     <Compile Include="Pages\SchuelerDetailsPage.xaml.cs">
       <DependentUpon>SchuelerDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\BeobachtungenEingabeVM.cs" />
+    <Compile Include="ViewModels\Pages\BeobachtungenEingabeVM.cs" />
     <Compile Include="Pages\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
