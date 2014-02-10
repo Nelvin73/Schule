@@ -50,13 +50,13 @@ namespace Groll.Schule.SchulDB.Pages
             // Command Bindings
             this.CommandBindings.AddRange(new List<CommandBinding>
                 {
-                       });
+                });
         }
 
-               
 
 
-       
+
+
 
         #region ISchulDBPage Implementierung
         public void SetMainWindow(MainWindow x)
@@ -71,27 +71,27 @@ namespace Groll.Schule.SchulDB.Pages
         }
         #endregion
 
-      
-      
+
+
 
 
         #region Navigation / Initialization
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             // Navigated away from Page
-                                           
+
         }
 
         private void Page_Initialized(object sender, EventArgs e)
         {
             // Page is first time initialized
-            
+
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             // Navigated toward Page
-           // Load FlowDocument
+            // Load FlowDocument
 
             LoadDocument();
         }
@@ -107,20 +107,20 @@ namespace Groll.Schule.SchulDB.Pages
             doc.ColumnRuleWidth = 2;
             doc.IsColumnWidthFlexible = true;
             doc.FontSize = 10;
-            doc.FontFamily = new FontFamily("Verdana");            
+            doc.FontFamily = new FontFamily("Verdana");
 
             List<Beobachtung> beos = RibbonVM.Default.UnitOfWork.Beobachtungen.GetList().
-                OrderBy ( x=>x.SchuljahrId).
+                OrderBy(x => x.SchuljahrId).
                 ThenBy(y => y.Klasse == null ? "" : y.Klasse.Name).
-                ThenBy(z => z.Schueler == null ? "" :  z.Schueler.DisplayName).
+                ThenBy(z => z.Schueler == null ? "" : z.Schueler.DisplayName).
                 ThenBy(zz => zz.Datum ?? DateTime.MinValue).ToList();
-            
+
             Paragraph p;
-                
+
             // Datensätze durchgehen 
             Schueler lastSchueler = null;
             Klasse lastKlasse = null;
-            DateTime? lastDatum = null;
+            DateTime? lastDatum = DateTime.MinValue;
 
             foreach (Beobachtung beo in beos)
             {
@@ -133,9 +133,9 @@ namespace Groll.Schule.SchulDB.Pages
                 {
                     // Neue Klasse
                     p = new Paragraph() { FontSize = 16, Foreground = Brushes.Red };
-                    
-                    if (lastKlasse != null)                    
-                        p.BreakPageBefore = true;                                            
+
+                    if (lastKlasse != null)
+                        p.BreakPageBefore = true;
 
                     p.Inlines.Add(new Bold(new Run(currKlasse.ToString())));
                     doc.Blocks.Add(p);
@@ -145,8 +145,8 @@ namespace Groll.Schule.SchulDB.Pages
                 {
                     // Neuer Schüler
                     p = new Paragraph() { FontSize = 14, Foreground = Brushes.Blue };
-                    if (lastSchueler != null)                    
-                        p.BreakPageBefore = true;                   
+                    if (lastSchueler != null)
+                        p.BreakPageBefore = true;
 
                     p.Inlines.Add(new Bold(new Run(beo.Schueler.DisplayName)));
                     doc.Blocks.Add(p);
@@ -156,15 +156,20 @@ namespace Groll.Schule.SchulDB.Pages
                 // Text ausgeben
                 p = new Paragraph() { Tag = beo.BeobachtungId };
                 p.Margin = new Thickness(70F, 0, 0, 0);
-                
-                if (beo.Datum.HasValue && (!lastDatum.HasValue || lastDatum.Value.Date != beo.Datum.Value.Date))
+
+                if (!beo.Datum.HasValue && lastDatum.HasValue)
+                {
+                    p.Inlines.Add(new Run("Kein Datum\t"));
+                    p.TextIndent = -70F;
+                }
+                else if (beo.Datum.HasValue && (!lastDatum.HasValue || lastDatum.Value.Date != beo.Datum.Value.Date))
                 {
                     p.Inlines.Add(new Run(beo.Datum.Value.ToString("dd.MM.yyyy") + "\t"));
                     p.TextIndent = -70F;
                 }
-                
-                
-                p.Inlines.Add(new Run(beo.Text));                
+
+
+                p.Inlines.Add(new Run(beo.Text));
                 doc.Blocks.Add(p);
                 /*// Beobachtung ausgeben
                 
@@ -176,41 +181,76 @@ namespace Groll.Schule.SchulDB.Pages
                 lastSchueler = beo.Schueler;
                 lastDatum = beo.Datum;
             }
-            
+
             Reader.Document = doc;
+        }
+
+        private void StartEdit(Paragraph p)
+        {
+            if (p == null || p.Tag == null || !(p.Tag is int))
+                return;
+            
+            Beobachtung b = RibbonVM.Default.UnitOfWork.Beobachtungen.GetById((int)p.Tag);
+            if (b == null)
+                return;
+            
+            ViewModel.EditedBeobachtung = b;
+            EditBox.Tag = p;            
         }
 
         private void Reader_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // Get Beobachtungen ID from current Selection
             var i = Reader.Selection.Start.Paragraph as Paragraph;
-            if (i.Tag != null && i.Tag is int)
-            {
-                Beobachtung b = RibbonVM.Default.UnitOfWork.Beobachtungen.GetById((int) i.Tag);
-                if (b == null)
-                    return;
-                ViewModel.EditedBeobachtung = b;
-                EditBox.Tag = Reader.Selection.Start.Parent as Run;
-
-             }
+            StartEdit(i);
         }
 
         private void btChange_Click(object sender, RoutedEventArgs e)
         {
-            Run i = EditBox.Tag as Run;
+            // Update View
+            var i = EditBox.Tag as Paragraph;
             if (i != null && ViewModel.EditedBeobachtung != null)
             {
-                i.Text = ViewModel.BeoText;
-                ViewModel.UpdateBeobachtung();
-                ViewModel.EditedBeobachtung = null;              
-            }          
+                // Schüler geändert ? => Komplett neu laden
+                if (ViewModel.EditedBeobachtung.Schueler != ViewModel.SelectedSchüler)
+                {
+                    ViewModel.UpdateBeobachtung(); 
+                    LoadDocument();
+                }
+                else
+                {
+                    if (i.Inlines.Count == 2)
+                        ((Run)i.Inlines.FirstInline).Text = (ViewModel.BeoDatum.HasValue ? ViewModel.BeoDatum.Value.ToString("dd.MM.yyyy") : "Kein Datum") + "\t";
+                    else
+                        i.Inlines.InsertBefore(i.Inlines.FirstInline, new Run((ViewModel.BeoDatum.HasValue ? ViewModel.BeoDatum.Value.ToString("dd.MM.yyyy") : "Kein Datum") + "\t"));
+
+                    i.TextIndent = -70F;
+
+                    ((Run)i.Inlines.LastInline).Text = ViewModel.BeoText;
+                    // Update DB
+                    ViewModel.UpdateBeobachtung();
+                }
+
+                // Update DB
+                ViewModel.EditedBeobachtung = null;
+            }
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
         {
             EditBox.Tag = null;
-            ViewModel.EditedBeobachtung = null;              
+            ViewModel.EditedBeobachtung = null;
         }
-             
+
+        private void Reader_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            // Wenn bereits edit-Mode an ist, andere Beobachtung selektieren
+            if (EditBox.Text != "")
+            {
+                var i = Reader.Selection.Start.Paragraph as Paragraph;
+                StartEdit(i);        
+            }
+        }
+
     }
 }

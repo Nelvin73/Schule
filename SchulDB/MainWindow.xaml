@@ -93,7 +93,13 @@
                     <RibbonButton Label="Beobachtungen" SmallImageSource="/Images/Word_Doc1.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungenansicht" />
                 </RibbonGroup>
             </RibbonTab>
-
+            
+            <!-- RibbonTab Beobachtungen-Ansicht -->
+            <RibbonTab DataContext="{Binding TabBeobachtungenAnsicht}" Header="123">
+                <RibbonToggleButton Width="50" Label="Schüler auf neuer Seite"  IsChecked="{Binding NewPageOnSchüler}" />
+                
+            </RibbonTab>
+            
             <!-- RibbonTab Beobachtungen -->
             <RibbonTab DataContext="{Binding TabBeobachtungen}" >
                 <RibbonGroup Header="Ansicht" >

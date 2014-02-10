@@ -87,6 +87,7 @@
     <Compile Include="ViewModels\Pages\BeobachtungenBaseVM.cs" />
     <Compile Include="ViewModels\Pages\BeobachtungenAnsichtVM.cs" />
     <Compile Include="ViewModels\Ribbon\ApplicationMenuVM.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonTabBeobachtungenViewVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonMenuSelectedItemEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonTabStandardVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonBaseVM.cs" />
@@ -247,9 +248,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Testen\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\test.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Trash.ico" />

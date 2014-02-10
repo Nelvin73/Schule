@@ -23,22 +23,24 @@ namespace Groll.Schule.SchulDB.ViewModels
         public Beobachtung EditedBeobachtung
         {
             get { return editedBeobachtung; }
-            set { editedBeobachtung = value;
-            // Update Selected Values
-            if (value == null)
+            set
             {
-                ResetBeobachtung();
-            }
-            else
-            {
-                SelectedSchüler = editedBeobachtung.Schueler;
-                SelectedFach = editedBeobachtung.Fach ?? Fächerliste.First(x => x.FachId == -1000) ;
-                SelectedSchuljahr = editedBeobachtung.Schuljahr;
-                SelectedKlasse = editedBeobachtung.Klasse;
-                BeoDatum = editedBeobachtung.Datum;
-                BeoText = editedBeobachtung.Text;
+                editedBeobachtung = value;
+                // Update Selected Values
+                if (value == null)
+                {
+                    ResetBeobachtung();
+                }
+                else
+                {
+                    SelectedSchüler = editedBeobachtung.Schueler;
+                    SelectedFach = editedBeobachtung.Fach ?? Fächerliste.First(x => x.FachId == -1000);
+                    SelectedSchuljahr = editedBeobachtung.Schuljahr;
+                    SelectedKlasse = editedBeobachtung.Klasse;
+                    BeoDatum = editedBeobachtung.Datum;
+                    BeoText = editedBeobachtung.Text;
 
-            }
+                }
             }
         }
         
