@@ -115,8 +115,24 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         #endregion
 
+        #region TabGroups
+        private bool isContextTabBeobachtungenVisible = false;
 
-    
+        public bool IsContextTabBeobachtungenVisible
+        {
+            get { return isContextTabBeobachtungenVisible; }
+            set
+            {
+                if (isContextTabBeobachtungenVisible != value)
+                { isContextTabBeobachtungenVisible = value; OnPropertyChanged(); }
+            }
+        }
+        
+
+
+        #endregion
+
+
         public RibbonVM()
         {
             // Initialization            

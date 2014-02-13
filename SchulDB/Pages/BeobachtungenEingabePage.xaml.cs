@@ -212,9 +212,8 @@ namespace Groll.Schule.SchulDB.Pages
         {
             // Navigated away from Page
             // Hide Context Tab
-            var mw = Tag as MainWindow;
-            if (mw != null && mw.RibbonVM != null)            
-                mw.RibbonVM.TabBeobachtungen.IsVisible = false;                                       
+            ViewModels.RibbonVM.Default.IsContextTabBeobachtungenVisible = false;
+            ViewModels.RibbonVM.Default.TabBeobachtungen.IsVisible = false;                        
         }
 
         private void Page_Initialized(object sender, EventArgs e)
@@ -229,8 +228,9 @@ namespace Groll.Schule.SchulDB.Pages
             var mw = Tag as MainWindow;
             if (mw != null && mw.RibbonVM != null)
             {
-                ViewModels.RibbonVM.Default.TabBeobachtungen.IsSelected = ViewModels.RibbonVM.Default.TabBeobachtungen.IsVisible = true;
-                mw.RibbonVM.TabBeobachtungen.IsSelected = mw.RibbonVM.TabBeobachtungen.IsVisible = true;
+                ViewModels.RibbonVM.Default.IsContextTabBeobachtungenVisible = true;
+                ViewModels.RibbonVM.Default.TabBeobachtungen.IsSelected = true;
+                ViewModels.RibbonVM.Default.TabBeobachtungen.IsVisible = true;
                 txtBeoText.Focus();
             }
         }

@@ -85,7 +85,7 @@
     </Compile>
     <Compile Include="Reports\BeobachtungenExport.cs" />
     <Compile Include="ViewModels\Pages\BeobachtungenBaseVM.cs" />
-    <Compile Include="ViewModels\Pages\BeobachtungenAnsichtVM.cs" />
+    <Compile Include="ViewModels\Pages\BeobachtungenEditVM.cs" />
     <Compile Include="ViewModels\Ribbon\ApplicationMenuVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonTabBeobachtungenViewVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonMenuSelectedItemEntryVM.cs" />

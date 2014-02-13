@@ -29,6 +29,30 @@ namespace Groll.Schule.SchulDB.ViewModels
 
 
         #region Properties für Bindings
+        
+        /// <summary>
+        /// Button zum Wechseln zur View-Page
+        /// </summary>
+        public RibbonBaseVM ViewBeobachtungenButton
+        {
+            get
+            {
+                string Key = "ViewBeobachtungenButton";
+                RibbonBaseVM t = GetElement(Key);
+
+                return t ?? SetElement(Key, 
+                    new RibbonBaseVM()
+                    {
+                        Label = "Beobachtungen anzeigen",
+                        LargeImageSourceFile = "Word_Doc1.ico",
+                        Command = BasicCommands.NavigateTo,
+                        CommandParameter = "beobachtungenansicht",
+                        ToolTipTitle = "Startet den Exportvorgang",
+                        ToolTipDescription = "Exportiert die Beobachtungen nach Word,\nentsprechend der eingestellten Vorgaben.",
+                        ToolTipImageSourceFile = "Word_Doc1.ico"
+                    });                               
+            }
+        }
 
         /// <summary>
         /// Button zum Start des Exports
@@ -547,7 +571,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// <param name="ribbonVM">Root Element</param>
         public RibbonTabBeobachtungenVM(RibbonVM ribbonVM = null) : base(ribbonVM)
         {
-            Label = "Beobachtungen";
+            Label = "Beobachtungen eingeben";
             IsVisible = false;  // per Default unsichtbar
             ContextualTabGroupHeader = "Beobachtungen";
             

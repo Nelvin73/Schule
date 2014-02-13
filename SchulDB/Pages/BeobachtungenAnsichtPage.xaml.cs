@@ -26,15 +26,15 @@ namespace Groll.Schule.SchulDB.Pages
     {
 
         #region ViewModel
-        private Groll.Schule.SchulDB.ViewModels.BeobachtungenAnsichtVM viewModel;
+        private Groll.Schule.SchulDB.ViewModels.BeobachtungenEditVM viewModel;
 
-        public Groll.Schule.SchulDB.ViewModels.BeobachtungenAnsichtVM ViewModel
+        public Groll.Schule.SchulDB.ViewModels.BeobachtungenEditVM ViewModel
         {
             get
             {
                 if (viewModel == null)
                 {
-                    viewModel = this.FindResource("ViewModel") as Groll.Schule.SchulDB.ViewModels.BeobachtungenAnsichtVM;
+                    viewModel = this.FindResource("ViewModel") as Groll.Schule.SchulDB.ViewModels.BeobachtungenEditVM;
                     if (viewModel == null)
                         throw new ResourceReferenceKeyNotFoundException();
                 }
@@ -50,9 +50,13 @@ namespace Groll.Schule.SchulDB.Pages
             // Command Bindings
             this.CommandBindings.AddRange(new List<CommandBinding>
                 {
+                     new CommandBinding(BeobachtungenCommands.UpdateBeobachtungenView, Executed_UpdateView, BasicCommands.CanExecute_TRUE),
+                            new CommandBinding(BeobachtungenCommands.EditModeChanged, Executed_EditModeChanged, BasicCommands.CanExecute_TRUE),
+            
                 });
         }
 
+        
 
 
 
@@ -79,7 +83,9 @@ namespace Groll.Schule.SchulDB.Pages
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             // Navigated away from Page
-
+            ViewModels.RibbonVM.Default.IsContextTabBeobachtungenVisible = false;            
+            ViewModels.RibbonVM.Default.TabBeobachtungenAnsicht.IsVisible = false;           
+          
         }
 
         private void Page_Initialized(object sender, EventArgs e)
@@ -92,7 +98,10 @@ namespace Groll.Schule.SchulDB.Pages
         {
             // Navigated toward Page
             // Load FlowDocument
-
+            ViewModels.RibbonVM.Default.IsContextTabBeobachtungenVisible = true;
+            ViewModels.RibbonVM.Default.TabBeobachtungenAnsicht.IsSelected = true;
+            ViewModels.RibbonVM.Default.TabBeobachtungenAnsicht.IsVisible = true;
+            EditBox.Focus();
             LoadDocument();
         }
         #endregion
@@ -145,7 +154,7 @@ namespace Groll.Schule.SchulDB.Pages
                 {
                     // Neuer Schüler
                     p = new Paragraph() { FontSize = 14, Foreground = Brushes.Blue };
-                    if (lastSchueler != null)
+                    if (lastSchueler != null && RibbonVM.Default.TabBeobachtungenAnsicht.NewPageOnSchüler)
                         p.BreakPageBefore = true;
 
                     p.Inlines.Add(new Bold(new Run(beo.Schueler.DisplayName)));
@@ -193,8 +202,9 @@ namespace Groll.Schule.SchulDB.Pages
             Beobachtung b = RibbonVM.Default.UnitOfWork.Beobachtungen.GetById((int)p.Tag);
             if (b == null)
                 return;
-            
-            ViewModel.EditedBeobachtung = b;
+
+            RibbonVM.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = true;
+            ViewModel.EditedBeobachtung = b;            
             EditBox.Tag = p;            
         }
 
@@ -233,11 +243,13 @@ namespace Groll.Schule.SchulDB.Pages
 
                 // Update DB
                 ViewModel.EditedBeobachtung = null;
+                RibbonVM.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = false;
             }
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
         {
+            RibbonVM.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = false;
             EditBox.Tag = null;
             ViewModel.EditedBeobachtung = null;
         }
@@ -245,12 +257,29 @@ namespace Groll.Schule.SchulDB.Pages
         private void Reader_MouseUp(object sender, MouseButtonEventArgs e)
         {
             // Wenn bereits edit-Mode an ist, andere Beobachtung selektieren
-            if (EditBox.Text != "")
+            if (ViewModel.IsEditMode)
             {
                 var i = Reader.Selection.Start.Paragraph as Paragraph;
                 StartEdit(i);        
             }
         }
 
+
+        #region Commands
+        // View muss aktualisiert werden
+        private void Executed_UpdateView(object sender, ExecutedRoutedEventArgs e)
+        {
+            LoadDocument();
+        }
+
+        // Editmode über Ribbon geändert
+        private void Executed_EditModeChanged(object sender, ExecutedRoutedEventArgs e)
+        {
+            ViewModel.IsEditMode = RibbonVM.Default.TabBeobachtungenAnsicht.EditMode;
+        }
+
+       
+
+        #endregion
     }
 }

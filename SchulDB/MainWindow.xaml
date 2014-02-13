@@ -64,7 +64,7 @@
             </Ribbon.ApplicationMenu>
 
             <Ribbon.ContextualTabGroups>
-                <RibbonContextualTabGroup Header="Beobachtungen" Visibility="{Binding TabBeobachtungen.IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#FFFFE800" />
+                <RibbonContextualTabGroup Header="Beobachtungen" Visibility="{Binding IsContextTabBeobachtungenVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#FFFFE800" />
             </Ribbon.ContextualTabGroups>
 
 
@@ -94,12 +94,7 @@
                 </RibbonGroup>
             </RibbonTab>
             
-            <!-- RibbonTab Beobachtungen-Ansicht -->
-            <RibbonTab DataContext="{Binding TabBeobachtungenAnsicht}" Header="123">
-                <RibbonToggleButton Width="50" Label="Schüler auf neuer Seite"  IsChecked="{Binding NewPageOnSchüler}" />
-                
-            </RibbonTab>
-            
+          
             <!-- RibbonTab Beobachtungen -->
             <RibbonTab DataContext="{Binding TabBeobachtungen}" >
                 <RibbonGroup Header="Ansicht" >
@@ -111,6 +106,7 @@
                             <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}" />                            
                         </RibbonGallery>
                     </RibbonMenuButton>
+                    <RibbonButton DataContext="{Binding ViewBeobachtungenButton}" />
 
                 </RibbonGroup>
 
@@ -203,7 +199,14 @@
 
             </RibbonTab>
 
-
+        <!-- RibbonTab Beobachtungen-Ansicht -->
+            <RibbonTab DataContext="{Binding TabBeobachtungenAnsicht}" >
+                <RibbonGroup Header="Ansicht">
+                <RibbonToggleButton Label="Schüler auf neuer Seite"  IsChecked="{Binding NewPageOnSchüler}" Command="comm:BeobachtungenCommands.UpdateBeobachtungenView" />
+                    <RibbonToggleButton Label="Ändern"  IsChecked="{Binding EditMode}" Command="comm:BeobachtungenCommands.EditModeChanged" />
+                </RibbonGroup>
+            </RibbonTab>
+            
 
         </Ribbon>
 

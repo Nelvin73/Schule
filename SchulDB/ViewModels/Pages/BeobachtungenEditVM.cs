@@ -13,7 +13,7 @@ namespace Groll.Schule.SchulDB.ViewModels
     /// <summary>
     /// ViewModel für die Beobachtungs-Eingabe-Seite
     /// </summary>
-    public class BeobachtungenAnsichtVM : BeobachtungenBaseVM
+    public class BeobachtungenEditVM : BeobachtungenBaseVM
     {
         // internal Member
        
@@ -43,13 +43,24 @@ namespace Groll.Schule.SchulDB.ViewModels
                 }
             }
         }
+
+        private bool isEditMode;
+
+        public bool IsEditMode
+        {
+            get { return isEditMode; }
+            set
+            {
+                if (isEditMode != value)
+                { isEditMode = value; OnPropertyChanged(); }
+            }
+        }
         
-        // Liste der Beobachtungen / z.B. für Dropdown oder Liste                       
-       
+               
         #endregion
 
         //  Konstructor
-        public BeobachtungenAnsichtVM()
+        public BeobachtungenEditVM()
         {
         }
 
@@ -84,7 +95,6 @@ namespace Groll.Schule.SchulDB.ViewModels
             b.Text = BeoText;
 
             UnitOfWork.Beobachtungen.Save();
-
 
             return true;
         }

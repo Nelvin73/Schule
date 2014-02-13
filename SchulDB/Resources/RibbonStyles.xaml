@@ -56,6 +56,7 @@
     <!-- RibbonButton -->
     <Style TargetType="{x:Type RibbonButton}" BasedOn="{StaticResource RibbonControlStyle}">
         <Setter Property="Command" Value="{Binding Command}" />
+        <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
     </Style>
 
     <!-- RibbonMenuButton -->
@@ -71,6 +72,7 @@
         <Setter Property="ImageSource" Value="{Binding ImageSource}" />
         <Setter Property="KeyTipService.KeyTip" Value="{Binding KeyTip}" />
         <Setter Property="Command" Value="{Binding Command}" />
+        <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
         <Setter Property="ItemsSource" Value="{Binding ItemsSource}" />
         <Setter Property="StaysOpenOnClick" Value="{Binding StaysOpenOnClick}" />
         <!--     <Setter Property="IsCheckable" Value="{Binding IsCheckable}" />

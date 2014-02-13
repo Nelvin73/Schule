@@ -14,8 +14,8 @@
 	    Title="" Loaded="Page_Loaded" Unloaded="Page_Unloaded" Initialized="Page_Initialized">
 
     <Page.Resources>
-        
-        <VM:BeobachtungenAnsichtVM x:Key="ViewModel" UnitOfWork="{StaticResource UnitOfWork}" />
+
+        <VM:BeobachtungenEditVM x:Key="ViewModel" UnitOfWork="{StaticResource UnitOfWork}" />
     </Page.Resources>
 
 
@@ -36,11 +36,12 @@
                 </Paragraph>
             </FlowDocument>
         </FlowDocumentReader>
+
         <Border Grid.Row="2" Height="0" >
             <Border.Style>
                  <Style TargetType="Border"    >
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Text, ElementName=EditBox}" Value="">
+                        <DataTrigger Binding="{Binding IsEditMode}" Value="False">
                             <DataTrigger.EnterActions>
                                 <BeginStoryboard >
                                     <Storyboard >
