@@ -16,6 +16,15 @@ using System.Windows.Shapes;
 using Groll.Schule.SchulDB.Commands;
 using Groll.Schule.SchulDB.ViewModels;
 
+
+/*
+ * TODO: 
+ * Ribbon: aufhübschen, Button zum Refresh, Sortierung, Filterung
+ * Bei Änderung und Neu erstellen zurückspringen zur BEO.
+ * 
+ * */
+
+
 namespace Groll.Schule.SchulDB.Pages
 {
     /// <summary>
@@ -49,11 +58,10 @@ namespace Groll.Schule.SchulDB.Pages
 
             // Command Bindings
             this.CommandBindings.AddRange(new List<CommandBinding>
-                {
-                     new CommandBinding(BeobachtungenCommands.UpdateBeobachtungenView, Executed_UpdateView, BasicCommands.CanExecute_TRUE),
-                            new CommandBinding(BeobachtungenCommands.EditModeChanged, Executed_EditModeChanged, BasicCommands.CanExecute_TRUE),
-            
-                });
+            {
+                new CommandBinding(BeobachtungenCommands.UpdateBeobachtungenView, Executed_UpdateView, BasicCommands.CanExecute_TRUE),
+                new CommandBinding(BeobachtungenCommands.EditModeChanged, Executed_EditModeChanged, BasicCommands.CanExecute_TRUE),            
+            });
         }
 
         
@@ -74,9 +82,6 @@ namespace Groll.Schule.SchulDB.Pages
             viewModel.Refresh();
         }
         #endregion
-
-
-
 
 
         #region Navigation / Initialization
@@ -102,7 +107,8 @@ namespace Groll.Schule.SchulDB.Pages
             ViewModels.RibbonVM.Default.TabBeobachtungenAnsicht.IsSelected = true;
             ViewModels.RibbonVM.Default.TabBeobachtungenAnsicht.IsVisible = true;
             EditBox.Focus();
-            LoadDocument();
+            if (Reader.Document == null)
+                LoadDocument();
         }
         #endregion
 
@@ -130,21 +136,24 @@ namespace Groll.Schule.SchulDB.Pages
             Schueler lastSchueler = null;
             Klasse lastKlasse = null;
             DateTime? lastDatum = DateTime.MinValue;
+            Klasse nullKlasse = new Klasse() { Name = "" };
+            
 
             foreach (Beobachtung beo in beos)
             {
+                bool newPage = false;
                 if (beo.Schueler == null)
                     throw new ArgumentNullException("Schüler in der Beobachtung darf nicht null sein!");
 
                 // Neue Klasse ? --> Kopfzeile bzw. neue Seite 
-                var currKlasse = beo.Klasse ?? new Klasse() { Name = "" };
+                var currKlasse = beo.Klasse ?? nullKlasse;
                 if (currKlasse != lastKlasse)
                 {
                     // Neue Klasse
                     p = new Paragraph() { FontSize = 16, Foreground = Brushes.Red };
 
                     if (lastKlasse != null)
-                        p.BreakPageBefore = true;
+                        newPage = p.BreakPageBefore = true;
 
                     p.Inlines.Add(new Bold(new Run(currKlasse.ToString())));
                     doc.Blocks.Add(p);
@@ -154,7 +163,7 @@ namespace Groll.Schule.SchulDB.Pages
                 {
                     // Neuer Schüler
                     p = new Paragraph() { FontSize = 14, Foreground = Brushes.Blue };
-                    if (lastSchueler != null && RibbonVM.Default.TabBeobachtungenAnsicht.NewPageOnSchüler)
+                    if (lastSchueler != null && RibbonVM.Default.TabBeobachtungenAnsicht.NewPageOnSchüler && !newPage)
                         p.BreakPageBefore = true;
 
                     p.Inlines.Add(new Bold(new Run(beo.Schueler.DisplayName)));
@@ -194,77 +203,121 @@ namespace Groll.Schule.SchulDB.Pages
             Reader.Document = doc;
         }
 
-        private void StartEdit(Paragraph p)
+        private void StartEdit(Paragraph p = null)
         {
-            if (p == null || p.Tag == null || !(p.Tag is int))
-                return;
-            
-            Beobachtung b = RibbonVM.Default.UnitOfWork.Beobachtungen.GetById((int)p.Tag);
-            if (b == null)
-                return;
-
+            // Edit Mode EIN
             RibbonVM.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = true;
-            ViewModel.EditedBeobachtung = b;            
-            EditBox.Tag = p;            
+
+            // Markierung von vorherigen Paragraph zurücksetzen            
+            var oldP = EditBox.Tag as Paragraph;
+            if (oldP == p)
+                return;           
+            
+            if (oldP != null)            
+                oldP.Background = null;            
+
+            // Edit von Beobachtung aktivieren
+            EditBox.Tag = null;
+            if (p == null || p.Tag == null || !(p.Tag is int))
+            {
+                // Aktive Beobachtung entfernen                
+                ViewModel.ResetBeobachtung();
+            }
+            else
+            {
+                Beobachtung b = RibbonVM.Default.UnitOfWork.Beobachtungen.GetById((int)p.Tag);
+                if (b != null)
+                {
+                    p.Background = Brushes.Yellow;
+                    ViewModel.EditedBeobachtung = b;
+                    EditBox.Tag = p;
+                }
+            }
+                   
+        }
+
+        private void CancelEdit()
+        {            
+            // Edit Mode AUS
+            RibbonVM.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = false;
+            
+            // Evtl. Markierung wegnehmen
+            var oldP = EditBox.Tag as Paragraph;           
+            if (oldP != null)
+                oldP.Background = null; 
+
+            // Aktive Beobachtung entfernen
+            EditBox.Tag = null;
+            ViewModel.ResetBeobachtung();
         }
 
         private void Reader_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            // Get Beobachtungen ID from current Selection
-            var i = Reader.Selection.Start.Paragraph as Paragraph;
-            StartEdit(i);
+            // Get Beobachtungen ID from current Selection             
+            StartEdit(Reader.Selection.Start.Paragraph as Paragraph);
         }
 
         private void btChange_Click(object sender, RoutedEventArgs e)
         {
             // Update View
-            var i = EditBox.Tag as Paragraph;
-            if (i != null && ViewModel.EditedBeobachtung != null)
+            var p = EditBox.Tag as Paragraph;
+            if (p != null && ViewModel.EditedBeobachtung != null)
             {
-                // Schüler geändert ? => Komplett neu laden
-                if (ViewModel.EditedBeobachtung.Schueler != ViewModel.SelectedSchüler)
-                {
-                    ViewModel.UpdateBeobachtung(); 
-                    LoadDocument();
-                }
-                else
-                {
-                    if (i.Inlines.Count == 2)
-                        ((Run)i.Inlines.FirstInline).Text = (ViewModel.BeoDatum.HasValue ? ViewModel.BeoDatum.Value.ToString("dd.MM.yyyy") : "Kein Datum") + "\t";
-                    else
-                        i.Inlines.InsertBefore(i.Inlines.FirstInline, new Run((ViewModel.BeoDatum.HasValue ? ViewModel.BeoDatum.Value.ToString("dd.MM.yyyy") : "Kein Datum") + "\t"));
-
-                    i.TextIndent = -70F;
-
-                    ((Run)i.Inlines.LastInline).Text = ViewModel.BeoText;
-                    // Update DB
-                    ViewModel.UpdateBeobachtung();
-                }
-
-                // Update DB
-                ViewModel.EditedBeobachtung = null;
-                RibbonVM.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = false;
+                bool Reload = ViewModel.IsSchülerChanged || ViewModel.IsSchuljahrChanged;
+                ViewModel.UpdateBeobachtung();
+                UpdateDocument(p, Reload);    
+                
+                            
             }
+        }
+
+        private void Document_Click(object sender, MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Debug.Print(e.OriginalSource.GetType().ToString());
+            Paragraph p = e.OriginalSource as Paragraph;
+            if (p == null)
+            {
+                var run = e.OriginalSource as Run;
+                if (run != null)
+                    p = run.Parent as Paragraph;
+            }
+
+            if (ViewModel.IsEditMode && p != null)
+            {                
+                StartEdit(p);
+            }            
+        }
+        private void UpdateDocument(Paragraph p, bool Reload = false)
+        {
+            if (p == null || ViewModel.EditedBeobachtung == null)
+                // nothing to update
+                return;
+
+            if (Reload)
+                    // Komplett neu laden
+                LoadDocument();
+                    
+            else
+            {
+                // Inline ändern
+                string Text = (ViewModel.BeoDatum.HasValue ? ViewModel.BeoDatum.Value.ToString("dd.MM.yyyy") : "Kein Datum") + "\t";
+                if (p.Inlines.Count == 2)
+                    ((Run)p.Inlines.FirstInline).Text = Text;
+                else
+                    p.Inlines.InsertBefore(p.Inlines.FirstInline, new Run(Text));
+
+                p.TextIndent = -70F;
+                ((Run)p.Inlines.LastInline).Text = ViewModel.BeoText;                   
+            }               
         }
 
         private void btCancel_Click(object sender, RoutedEventArgs e)
         {
-            RibbonVM.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = false;
-            EditBox.Tag = null;
-            ViewModel.EditedBeobachtung = null;
+            CancelEdit();
         }
 
-        private void Reader_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            // Wenn bereits edit-Mode an ist, andere Beobachtung selektieren
-            if (ViewModel.IsEditMode)
-            {
-                var i = Reader.Selection.Start.Paragraph as Paragraph;
-                StartEdit(i);        
-            }
-        }
-
-
+        
+       
         #region Commands
         // View muss aktualisiert werden
         private void Executed_UpdateView(object sender, ExecutedRoutedEventArgs e)
@@ -275,7 +328,10 @@ namespace Groll.Schule.SchulDB.Pages
         // Editmode über Ribbon geändert
         private void Executed_EditModeChanged(object sender, ExecutedRoutedEventArgs e)
         {
-            ViewModel.IsEditMode = RibbonVM.Default.TabBeobachtungenAnsicht.EditMode;
+            if (RibbonVM.Default.TabBeobachtungenAnsicht.EditMode)
+                StartEdit();
+            else
+                CancelEdit();            
         }
 
        

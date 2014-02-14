@@ -44,6 +44,17 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
+        public bool IsSchülerChanged
+        {
+            get { return editedBeobachtung.Schueler != SelectedSchüler; }
+        }
+
+        public bool IsSchuljahrChanged
+        {
+            get { return editedBeobachtung.Schuljahr != SelectedSchuljahr; }
+        }
+
+
         private bool isEditMode;
 
         public bool IsEditMode
@@ -68,7 +79,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                   
         #endregion
 
-        private void ResetBeobachtung()
+        public void ResetBeobachtung()
         {
             SelectedSchüler = null;
             SelectedFach = null;
