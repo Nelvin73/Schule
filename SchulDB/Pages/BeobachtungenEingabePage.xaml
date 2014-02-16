@@ -38,7 +38,7 @@
                     <ComboBox x:Name="cbKlassenListe" Margin="3" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" MinWidth="200"/>
                 </StackPanel>
                 <TextBox x:Name="Filter" TextChanged="Filter_TextChanged" Margin="3" />
-                <ListBox x:Name="cbSchülerListe" Margin="3"  MaxHeight="200" ItemsSource="{Binding Mode=OneWay, Source={StaticResource SchülerListeViewSource}}" MinWidth="200" MinHeight="100"  SelectedItem="{Binding SelectedSchüler}" SelectionMode="Extended" />
+                <ListBox x:Name="cbSchülerListe" Margin="3"  MaxHeight="200" ItemsSource="{Binding Mode=OneWay, Source={StaticResource SchülerListeViewSource}}" MinWidth="200" MinHeight="100"  SelectedItem="{Binding SelectedSchüler}" />
             </StackPanel>
 
         </GroupBox>

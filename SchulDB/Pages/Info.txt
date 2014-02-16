@@ -1,0 +1,5 @@
+﻿Custom Dictionaries
+http://blogs.msdn.com/b/text/archive/2009/10/02/custom-dictionaries.aspx
+
+With Context Menu Add to Dic.
+http://www.dotnetfunda.com/articles/show/842/spellchecker-in-wpf
