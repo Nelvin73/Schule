@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
@@ -12,29 +13,18 @@ namespace Groll.UserControls
 {
     public partial class SpellCheckTextBox : TextBox
     {
-        ContextMenu _menu;
-        private ContextMenu menu
-        {
-            get
-            {
-                if (_menu == null)
-                {
-                    _menu = new ContextMenu();
-                    _menu.Items.Add(new MenuItem() { Command = ApplicationCommands.Cut });
-                    _menu.Items.Add(new MenuItem() { Command = ApplicationCommands.Copy });
-                    _menu.Items.Add(new MenuItem() { Command = ApplicationCommands.Paste });
-                }
-                return _menu;
-            }
-        }
-
+        ContextMenu contextMenu = new ContextMenu();
 
         public SpellCheckTextBox()
             : base()
         {
-            this.ContextMenu = menu;
+            this.ContextMenu = contextMenu;
             this.SpellCheck.IsEnabled = true;
             this.SpellCheck.SpellingReform = SpellingReform.Postreform;
+            
+            if (System.IO.File.Exists("Wörterbuch.lex"))
+                this.SpellCheck.CustomDictionaries.Add(new Uri("Wörterbuch.lex", UriKind.Relative)); 
+
             this.Language = System.Windows.Markup.XmlLanguage.GetLanguage("DE");
             this.Initialized += (s, e) =>
                 ContextMenuOpening += new ContextMenuEventHandler(SpellCheckTextBox_ContextMenuOpening);
@@ -43,51 +33,72 @@ namespace Groll.UserControls
         private void SpellCheckTextBox_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             // Define new Context Menu
-                       
-            /*
-             *  Vorschläge (Fett)   oder  (no spelling suggestions)
-             * -----------------
-             * Ignore all
-             * ------------------
-             * Cut
-             * Copy
-             * Paste
-             * */
-            this.ClearSpellCheckMenuItems(menu);
-            int catatPos = this.CaretIndex;
-     
-            SpellingError error = this.GetSpellingError(catatPos);
+
+            contextMenu.Items.Clear();
+
+            // Check for spelling errors
+            SpellingError error = this.GetSpellingError(this.CaretIndex);
             if (error != null)
             {
-                this.ContextMenu.Items.Insert(0, new Separator());
-                MenuItem item = this.GetMenu("Ignore All", EditingCommands.IgnoreSpellingError, this);
-                item.Tag = "S";
-                this.ContextMenu.Items.Insert(0, item);
-                foreach (string suggession in error.Suggestions)
+                var sugg = error.Suggestions.ToList();
+                if (sugg.Count > 0)
                 {
-                    item = this.GetMenu(suggession, EditingCommands.CorrectSpellingError, this);
-                    item.Tag = "S";
-                    this.ContextMenu.Items.Insert(0, item);
+                    // Add Suggestions
+                    foreach (string suggession in sugg)
+                    {
+                        contextMenu.Items.Add(GetMenu(suggession, EditingCommands.CorrectSpellingError, this, true));
+                    }
                 }
+                else
+                    contextMenu.Items.Add(GetMenu("(keine Vorschläge)", ApplicationCommands.NotACommand, this));
+                // Add Separator
+                contextMenu.Items.Add(new Separator());
 
+                // Add Ignore All
+                contextMenu.Items.Add(GetMenu("Alle ignorieren", EditingCommands.IgnoreSpellingError, this));
+
+                // Add to dic.                  
+                var dicItem = new MenuItem() { Header = "Zum Wörterbuch hinzufügen" };
+                dicItem.Command = EditingCommands.IgnoreSpellingError;
+                dicItem.CommandTarget = this;
+                dicItem.Click += (object o, RoutedEventArgs rea) =>
+                {
+                    this.AddToDictionary(this.Text.Substring(GetSpellingErrorStart(this.CaretIndex), GetSpellingErrorLength(this.CaretIndex)));
+                };
+                contextMenu.Items.Add(dicItem);
             }
+
+            // Add Separator
+            contextMenu.Items.Add(new Separator());
+
+            // Add Cut, Copy, Paste
+            contextMenu.Items.Add(new MenuItem() { Command = ApplicationCommands.Cut });
+            contextMenu.Items.Add(new MenuItem() { Command = ApplicationCommands.Copy });
+            contextMenu.Items.Add(new MenuItem() { Command = ApplicationCommands.Paste });
         }
-        private MenuItem GetMenu(string header, ICommand command, TextBoxBase target)
+
+        private void AddToDictionary(string p)
+        {
+            // Save string in Dictionary File
+            var file = System.IO.File.AppendText("Wörterbuch.lex");
+            file.WriteLine(p);
+            file.Close();
+
+            // Check if Wörterbuch already used
+            if (this.SpellCheck.CustomDictionaries.Count == 0)
+                this.SpellCheck.CustomDictionaries.Add(new Uri("Wörterbuch.dic", UriKind.Relative)); 
+
+        }
+
+        private MenuItem GetMenu(string header, ICommand command, TextBoxBase target, bool Bold = false)
         {
             MenuItem item = new MenuItem();
             item.Header = header;
+            item.FontWeight = Bold ? FontWeights.Bold : FontWeights.Normal;
             item.Command = command;
             item.CommandParameter = header;
-            item.CommandTarget = target;
+            item.CommandTarget = target;           
             return item;
-        }
-        private void ClearSpellCheckMenuItems(ContextMenu menu)
-        {
-            foreach (var item in menu.Items.Cast<MenuItem>().ToList())
-            {               
-                if (item != null && item.Tag != null)
-                    menu.Items.Remove(item);
-            }
         }
     }
 }
