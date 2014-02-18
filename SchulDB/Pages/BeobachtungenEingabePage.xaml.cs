@@ -236,6 +236,14 @@ namespace Groll.Schule.SchulDB.Pages
         }
         #endregion
 
+        private void txtBeoText_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            var i = e.Source as TextBox;
+
+        }
+
+       
+
 
 
        

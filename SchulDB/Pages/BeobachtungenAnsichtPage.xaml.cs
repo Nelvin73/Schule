@@ -63,12 +63,7 @@ namespace Groll.Schule.SchulDB.Pages
                 new CommandBinding(BeobachtungenCommands.EditModeChanged, Executed_EditModeChanged, BasicCommands.CanExecute_TRUE),            
             });
         }
-
         
-
-
-
-
 
         #region ISchulDBPage Implementierung
         public void SetMainWindow(MainWindow x)
@@ -89,8 +84,7 @@ namespace Groll.Schule.SchulDB.Pages
         {
             // Navigated away from Page
             ViewModels.RibbonVM.Default.IsContextTabBeobachtungenVisible = false;            
-            ViewModels.RibbonVM.Default.TabBeobachtungenAnsicht.IsVisible = false;           
-          
+            ViewModels.RibbonVM.Default.TabBeobachtungenAnsicht.IsVisible = false;                     
         }
 
         private void Page_Initialized(object sender, EventArgs e)

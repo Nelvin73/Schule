@@ -51,6 +51,9 @@
       <DependentUpon>MultiThumbSlider.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpellCheckTextBox.xaml.cs">
+      <DependentUpon>SpellCheckTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ThreeDigitDoubleConverter.cs" />
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
@@ -64,6 +67,10 @@
     <Page Include="MultiThumbSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SpellCheckTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControl1.xaml">
       <SubType>Designer</SubType>

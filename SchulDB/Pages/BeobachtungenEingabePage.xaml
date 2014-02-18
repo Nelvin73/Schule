@@ -10,7 +10,7 @@
         xmlns:loc="clr-namespace:Groll.Schule.SchulDB.Pages"
         mc:Ignorable="d" 
         d:DesignHeight="460" d:DesignWidth="800"
-	    Title="" Loaded="Page_Loaded" Unloaded="Page_Unloaded" Initialized="Page_Initialized">
+	    Title="" Loaded="Page_Loaded" Unloaded="Page_Unloaded" Initialized="Page_Initialized" >
 
     <Page.Resources>
         <VM:BeobachtungenEingabeVM x:Key="ViewModel" UnitOfWork="{StaticResource UnitOfWork}" />
@@ -52,7 +52,7 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Beobachtung eingeben" Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
-            <TextBox Text="{Binding BeoText, UpdateSourceTrigger=PropertyChanged}" Margin="3" x:Name="txtBeoText" SpellCheck.IsEnabled="True" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap"/>
+            <UI:SpellCheckTextBox Text="{Binding BeoText, UpdateSourceTrigger=PropertyChanged}" Margin="3" x:Name="txtBeoText" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" />
         </GroupBox>
         <GridSplitter Grid.Row="2" Grid.ColumnSpan="2" Height="10" ShowsPreview="True" HorizontalAlignment="Stretch" />
         <GroupBox Header="Die letzten Beobachtungen" Grid.Row="3" Margin="3" Grid.ColumnSpan="2">
