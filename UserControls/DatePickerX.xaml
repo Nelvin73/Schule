@@ -6,7 +6,7 @@
              xmlns:loc="clr-namespace:Groll.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Style="{DynamicResource DatePickerXStyle}"          
-            Loaded="userControl_Loaded"
+            Loaded="userControl_Loaded" 
             >
    
     <DatePicker.Resources>

@@ -13,6 +13,7 @@ namespace Groll.UserControls
 {
     public partial class SpellCheckTextBox : TextBox
     {
+                
         ContextMenu contextMenu = new ContextMenu();
 
         public SpellCheckTextBox()
@@ -33,7 +34,6 @@ namespace Groll.UserControls
         private void SpellCheckTextBox_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             // Define new Context Menu
-
             contextMenu.Items.Clear();
 
             // Check for spelling errors
@@ -80,14 +80,22 @@ namespace Groll.UserControls
         private void AddToDictionary(string p)
         {
             // Save string in Dictionary File
-            var file = System.IO.File.AppendText("Wörterbuch.lex");
-            file.WriteLine(p);
-            file.Close();
+            try
+            {
+                var file = System.IO.File.AppendText("Wörterbuch.lex");
+                file.WriteLine(p);
+                file.Close();
 
-            // Check if Wörterbuch already used
-            if (this.SpellCheck.CustomDictionaries.Count == 0)
-                this.SpellCheck.CustomDictionaries.Add(new Uri("Wörterbuch.dic", UriKind.Relative)); 
+                // Check if Wörterbuch already used
+                if (this.SpellCheck.CustomDictionaries.Count == 0)
+                    this.SpellCheck.CustomDictionaries.Add(new Uri("Wörterbuch.dic", UriKind.Relative)); 
 
+            }
+            catch (Exception)
+            {
+                // Failed to write to dic ... ignore error ...                
+            }
+            
         }
 
         private MenuItem GetMenu(string header, ICommand command, TextBoxBase target, bool Bold = false)
