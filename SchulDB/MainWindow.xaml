@@ -113,7 +113,7 @@
                 <RibbonGroup Header="Eingabe" >
                     <RibbonButton Label="Eingabe löschen" Command="comm:BeobachtungenCommands.ClearInput" LargeImageSource="/Images/Trash.ico"  />
                     <RibbonSplitButton Label="Beobachtung speichern" Command="comm:BeobachtungenCommands.Add" LargeImageSource="/Images/Add_Comment.ico"  >
-                        <RibbonMenuItem Header="Speichern" Command="comm:BeobachtungenCommands.Add" ImageSource="/Images/Add_Comment.ico" />
+                        <RibbonMenuItem Header="Speichern (STRG+Enter)"  Command="comm:BeobachtungenCommands.Add" ImageSource="/Images/Add_Comment.ico" />
                         <RibbonMenuItem Header="Speichern ohne Löschen" Command="comm:BeobachtungenCommands.Add" CommandParameter="noClear" ImageSource="/Images/Add_Comment.ico" />
                     </RibbonSplitButton>
                 </RibbonGroup>
@@ -173,8 +173,8 @@
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>
-                            <RibbonMenuItem DataContext="{Binding TextBreakSchuelerMenuButton}" ItemsSource="{x:Null}" >
-                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedTextBreakSchueler}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <RibbonMenuItem DataContext="{Binding TextBreakSchülerMenuButton}" ItemsSource="{x:Null}" >
+                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedTextBreakSchüler}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>
@@ -182,11 +182,12 @@
                                 <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedTextBreakDatum}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
-                            </RibbonMenuItem>
+                            </RibbonMenuItem>                            
+                            
                                                       
                             <RibbonSeparator />
-                            <RibbonMenuItem Header="Absatz nach jedem Eintrag" IsCheckable="True" IsChecked="{Binding ParagraphAfterEveryEntry}" />
-                            <RibbonMenuItem Header="Gleichen Namen / Datum wiederholen" IsCheckable="True" IsChecked="{Binding RepeatSameName}" />
+                            <RibbonMenuItem Header="Absatz nach jedem Eintrag" StaysOpenOnClick="True" IsCheckable="True" IsChecked="{Binding ParagraphAfterEveryEntry}" />
+                            <RibbonMenuItem Header="Gleichen Namen / Datum wiederholen" StaysOpenOnClick="True" IsCheckable="True" IsChecked="{Binding RepeatSameName}" />
                         </RibbonMenuItem>
 
 

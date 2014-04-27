@@ -92,7 +92,7 @@ namespace Groll.UserControls
         public void SetPrevMonth()
         {
             if (SelectedDate != null)
-                SelectedDate = SelectedDate.Value.AddMonths(1);
+                SelectedDate = SelectedDate.Value.AddMonths(-1);
         }
 
         #endregion

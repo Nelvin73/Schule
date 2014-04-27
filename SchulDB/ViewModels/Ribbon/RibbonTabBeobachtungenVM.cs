@@ -17,13 +17,11 @@ namespace Groll.Schule.SchulDB.ViewModels
     public class RibbonTabBeobachtungenVM : RibbonTabVM
     {
         private ObservableCollection<Beobachtung> beobachtungenCollection;
-        private RibbonBaseVM selectedExportFilter;
-        private List<RibbonMenuEntryVM> exportFilterItemSource;
         private RibbonMenuEntryVM selectedGrouping;
         private RibbonMenuEntryVM selectedSorting;
         private RibbonMenuEntryVM selectedTextBreakKlasse;
-        private RibbonMenuEntryVM selectedTextBreakSchueler;
-        private RibbonMenuEntryVM selectedTextBreakDatum;
+        private RibbonMenuEntryVM selectedTextBreakSchüler;
+        private RibbonMenuEntryVM selectedTextBreakDatum;        
         private bool paragraphAfterEveryEntry = false;
         private bool repeatSameName = false;
 
@@ -162,8 +160,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                 {
                     t = new RibbonMenuEntryVM()
                     {
-                        Label = "Gruppieren",
-                     //   StaysOpenOnClick = true,
+                        Label = "Gruppieren",                       
                         ItemsSource = new List<RibbonMenuEntryVM>()
                         {
                             new RibbonMenuEntryVM()
@@ -185,7 +182,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                             }
                         }
                     };
-                    t.SelectedItem = t.ItemsSource[0];
+                    t.SelectedItem = SelectedGrouping = t.ItemsSource[0];
                     SetElement(Key, (RibbonBaseVM)t);
                 }
 
@@ -227,7 +224,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                         }
                     };
 
-                    t.SelectedItem = t.ItemsSource[0];
+                    t.SelectedItem = SelectedSorting = t.ItemsSource[0];
                     SetElement(Key, (RibbonBaseVM)t);
                 }
 
@@ -302,20 +299,20 @@ namespace Groll.Schule.SchulDB.ViewModels
                     selectedGrouping = value; OnPropertyChanged();
                     if (selectedGrouping.Tag.ToString() == "S")
                     {
-                        TextBreakSchuelerMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
-                        TextBreakDatumMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
-                        SelectedTextBreakSchueler = TextBreakSchuelerMenuButton.ItemsSource[0];
+                       // TextBreakSchülerMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
+                      //  TextBreakDatumMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
+                        SelectedTextBreakSchüler = TextBreakSchülerMenuButton.ItemsSource[0];
                         SelectedTextBreakDatum = TextBreakDatumMenuButton.ItemsSource[2];
                     }else
                     {
-                       TextBreakSchuelerMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
-                        TextBreakDatumMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
-                        SelectedTextBreakSchueler = TextBreakSchuelerMenuButton.ItemsSource[2];
+                    //   TextBreakSchülerMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
+                     //   TextBreakDatumMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
+                        SelectedTextBreakSchüler = TextBreakSchülerMenuButton.ItemsSource[2];
                         SelectedTextBreakDatum = TextBreakDatumMenuButton.ItemsSource[0];
 
                     }
-                    OnPropertyChanged("TextBreakSchuelerMenuButton");
-                    OnPropertyChanged("SelectedTextBreakDatum");
+                 //   OnPropertyChanged("SelectedTextBreakSchüler");
+                //    OnPropertyChanged("SelectedTextBreakDatum");
                 }
             }
         }
@@ -380,20 +377,21 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-        public RibbonMenuEntryVM SelectedTextBreakSchueler
+        public RibbonMenuEntryVM SelectedTextBreakSchüler
         {
             get
             {
-                return selectedTextBreakSchueler;
+                return selectedTextBreakSchüler;
             }
             set
             {
-                if (selectedTextBreakSchueler != value)
+                if (selectedTextBreakSchüler != value)
                 {
-                    selectedTextBreakSchueler = value; OnPropertyChanged();
+                    selectedTextBreakSchüler = value; OnPropertyChanged();
                 }
             }
         }
+     
 
         public RibbonMenuEntryVM SelectedTextBreakDatum
         {
@@ -440,7 +438,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                             }
                         }
                     };
-                    t.SelectedItem = t.ItemsSource[0];
+                    t.SelectedItem =  t.ItemsSource[0];
                     SetElement(Key, (RibbonBaseVM)t);
                 }
 
@@ -448,17 +446,17 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-        public RibbonMenuEntryVM TextBreakSchuelerMenuButton
+        public RibbonMenuEntryVM TextBreakSchülerMenuButton
         {
             get
             {
-                string Key = "TextBreakSchuelerMenuButton";
+                string Key = "TextBreakSchülerMenuButton";
                 RibbonMenuEntryVM t = GetElement(Key) as RibbonMenuEntryVM;
                 if (t == null)
                 {
                     t = new RibbonMenuEntryVM()
                     {
-                        Label = "Schueler",
+                        Label = "Schüler",
                         StaysOpenOnClick = true,
                         ItemsSource = new List<RibbonMenuEntryVM>()
                         {
@@ -480,9 +478,10 @@ namespace Groll.Schule.SchulDB.ViewModels
                                 Label = "Fortlaufend",
                                 LongHeader = "Fortlaufend\n (ohne Trennung)",
                                 Tag = "None",
-                            }}};
-
-                    t.SelectedItem = t.ItemsSource[0];
+                            }
+                        }
+                    };
+                    t.SelectedItem =  t.ItemsSource[0];
                     SetElement(Key, (RibbonBaseVM)t);
                 }
 
@@ -525,7 +524,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                             }
                         }
                     };
-                    t.SelectedItem = t.ItemsSource[0];
+                    t.SelectedItem = SelectedTextBreakDatum = t.ItemsSource[02];
                     SetElement(Key, (RibbonBaseVM)t);
                 }
 

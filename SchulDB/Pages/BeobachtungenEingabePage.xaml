@@ -8,6 +8,7 @@
         x:Class="Groll.Schule.SchulDB.Pages.BeobachtungenEingabePage" 
         xmlns:VM="clr-namespace:Groll.Schule.SchulDB.ViewModels"
         xmlns:loc="clr-namespace:Groll.Schule.SchulDB.Pages"
+        xmlns:ext="clr-namespace:Groll.Schule.SchulDB.Helper"
         mc:Ignorable="d" 
         d:DesignHeight="460" d:DesignWidth="800"
 	    Title="" Loaded="Page_Loaded" Unloaded="Page_Unloaded" Initialized="Page_Initialized" >
@@ -18,7 +19,7 @@
     </Page.Resources>
 
 
-    <Grid x:Name="root" DataContext="{StaticResource ViewModel}" >
+    <Grid x:Name="root" DataContext="{StaticResource ViewModel}"  >
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="519*"/>
@@ -38,7 +39,7 @@
                     <ComboBox x:Name="cbKlassenListe" Margin="3" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" MinWidth="200"/>
                 </StackPanel>
                 <TextBox x:Name="Filter" TextChanged="Filter_TextChanged" Margin="3" />
-                <ListBox x:Name="cbSchülerListe" Margin="3"  MaxHeight="200" ItemsSource="{Binding Mode=OneWay, Source={StaticResource SchülerListeViewSource}}" MinWidth="200" MinHeight="100"  SelectedItem="{Binding SelectedSchüler}" />
+                <ListBox x:Name="cbSchülerListe" Margin="3" SelectionChanged="cbSchülerListe_SelectionChanged" MaxHeight="200" ItemsSource="{Binding Mode=OneWay, Source={StaticResource SchülerListeViewSource}}" MinWidth="200" MinHeight="100" SelectedItem="{Binding SelectedSchüler}" SelectionMode="Extended" />
             </StackPanel>
 
         </GroupBox>
@@ -55,7 +56,7 @@
             <UI:SpellCheckTextBox Text="{Binding BeoText, UpdateSourceTrigger=PropertyChanged}" Margin="3" x:Name="txtBeoText" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" />
         </GroupBox>
         <GridSplitter Grid.Row="2" Grid.ColumnSpan="2" Height="10" ShowsPreview="True" HorizontalAlignment="Stretch" />
-        <GroupBox Header="Die letzten Beobachtungen" Grid.Row="3" Margin="3" Grid.ColumnSpan="2">
+        <GroupBox Header="Die letzten Beobachtungen" Grid.Row="3" Margin="3" Grid.ColumnSpan="2" xml:lang="de-DE">
 
             <ListBox Margin="3" ItemsSource="{Binding BeobachtungenHistoryListe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" >
                 <ListBox.ItemTemplate>
@@ -67,7 +68,7 @@
                                         <TextBlock Text="Fach: " Foreground="White" FontWeight="Bold" />
                                         <TextBlock Text="{Binding Fach, TargetNullValue=Allgemein}" Foreground="Yellow" />
                                         <TextBlock Text=",  Datum: " Foreground="White" FontWeight="Bold" />
-                                        <TextBlock Text="{Binding Datum, TargetNullValue=Allgemein}" Foreground="Yellow" />
+                                        <TextBlock Text="{Binding Datum, TargetNullValue=Allgemein, StringFormat=D}" Foreground="Yellow" />
                                         <TextBlock Text=",  Schüler: " Foreground="White" FontWeight="Bold" />
                                         <TextBlock Text="{Binding Schueler.DisplayName, Mode=OneWay}" Foreground="Yellow" />
                                     </StackPanel>

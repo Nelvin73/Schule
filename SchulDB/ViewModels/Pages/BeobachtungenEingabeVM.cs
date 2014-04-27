@@ -18,7 +18,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         // internal Member
         private List<Beobachtung> beobachtungenHistoryListe;
         private BeoHistoryMode beobachtungenHistoryMode;
-
+        private List<Schueler> selectedSchülerList;
         public enum BeoHistoryMode { LastEntered, SortDate, CurrentSchueler }
 
         #region Properties
@@ -45,7 +45,16 @@ namespace Groll.Schule.SchulDB.ViewModels
                     return;
                 beobachtungenHistoryMode = value; OnPropertyChanged(); UpdateHistory();
             }
-        }      
+        }
+
+        public List<Schueler> SelectedSchülerList
+        {
+            get { return selectedSchülerList; }
+            set
+            {
+                selectedSchülerList = value;
+            }
+        }
 
         #endregion
 
@@ -99,16 +108,19 @@ namespace Groll.Schule.SchulDB.ViewModels
         public void AddCurrentComment(bool clear = true)
         {
             // Save current comment
-            Beobachtung b = new Beobachtung()
-            {
-                Datum = BeoDatum,
-                Fach = (SelectedFach == null || SelectedFach.FachId == -1000) ? null : SelectedFach,
-                Text = BeoText,
-                SchuljahrId = SelectedSchuljahr.Startjahr,
-                Schueler = SelectedSchüler
-            };
-
-            UnitOfWork.Beobachtungen.Add(b);
+            foreach (Schueler s in SelectedSchülerList)
+            {            
+                Beobachtung b = new Beobachtung()
+                {
+                    Datum = BeoDatum,
+                    Fach = (SelectedFach == null || SelectedFach.FachId == -1000) ? null : SelectedFach,
+                    Text = BeoText,
+                    SchuljahrId = SelectedSchuljahr.Startjahr,
+                    Schueler = s
+                };
+                UnitOfWork.Beobachtungen.Add(b);
+            }
+            
             UnitOfWork.Save();
             UpdateHistory();
 

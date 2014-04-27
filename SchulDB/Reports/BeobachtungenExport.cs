@@ -409,7 +409,7 @@ namespace Groll.Schule.SchulDB.Reports
                     app.Selection.set_Style(FormatData2Spalten);
                     if (groupBy == GroupByType.GroupBySchüler)
                     {
-                        if (lastDatum.Value.Date != beo.Datum.Value.Date || repeatSameName)
+                        if (!lastDatum.HasValue || lastDatum.Value.Date != beo.Datum.Value.Date || repeatSameName)
                             app.Selection.TypeText(beo.Datum.Value.ToString("dd.MM.yyyy"));
                         app.Selection.TypeText("\t");
                     }

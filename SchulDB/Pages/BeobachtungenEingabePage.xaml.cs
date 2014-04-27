@@ -135,7 +135,7 @@ namespace Groll.Schule.SchulDB.Pages
 
             exp.DateSortDirection = vm.SelectedSorting.Tag == null || vm.SelectedSorting.Tag.ToString() == "ASC" ? System.ComponentModel.ListSortDirection.Ascending : System.ComponentModel.ListSortDirection.Descending;
             exp.BreakOnNewKlasse = ConvertToTextBreakType(vm.SelectedTextBreakKlasse);
-            exp.BreakOnNewSchüler = ConvertToTextBreakType(vm.SelectedTextBreakSchueler);
+            exp.BreakOnNewSchüler = ConvertToTextBreakType(vm.SelectedTextBreakSchüler);
             exp.BreakOnNewDate = ConvertToTextBreakType(vm.SelectedTextBreakDatum);
             exp.GroupBy = vm.SelectedSorting.Tag == null || vm.SelectedGrouping.Tag.ToString() == "S" ? Reports.BeobachtungenExport.GroupByType.GroupBySchüler : Reports.BeobachtungenExport.GroupByType.GroupByDatum;
             exp.ParagraphAfterEveryEntry = vm.ParagraphAfterEveryEntry;
@@ -165,7 +165,12 @@ namespace Groll.Schule.SchulDB.Pages
 
         private void Executed_Add(object sender, ExecutedRoutedEventArgs e)
         {            
+            // Beobachtung speichern
             ViewModel.AddCurrentComment((e.Parameter ?? "").ToString() != "noClear");            
+
+            // Zu Person Filter springen
+            Filter.SelectAll();
+            Filter.Focus();            
         }
 
         private void CanExecute_Add(object sender, CanExecuteRoutedEventArgs e)
@@ -197,6 +202,8 @@ namespace Groll.Schule.SchulDB.Pages
         {
             var s = TryFindResource("SchülerListeViewSource") as CollectionViewSource;
             s.View.Refresh();
+            if (cbSchülerListe.Items.Count > 0)
+                cbSchülerListe.SelectedIndex = 0;
         }
 
         // Filter
@@ -240,6 +247,12 @@ namespace Groll.Schule.SchulDB.Pages
         {
             var i = e.Source as TextBox;
 
+        }
+
+        private void cbSchülerListe_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Auswahl geändert ... SelectedSchülerList anpassen
+            ViewModel.SelectedSchülerList = cbSchülerListe.SelectedItems.Cast<Schueler>().ToList();
         }
 
        

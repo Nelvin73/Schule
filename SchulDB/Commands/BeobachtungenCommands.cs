@@ -12,7 +12,7 @@ namespace Groll.Schule.SchulDB.Commands
 
         private static RoutedUICommand historyViewChanged = new RoutedUICommand("HistoryViewChanged", "ChangeHistoryView", typeof(BeobachtungenCommands));
         private static RoutedUICommand clearInput = new RoutedUICommand("ClearInput", "ClearInput", typeof(BeobachtungenCommands));
-        private static RoutedUICommand add = new RoutedUICommand("Add", "Add", typeof(BeobachtungenCommands));
+        private static RoutedUICommand add = new RoutedUICommand("Add", "Add", typeof(BeobachtungenCommands), new InputGestureCollection() { new KeyGesture(Key.Enter, ModifierKeys.Control)});
         private static RoutedUICommand insertText = new RoutedUICommand("InsertText", "InsertText", typeof(BeobachtungenCommands));
         private static RoutedUICommand export = new RoutedUICommand("ExportBeobachtungen", "ExportBeobachtungen", typeof(BeobachtungenCommands));
         private static RoutedUICommand updateView = new RoutedUICommand("UpdateBeobachtungenView", "UpdateBeobachtungenView", typeof(BeobachtungenCommands));
