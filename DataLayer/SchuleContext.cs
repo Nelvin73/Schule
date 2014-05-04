@@ -30,6 +30,7 @@ namespace Groll.Schule.DataAccess
         public DbSet<Schuljahr> Schuljahre { get; set; }
         public DbSet<Fach> Fächer { get; set; }
         // public DbSet<Stundenplan> Stundenpläne { get; set; }
+        public DbSet<Textbaustein> Textbausteine { get; set; }
         public DbSet<Beobachtung> Beobachtungen { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

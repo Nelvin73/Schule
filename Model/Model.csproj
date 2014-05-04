@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Beobachtung.cs" />
     <Compile Include="Fach.cs" />
+    <Compile Include="Textbausteine.cs" />
     <Compile Include="Schueler.cs" />
     <Compile Include="Klasse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

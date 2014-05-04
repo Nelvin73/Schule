@@ -236,7 +236,8 @@ namespace Groll.Schule.DataManager
             context.Fächer.Load();
             context.Klassen.Load();
             context.Schuljahre.Load();
-            context.Beobachtungen.Load(); 
+            context.Beobachtungen.Load();
+            context.Textbausteine.Load();
         }
 
         private void ResetRepositories()
