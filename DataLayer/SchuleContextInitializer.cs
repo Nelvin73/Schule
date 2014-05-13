@@ -8,7 +8,7 @@ using Groll.Schule.Model;
 
 namespace Groll.Schule.DataAccess
 {
-    public class SchuleContextInitializer : DropCreateDatabaseIfModelChanges<SchuleContext>
+    public class SchuleContextInitializer : CreateDatabaseIfNotExists<SchuleContext> // DropCreateDatabaseIfModelChanges<SchuleContext>
     {
         public bool CreateEmptyDB = true;
 
