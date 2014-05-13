@@ -53,6 +53,7 @@
     <Compile Include="Configuration\SchuljahrConfig.cs" />
     <Compile Include="Configuration\BeobachtungConfig.cs" />
     <Compile Include="Configuration\SchuelerConfig.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SchuleContextInitializer.cs" />
     <Compile Include="SchuleContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

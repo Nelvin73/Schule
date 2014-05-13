@@ -15,7 +15,7 @@ namespace Groll.Schule.DataAccess
 {
     public partial class SchuleContext : DbContext
     {
-        private SchuleContext() : this("Groll.SchulDB") {    }
+        public SchuleContext() : this("Groll.SchulDB") {    }
 
         private SchuleContext(string DBfile)
             : base(DBfile)
