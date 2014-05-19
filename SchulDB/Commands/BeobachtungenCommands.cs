@@ -14,6 +14,7 @@ namespace Groll.Schule.SchulDB.Commands
         private static RoutedUICommand clearInput = new RoutedUICommand("ClearInput", "ClearInput", typeof(BeobachtungenCommands));
         private static RoutedUICommand add = new RoutedUICommand("Add", "Add", typeof(BeobachtungenCommands), new InputGestureCollection() { new KeyGesture(Key.Enter, ModifierKeys.Control)});
         private static RoutedUICommand insertText = new RoutedUICommand("InsertText", "InsertText", typeof(BeobachtungenCommands));
+        private static RoutedUICommand insertTextbaustein = new RoutedUICommand("InsertTextbaustein", "InsertTextbaustein", typeof(BeobachtungenCommands));
         private static RoutedUICommand export = new RoutedUICommand("ExportBeobachtungen", "ExportBeobachtungen", typeof(BeobachtungenCommands));
         private static RoutedUICommand updateView = new RoutedUICommand("UpdateBeobachtungenView", "UpdateBeobachtungenView", typeof(BeobachtungenCommands));
         private static RoutedUICommand editModeChanged = new RoutedUICommand("EditModeChanged", "EditModeChanged", typeof(BeobachtungenCommands));
@@ -36,6 +37,11 @@ namespace Groll.Schule.SchulDB.Commands
         public static RoutedUICommand InsertText
         {
             get { return insertText; }
+        }
+
+        public static RoutedUICommand InsertTextbaustein
+        {
+            get { return insertTextbaustein; }
         }
 
         public static RoutedUICommand ExportBeobachtungen

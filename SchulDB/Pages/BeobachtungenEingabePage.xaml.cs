@@ -53,13 +53,13 @@ namespace Groll.Schule.SchulDB.Pages
                     new CommandBinding(BeobachtungenCommands.ClearInput, Executed_ClearInput, BasicCommands.CanExecute_TRUE),
                     new CommandBinding(BeobachtungenCommands.Add, Executed_Add, CanExecute_Add),
                     new CommandBinding(BeobachtungenCommands.InsertText, Executed_InsertText, BasicCommands.CanExecute_TRUE),
+                    new CommandBinding(BeobachtungenCommands.InsertTextbaustein, Executed_InsertTextbaustein, BasicCommands.CanExecute_TRUE),
                     new CommandBinding(BeobachtungenCommands.ExportBeobachtungen, Executed_Export, BasicCommands.CanExecute_TRUE),
                     new CommandBinding(BeobachtungenCommands.HistoryViewChanged, Executed_HistoryViewChanged, BasicCommands.CanExecute_TRUE)
                 });
         }
 
-        
-       
+      
        
        
 
@@ -95,6 +95,24 @@ namespace Groll.Schule.SchulDB.Pages
             }   
         }
 
+        private void Executed_InsertTextbaustein(object sender, ExecutedRoutedEventArgs e)
+        {
+            // Text aus Textbaustein einfügen
+            if (txtBeoText.IsSelectionActive)
+            {
+                Textbaustein t = ViewModel.UnitOfWork.Textbausteine.GetById((int) e.Parameter);
+                if (t != null)
+                {
+                    t.UsageCount++;
+                    txtBeoText.Text = txtBeoText.Text.Remove(txtBeoText.SelectionStart, txtBeoText.SelectionLength).Insert(txtBeoText.SelectionStart, t.Text);
+                    
+                }
+              
+            }   
+        }
+
+        
+       
         private void Executed_ClearInput(object sender, ExecutedRoutedEventArgs e)
         {
             // Eingabe im Model löschen

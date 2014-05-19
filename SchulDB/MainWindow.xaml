@@ -134,14 +134,14 @@
                     <RibbonMenuButton x:Name="TextButton" Label="Gespeicherte Sätze" MinWidth="55" LargeImageSource="/Images/Add_Document.ico" ItemsSource="{Binding Textbausteine}"  >
                         <RibbonMenuButton.ItemContainerStyle>
                             <Style TargetType="{x:Type RibbonMenuItem}">
-                                <Setter Property="Header" Value="{Binding Name}" />
-                                <Setter Property="Command" Value="{x:Static comm:BeobachtungenCommands.InsertText}" />
+                                <Setter Property="Header" Value="{Binding Name}" />                                
+                                <Setter Property="Command" Value="{x:Static comm:BeobachtungenCommands.InsertTextbaustein}" />
                                 <Setter Property="ToolTipTitle" Value="{Binding Name}" />
                                 <Setter Property="ToolTipDescription" Value="{Binding Text}" />
                                 <Setter Property="ToolTipFooterTitle" Value="Benutzt:" />
                                 <Setter Property="ToolTipImageSource" Value="/Images/Notiz2.ico" />
                                 <Setter Property="ToolTipFooterDescription" Value="{Binding UsageCount}" />
-                                <Setter Property="CommandParameter" Value="{Binding Text}" />
+                                <Setter Property="CommandParameter" Value="{Binding TextbausteinId}" />
                                 <Setter Property="Tag" Value="{Binding Text}" />
                                 <Setter Property="ImageSource" Value="/Images/Notiz2.ico" />
                             </Style>
