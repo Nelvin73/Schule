@@ -48,6 +48,7 @@
     <Compile Include="Configuration\KlasseConfig.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\TextbausteineConfig.cs" />
     <Compile Include="Configuration\UnterrichtsstundeConfig.cs" />
     <Compile Include="Configuration\StundenplanConfig.cs" />
     <Compile Include="Configuration\SchuljahrConfig.cs" />

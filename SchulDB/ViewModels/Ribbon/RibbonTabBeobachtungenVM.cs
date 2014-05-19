@@ -17,10 +17,12 @@ namespace Groll.Schule.SchulDB.ViewModels
     public class RibbonTabBeobachtungenVM : RibbonTabVM
     {
         private ObservableCollection<Beobachtung> beobachtungenCollection;
+        private ObservableCollection<Textbaustein> texteCollection;
         private RibbonMenuEntryVM selectedGrouping;
         private RibbonMenuEntryVM selectedSorting;
         private RibbonMenuEntryVM selectedTextBreakKlasse;
         private RibbonMenuEntryVM selectedTextBreakSchüler;
+        private Textbaustein selectedTextBaustein;
         private RibbonMenuEntryVM selectedTextBreakDatum;        
         private bool paragraphAfterEveryEntry = false;
         private bool repeatSameName = false;
@@ -332,6 +334,23 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
+        public Textbaustein SelectedTextBaustein
+        {
+            get
+            {
+                return selectedTextBaustein;
+            }
+            set
+            {
+                if (selectedTextBaustein != value)
+                {
+                    selectedTextBaustein = value; OnPropertyChanged();
+                    SelectedTextBaustein = null;
+
+                }
+            }
+        }
+
         public bool ParagraphAfterEveryEntry
         {
             get
@@ -553,6 +572,25 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
 
         }
+
+        public List<Textbaustein> Textbausteine
+        {
+            get
+            {
+                if (UnitOfWork == null || UnitOfWork.CurrentDbType == UowSchuleDB.DatabaseType.None)
+                    return new List<Textbaustein>();
+
+                if (texteCollection == null)
+                {
+                    // Liste der Beobachtungen laden und benachrichtigen lassen, wenn diese sich ändert.
+                    texteCollection = UnitOfWork.Textbausteine.GetObservableCollection();
+                    texteCollection.CollectionChanged += txt_CollectionChanged;
+                }
+
+                return texteCollection.ToList();
+            }
+
+        }
        
 
       
@@ -586,10 +624,18 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             // invalidate all database relevant properties
             beobachtungenCollection = null;
+            texteCollection = null;
+            OnPropertyChanged("Textbausteine");
             OnPropertyChanged("Last10Beobachtungen");
             base.OnDatabaseChanged();
         }
-
+        
+        void txt_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            // Textbausteine changed            
+            OnPropertyChanged("Textbausteine");
+        }
+        
         void beo_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             // Beobachtungen changed            

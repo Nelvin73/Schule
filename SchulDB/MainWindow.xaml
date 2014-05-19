@@ -4,7 +4,8 @@
         xmlns:comm="clr-namespace:Groll.Schule.SchulDB.Commands"
         xmlns:ViewModels="clr-namespace:Groll.Schule.SchulDB.ViewModels"
         xmlns:local="clr-namespace:Groll.Schule.SchulDB"
-        xmlns:Primitives="clr-namespace:System.Windows.Controls.Ribbon.Primitives;assembly=System.Windows.Controls.Ribbon" x:Class="Groll.Schule.SchulDB.MainWindow"
+        xmlns:Model="clr-namespace:Groll.Schule.Model;assembly=Model"    
+    xmlns:Primitives="clr-namespace:System.Windows.Controls.Ribbon.Primitives;assembly=System.Windows.Controls.Ribbon" x:Class="Groll.Schule.SchulDB.MainWindow"
         Title="SchulDB"
         x:Name="RibbonWindow"
         Width="1024" Height="800">
@@ -120,17 +121,33 @@
 
                 <RibbonGroup Header="Einfügen" >
                     <RibbonMenuButton Label="Letzte Kommentare" LargeImageSource="/Images/Aktenschrank.ico" ItemsSource="{Binding Last10Beobachtungen}" >
-                        <RibbonMenuButton.ItemContainerStyle>
-                            <Style TargetType="{x:Type RibbonMenuItem}">
+                        <RibbonMenuButton.ItemContainerStyle>                            
+                            <Style TargetType="{x:Type RibbonMenuItem}">                                
                                 <Setter Property="Header" Value="{Binding Text}" />
                                 <Setter Property="Command" Value="{x:Static comm:BeobachtungenCommands.InsertText}" />
                                 <Setter Property="CommandParameter" Value="{Binding Text}" />
                                 <Setter Property="ImageSource" Value="/Images/Notiz2.ico" />
                             </Style>
                         </RibbonMenuButton.ItemContainerStyle>
+                    </RibbonMenuButton>                                
+                    
+                    <RibbonMenuButton x:Name="TextButton" Label="Gespeicherte Sätze" MinWidth="55" LargeImageSource="/Images/Add_Document.ico" ItemsSource="{Binding Textbausteine}"  >
+                        <RibbonMenuButton.ItemContainerStyle>
+                            <Style TargetType="{x:Type RibbonMenuItem}">
+                                <Setter Property="Header" Value="{Binding Name}" />
+                                <Setter Property="Command" Value="{x:Static comm:BeobachtungenCommands.InsertText}" />
+                                <Setter Property="ToolTipTitle" Value="{Binding Name}" />
+                                <Setter Property="ToolTipDescription" Value="{Binding Text}" />
+                                <Setter Property="ToolTipFooterTitle" Value="Benutzt:" />
+                                <Setter Property="ToolTipImageSource" Value="/Images/Notiz2.ico" />
+                                <Setter Property="ToolTipFooterDescription" Value="{Binding UsageCount}" />
+                                <Setter Property="CommandParameter" Value="{Binding Text}" />
+                                <Setter Property="Tag" Value="{Binding Text}" />
+                                <Setter Property="ImageSource" Value="/Images/Notiz2.ico" />
+                            </Style>
+                        </RibbonMenuButton.ItemContainerStyle>
+                    
                     </RibbonMenuButton>
-
-                    <RibbonButton Label="Gespeicherte Sätze" LargeImageSource="/Images/Add_Document.ico" />
                 </RibbonGroup>
 
                 <RibbonGroup Header="Exportieren" >

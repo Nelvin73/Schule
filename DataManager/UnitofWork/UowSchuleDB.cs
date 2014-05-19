@@ -53,6 +53,7 @@ namespace Groll.Schule.DataManager
 
         private SchuelerRepository repSchueler;
         private KlassenRepository repKlassen;
+        private RepositoryBase<Textbaustein> repTextbausteine;
         private FaecherRepository repFächer;
         private RepositoryBase<Beobachtung> repBeobachtungen;
         private RepositoryBase<Schuljahr> repSchuljahre;
@@ -82,6 +83,17 @@ namespace Groll.Schule.DataManager
             }
         }
 
+        public RepositoryBase<Textbaustein> Textbausteine
+        {
+            get
+            {
+                if (repTextbausteine == null && context != null)
+                    repTextbausteine = new RepositoryBase<Textbaustein>(context);
+
+                return repTextbausteine; ;
+            }
+        }
+        
         public RepositoryBase<Schuljahr> Schuljahre
         {
             get

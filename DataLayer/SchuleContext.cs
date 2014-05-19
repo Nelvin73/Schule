@@ -40,6 +40,8 @@ namespace Groll.Schule.DataAccess
             modelBuilder.Configurations.Add(new KlasseConfiguration());
             modelBuilder.Configurations.Add(new SchuljahrConfiguration());
             modelBuilder.Configurations.Add(new FachConfiguration());
+            modelBuilder.Configurations.Add(new TextbausteineConfig());
+            
             //modelBuilder.Configurations.Add(new UnterrichtsstundeConfiguration());
             modelBuilder.Configurations.Add(new BeobachtungConfiguration());
             //modelBuilder.Configurations.Add(new StundenplanConfiguration());
