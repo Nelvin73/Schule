@@ -139,7 +139,7 @@ namespace Groll.Schule.SchulDB
             }
 
             // Show page
-            if (page != null)
+            if (page != null) 
                 ContentFrame.Navigate(page);
             else
                 throw new ArgumentException("'" + p.ToString() + "' is no valid page name.", "p");

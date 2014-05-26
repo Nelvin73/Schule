@@ -10,11 +10,11 @@
         x:Name="RibbonWindow"
         Width="1024" Height="800">
 
-    <RibbonWindow.Resources>        
-     
+    <RibbonWindow.Resources>
+        <ViewModels:MainWindowVM x:Key="MainViewModel" />
     </RibbonWindow.Resources>
 
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" DataContext="{StaticResource MainViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -229,6 +229,6 @@
         </Ribbon>
 
         <!-- Main content -->
-        <Frame x:Name="ContentFrame"  Grid.Row="1" />
+        <Frame x:Name="ContentFrame"  Grid.Row="1" />         
     </Grid>
 </RibbonWindow>

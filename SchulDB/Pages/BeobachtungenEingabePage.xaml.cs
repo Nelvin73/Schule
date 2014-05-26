@@ -81,6 +81,8 @@ namespace Groll.Schule.SchulDB.Pages
                     break;
             }
             ViewModel.BeobachtungenHistoryType = type;
+            
+
         }
 
 
