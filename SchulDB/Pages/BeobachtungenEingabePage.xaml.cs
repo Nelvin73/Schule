@@ -150,7 +150,7 @@ namespace Groll.Schule.SchulDB.Pages
         private void Executed_Export(object sender, ExecutedRoutedEventArgs e)
         {          
             // Get settings from Ribbon               
-            var vm = RibbonVM.Default.TabBeobachtungen;
+            var vm = RibbonViewModel.Default.TabBeobachtungen;
             var exp = new Reports.BeobachtungenExport();
 
             exp.DateSortDirection = vm.SelectedSorting.Tag == null || vm.SelectedSorting.Tag.ToString() == "ASC" ? System.ComponentModel.ListSortDirection.Ascending : System.ComponentModel.ListSortDirection.Descending;
@@ -239,8 +239,8 @@ namespace Groll.Schule.SchulDB.Pages
         {
             // Navigated away from Page
             // Hide Context Tab
-            ViewModels.RibbonVM.Default.IsContextTabBeobachtungenVisible = false;
-            ViewModels.RibbonVM.Default.TabBeobachtungen.IsVisible = false;                        
+            ViewModels.RibbonViewModel.Default.IsContextTabBeobachtungenVisible = false;
+            ViewModels.RibbonViewModel.Default.TabBeobachtungen.IsVisible = false;                        
         }
 
         private void Page_Initialized(object sender, EventArgs e)
@@ -253,11 +253,11 @@ namespace Groll.Schule.SchulDB.Pages
         {
             // Navigated toward Page
             var mw = Tag as MainWindow;
-            if (mw != null && mw.RibbonVM != null)
+            if (mw != null && mw.RibbonViewModel != null)
             {
-                ViewModels.RibbonVM.Default.IsContextTabBeobachtungenVisible = true;
-                ViewModels.RibbonVM.Default.TabBeobachtungen.IsSelected = true;
-                ViewModels.RibbonVM.Default.TabBeobachtungen.IsVisible = true;
+                ViewModels.RibbonViewModel.Default.IsContextTabBeobachtungenVisible = true;
+                ViewModels.RibbonViewModel.Default.TabBeobachtungen.IsSelected = true;
+                ViewModels.RibbonViewModel.Default.TabBeobachtungen.IsVisible = true;
                 txtBeoText.Focus();
             }
         }

@@ -11,40 +11,26 @@ using System.Collections.ObjectModel;
 
 namespace Groll.Schule.SchulDB.ViewModels
 {
-    public class RibbonVM : ObservableObject
+    public class RibbonViewModel : SchuleViewModelBase
     {
         #region Static Instance
-        static RibbonVM staticInstance;
+        static RibbonViewModel staticInstance;
 
-        public static RibbonVM Default
+        public static RibbonViewModel Default
         {
             get
             {
                 if (staticInstance == null)
-                    staticInstance = new RibbonVM();
+                    staticInstance = new RibbonViewModel();
                 return staticInstance;
             }
         }
         #endregion
-        
-        #region Unit of Work
-        private UowSchuleDB unitOfWork;
-        public UowSchuleDB UnitOfWork
-        {
-            get {
-                if (unitOfWork == null)                
-                    // Try to get UnitOfWork Global Ressource; if not successful, it stays <null>
-                    UnitOfWork = System.Windows.Application.Current.TryFindResource("UnitOfWork") as UowSchuleDB;                    
-                
-                return unitOfWork; }
-
-            set { unitOfWork = value; OnPropertyChanged(); OnUnitOfWorkChanged(); }
-        }
-        #endregion
+               
 
         #region Tabs
 
-        private Dictionary<string, RibbonTabVM> tabs = new Dictionary<string, RibbonTabVM>();
+        private Dictionary<string, object> tabs = new Dictionary<string, object>();
 
         public ApplicationMenuVM ApplicationMenu
         {
@@ -86,7 +72,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-        private RibbonTabVM GetElement(string Key)
+        private object GetElement(string Key)
         {
             if (Key != null && tabs.ContainsKey(Key))
                 return tabs[Key];
@@ -94,7 +80,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                 return null;
         }
 
-        private RibbonTabVM SetElement(string Key, RibbonTabVM Element, bool Overwrite = true)
+        private object SetElement(string Key, object Element, bool Overwrite = true)
         {
             if (string.IsNullOrEmpty(Key) || Element == null)
                 return null;
@@ -133,27 +119,18 @@ namespace Groll.Schule.SchulDB.ViewModels
         #endregion
 
 
-        public RibbonVM()
+        public RibbonViewModel()
         {
             // Initialization            
         }
 
-
-        private void OnUnitOfWorkChanged()
+        protected override void RefreshData()
         {
-            // Initialize Database parameters
-            unitOfWork.DatabaseChanged += unitOfWork_DatabaseChanged;
-            unitOfWork_DatabaseChanged(this, null);
-        }
+            base.RefreshData();
 
-        void unitOfWork_DatabaseChanged(object sender, EventArgs e)
-        {
-            // Invalidate database dependent properties
-            
             // Inform RibbonTabs
             foreach (RibbonTabVM tab in tabs.Values)
                 tab.OnDatabaseChanged();
-          
-        }      
+        }           
     }
 }

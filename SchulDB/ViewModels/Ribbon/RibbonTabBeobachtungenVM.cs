@@ -605,8 +605,9 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="ribbonVM">Root Element</param>
-        public RibbonTabBeobachtungenVM(RibbonVM ribbonVM = null) : base(ribbonVM)
+        /// <param name="RibbonViewModel">Root Element</param>
+        public RibbonTabBeobachtungenVM(RibbonViewModel RibbonViewModel = null)
+            : base(RibbonViewModel)
         {
             Label = "Beobachtungen eingeben";
             IsVisible = false;  // per Default unsichtbar

@@ -27,12 +27,12 @@ namespace Groll.Schule.SchulDB
         private Dictionary<string, ISchulDBPage> pages = new Dictionary<string, ISchulDBPage>();
         private Groll.Schule.DataManager.UowSchuleDB UnitOfWork;
         private string currentPage;
-        
-        public RibbonVM RibbonVM
+
+        public RibbonViewModel RibbonViewModel
         {
             get
-            {                
-                return RibbonVM.Default;
+            {
+                return RibbonViewModel.Default;
             }
         }
         public MainWindow()
@@ -140,7 +140,7 @@ namespace Groll.Schule.SchulDB
 
             // Show page
             if (page != null) 
-                ContentFrame.Navigate(page);
+         ;//       ContentFrame.Navigate(page);
             else
                 throw new ArgumentException("'" + p.ToString() + "' is no valid page name.", "p");
         }

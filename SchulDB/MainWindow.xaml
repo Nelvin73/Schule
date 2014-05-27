@@ -20,20 +20,19 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Ribbon x:Name="Ribbon" Title="Ribbon Title" DataContext="{x:Static ViewModels:RibbonVM.Default}" >
+        <Ribbon x:Name="Ribbon" Title="Ribbon Title" >
             <Ribbon.HelpPaneContent>
                 <RibbonButton SmallImageSource="/Images/i1.bmp" />
             </Ribbon.HelpPaneContent>
 
             <Ribbon.QuickAccessToolBar>
                 <RibbonQuickAccessToolBar>
-                    <RibbonButton Content="Save"  SmallImageSource="/Images/i1.bmp" Command="Save" />
-                    <RibbonButton Content="Text2"  SmallImageSource="/Images/i1.bmp" />
+                    <RibbonButton Content="Save"  SmallImageSource="/Images/Mappe.ico" Command="{Binding SaveCommand}" />                    
                 </RibbonQuickAccessToolBar>
             </Ribbon.QuickAccessToolBar>
 
             <Ribbon.ApplicationMenu>
-                <RibbonApplicationMenu DataContext="{Binding ApplicationMenu}" >
+                <RibbonApplicationMenu DataContext="{Binding Ribbon.ApplicationMenu}" SmallImageSource="Images/DB.ico" >
                     <RibbonApplicationMenu.AuxiliaryPaneContent>
                         <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center">
                             <TextBlock Text="SchulDB v1.1" FontSize="32" HorizontalAlignment="Center" />
@@ -48,9 +47,9 @@
                     </RibbonApplicationMenu.AuxiliaryPaneContent>
 
                     <RibbonApplicationMenuItem Header="Datenbank wechseln" ImageSource="Images\DB.ico" >
-                        <RibbonApplicationMenuItem Header="Standard" ImageSource="Images\DB.ico" Command="comm:BasicCommands.ChangeDatabase" />
-                        <RibbonApplicationMenuItem Header="Test-Daten" ImageSource="Images\DB_Test.ico" Command="comm:BasicCommands.ChangeDatabase" CommandParameter="dev" />
-                        <RibbonApplicationMenuItem Header="Datei öffnen" ImageSource="Images\DB_Search.ico" Command="comm:BasicCommands.ChangeDatabase" CommandParameter="custom" />
+                        <RibbonApplicationMenuItem Header="Standard" ImageSource="Images\DB.ico" Command="{Binding ChangeDatabaseCommand}" />
+                        <RibbonApplicationMenuItem Header="Test-Daten" ImageSource="Images\DB_Test.ico" Command="{Binding ChangeDatabaseCommand}" CommandParameter="dev" />
+                        <RibbonApplicationMenuItem Header="Datei öffnen" ImageSource="Images\DB_Search.ico" Command="{Binding ChangeDatabaseCommand}" CommandParameter="custom" />
                     </RibbonApplicationMenuItem>
 
                     <RibbonSeparator />
@@ -76,8 +75,8 @@
                     <RibbonButton Label="Fächer" SmallImageSource="/Images/Schultafel_Schulfaecher_320986.jpg" Command="comm:BasicCommands.NavigateTo" CommandParameter="faecherdetails" LargeImageSource="/Images/Mappe.ico" />
                     <RibbonButton Label="Schuljahre" SmallImageSource="/Images/neues-jahr-2012.jpg" Command="comm:BasicCommands.NavigateTo" CommandParameter="schuljahredetails" LargeImageSource="/Images/neues-jahr-2012.jpg" />
                 </RibbonGroup>
-                <RibbonGroup Header="Beobachtungen">
-                    <RibbonButton Label="Eingeben" SmallImageSource="/Images/Schüler.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe" LargeImageSource="/Images/Schultafel_Schulfaecher_320986.jpg"  />
+                <RibbonGroup Header="Beobachtungen" DataContext="{StaticResource MainViewModel}">
+                    <RibbonButton Label="Eingeben" SmallImageSource="/Images/Schüler.ico" Command="{Binding NavigateToCommand}" CommandParameter="beobachtungeneingabe" LargeImageSource="/Images/Schultafel_Schulfaecher_320986.jpg"  />
                     <RibbonButton Label="Exportieren" SmallImageSource="/Images/Klasse.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe"  />
                     <RibbonButton Label="Korrigieren" SmallImageSource="/Images/Mappe.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe"  />
                 </RibbonGroup>
@@ -173,30 +172,30 @@
                     <RibbonMenuButton Label="Einstellungen" LargeImageSource="/Images/Settings1.ico">
                                                 
                         <RibbonMenuItem  DataContext="{Binding GroupingSettingsMenuButton}" ItemsSource="{x:Null}">
-                            <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedGrouping}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonViewModel.Default}, Path=TabBeobachtungen.SelectedGrouping}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                 <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />                                
                             </RibbonGallery>
                         </RibbonMenuItem>
 
                         <RibbonMenuItem DataContext="{Binding SortSettingsMenuButton}" ItemsSource="{x:Null}" >
-                            <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedSorting}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonViewModel.Default}, Path=TabBeobachtungen.SelectedSorting}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                 <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                             </RibbonGallery>
                          </RibbonMenuItem>
 
                         <RibbonMenuItem Header="Formatierung" >
                             <RibbonMenuItem DataContext="{Binding TextBreakKlasseMenuButton}" ItemsSource="{x:Null}" >
-                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedTextBreakKlasse}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonViewModel.Default}, Path=TabBeobachtungen.SelectedTextBreakKlasse}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>
                             <RibbonMenuItem DataContext="{Binding TextBreakSchülerMenuButton}" ItemsSource="{x:Null}" >
-                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedTextBreakSchüler}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonViewModel.Default}, Path=TabBeobachtungen.SelectedTextBreakSchüler}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>
                             <RibbonMenuItem DataContext="{Binding TextBreakDatumMenuButton}" ItemsSource="{x:Null}" >
-                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonVM.Default}, Path=TabBeobachtungen.SelectedTextBreakDatum}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonViewModel.Default}, Path=TabBeobachtungen.SelectedTextBreakDatum}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>                            
@@ -229,6 +228,6 @@
         </Ribbon>
 
         <!-- Main content -->
-        <Frame x:Name="ContentFrame"  Grid.Row="1" />         
+        <Frame x:Name="ContentFrame" Content="{Binding CurrentPage}"  Grid.Row="1" />         
     </Grid>
 </RibbonWindow>

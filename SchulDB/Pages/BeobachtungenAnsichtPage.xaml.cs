@@ -83,8 +83,8 @@ namespace Groll.Schule.SchulDB.Pages
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             // Navigated away from Page
-            ViewModels.RibbonVM.Default.IsContextTabBeobachtungenVisible = false;            
-            ViewModels.RibbonVM.Default.TabBeobachtungenAnsicht.IsVisible = false;                     
+            ViewModels.RibbonViewModel.Default.IsContextTabBeobachtungenVisible = false;
+            ViewModels.RibbonViewModel.Default.TabBeobachtungenAnsicht.IsVisible = false;                     
         }
 
         private void Page_Initialized(object sender, EventArgs e)
@@ -97,9 +97,9 @@ namespace Groll.Schule.SchulDB.Pages
         {
             // Navigated toward Page
             // Load FlowDocument
-            ViewModels.RibbonVM.Default.IsContextTabBeobachtungenVisible = true;
-            ViewModels.RibbonVM.Default.TabBeobachtungenAnsicht.IsSelected = true;
-            ViewModels.RibbonVM.Default.TabBeobachtungenAnsicht.IsVisible = true;
+            ViewModels.RibbonViewModel.Default.IsContextTabBeobachtungenVisible = true;
+            ViewModels.RibbonViewModel.Default.TabBeobachtungenAnsicht.IsSelected = true;
+            ViewModels.RibbonViewModel.Default.TabBeobachtungenAnsicht.IsVisible = true;
             EditBox.Focus();
             if (Reader.Document == null)
                 LoadDocument();
@@ -118,7 +118,7 @@ namespace Groll.Schule.SchulDB.Pages
             doc.FontSize = 10;
             doc.FontFamily = new FontFamily("Verdana");
 
-            List<Beobachtung> beos = RibbonVM.Default.UnitOfWork.Beobachtungen.GetList().
+            List<Beobachtung> beos = RibbonViewModel.Default.UnitOfWork.Beobachtungen.GetList().
                 OrderBy(x => x.SchuljahrId).
                 ThenBy(y => y.Klasse == null ? "" : y.Klasse.Name).
                 ThenBy(z => z.Schueler == null ? "" : z.Schueler.DisplayName).
@@ -157,7 +157,7 @@ namespace Groll.Schule.SchulDB.Pages
                 {
                     // Neuer Schüler
                     p = new Paragraph() { FontSize = 14, Foreground = Brushes.Blue };
-                    if (lastSchueler != null && RibbonVM.Default.TabBeobachtungenAnsicht.NewPageOnSchüler && !newPage)
+                    if (lastSchueler != null && RibbonViewModel.Default.TabBeobachtungenAnsicht.NewPageOnSchüler && !newPage)
                         p.BreakPageBefore = true;
 
                     p.Inlines.Add(new Bold(new Run(beo.Schueler.DisplayName)));
@@ -200,7 +200,7 @@ namespace Groll.Schule.SchulDB.Pages
         private void StartEdit(Paragraph p = null)
         {
             // Edit Mode EIN
-            RibbonVM.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = true;
+            RibbonViewModel.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = true;
 
             // Markierung von vorherigen Paragraph zurücksetzen            
             var oldP = EditBox.Tag as Paragraph;
@@ -219,7 +219,7 @@ namespace Groll.Schule.SchulDB.Pages
             }
             else
             {
-                Beobachtung b = RibbonVM.Default.UnitOfWork.Beobachtungen.GetById((int)p.Tag);
+                Beobachtung b = RibbonViewModel.Default.UnitOfWork.Beobachtungen.GetById((int)p.Tag);
                 if (b != null)
                 {
                     p.Background = Brushes.Yellow;
@@ -233,7 +233,7 @@ namespace Groll.Schule.SchulDB.Pages
         private void CancelEdit()
         {            
             // Edit Mode AUS
-            RibbonVM.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = false;
+            RibbonViewModel.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = false;
             
             // Evtl. Markierung wegnehmen
             var oldP = EditBox.Tag as Paragraph;           
@@ -322,7 +322,7 @@ namespace Groll.Schule.SchulDB.Pages
         // Editmode über Ribbon geändert
         private void Executed_EditModeChanged(object sender, ExecutedRoutedEventArgs e)
         {
-            if (RibbonVM.Default.TabBeobachtungenAnsicht.EditMode)
+            if (RibbonViewModel.Default.TabBeobachtungenAnsicht.EditMode)
                 StartEdit();
             else
                 CancelEdit();            

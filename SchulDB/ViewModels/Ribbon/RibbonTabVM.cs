@@ -12,8 +12,8 @@ using System.Collections.ObjectModel;
 namespace Groll.Schule.SchulDB.ViewModels
 {
     public class RibbonTabVM : RibbonBaseVM
-    {        
-        private RibbonVM ribbonVM;
+    {
+        private RibbonViewModel RibbonVM;
         private string contextualTabGroupHeader;
         protected Dictionary<string, RibbonBaseVM> elementCache = new Dictionary<string,RibbonBaseVM>();
 
@@ -40,18 +40,18 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             get
             {
-                if (ribbonVM != null)
-                    return ribbonVM.UnitOfWork;
+                if (RibbonVM != null)
+                    return RibbonVM.UnitOfWork;
                 else return null;
             }
          }
 
-        
 
-        public RibbonTabVM(RibbonVM RibbonVM = null)
+
+        public RibbonTabVM(RibbonViewModel RibbonViewModel = null)
         {
-            // Set RibbonVM to Default, if it is null
-            ribbonVM = RibbonVM ?? RibbonVM.Default;
+            // Set RibbonViewModel to Default, if it is null
+            RibbonVM = RibbonViewModel ?? RibbonViewModel.Default;
             
             // Im Designermode anzeigen
             if (App.Current.MainWindow == null)

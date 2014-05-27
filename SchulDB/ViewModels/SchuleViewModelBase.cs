@@ -18,26 +18,27 @@ namespace Groll.Schule.SchulDB.ViewModels
               
         #region Properties
 
-
         #region Unit of Work
+        
         private UowSchuleDB unitOfWork;
+
         public UowSchuleDB UnitOfWork
         {
-            get {
-                if (unitOfWork == null)       
-         
+            get
+            {
+                if (unitOfWork == null)
+                { 
                     // Try to get UnitOfWork Global Ressource; if not successful, it stays <null>
-                    unitOfWork = System.Windows.Application.Current.TryFindResource("UnitOfWork") as UowSchuleDB;                    
-                
-                return unitOfWork; }
-
-            set { unitOfWork = value; OnPropertyChanged(); OnUnitOfWorkChanged(); }
+                    unitOfWork = System.Windows.Application.Current.TryFindResource("UnitOfWork") as UowSchuleDB;
+                    unitOfWork.DatabaseChanged += unitOfWork_DatabaseChanged;
+                    OnDatabaseChanged();
+                }
+                return unitOfWork;
+            }          
         }
 
-        #endregion
-
-       
-     
+        
+        #endregion       
 
         #endregion
 
@@ -47,12 +48,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         }
 
         #region Verhalten bei Änderung der Datenbank
-
-        protected virtual void OnUnitOfWorkChanged()
-        {
-            unitOfWork.DatabaseChanged += unitOfWork_DatabaseChanged;
-            RefreshData();
-        }
+      
 
         /// <summary>
         /// EventHandler für das DatabaseChanged event
@@ -61,12 +57,16 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// <param name="e"></param>
         protected virtual void unitOfWork_DatabaseChanged(object sender, EventArgs e)
         {
+            OnDatabaseChanged();
+            
+        }
+
+        protected virtual void OnDatabaseChanged()
+        {
             RefreshData();
         }
 
-        protected virtual void RefreshData()
-        {            
-        }
+        protected virtual void RefreshData()  {  }
 
        
 

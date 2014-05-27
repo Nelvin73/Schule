@@ -17,7 +17,7 @@ namespace Groll.Schule.SchulDB
             if (DatabaseFile == "")
                 return;
 
-            var uow = ViewModels.RibbonVM.Default.UnitOfWork;          
+            var uow = ViewModels.RibbonViewModel.Default.UnitOfWork;          
            
             string CON = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=\"" + DatabaseFile + "\";Persist Security Info=True";
 

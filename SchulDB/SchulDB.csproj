@@ -85,6 +85,7 @@
       <DependentUpon>BeobachtungenAnsichtPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reports\BeobachtungenExport.cs" />
+    <Compile Include="ViewModels\Ribbon\neu\RibbonTabViewModel.cs" />
     <Compile Include="ViewModels\SchuleViewModelBase.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
     <Compile Include="ViewModels\Pages\BeobachtungenBaseVM.cs" />
@@ -97,7 +98,7 @@
     <Compile Include="ViewModels\Ribbon\RibbonMenuEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonTabVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonTabBeobachtungenVM.cs" />
-    <Compile Include="ViewModels\Ribbon\RibbonVM.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonViewModel.cs" />
     <Compile Include="Properties\Settings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

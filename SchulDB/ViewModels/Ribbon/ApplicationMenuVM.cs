@@ -10,11 +10,12 @@ using System.Collections.ObjectModel;
 using System.Windows.Controls.Ribbon;
 using System.Windows.Media;
 using Groll.Schule.SchulDB.Commands;
+using System.Windows;
 
 
 namespace Groll.Schule.SchulDB.ViewModels
 {
-    public class ApplicationMenuVM : RibbonTabVM
+    public class ApplicationMenuVM : RibbonTabViewModel
     {        
         #region Properties für Bindings
 
@@ -22,10 +23,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             get
             {
-                if (UnitOfWork == null)
-                    return "";
-
-                return UnitOfWork.CurrentDbType.ToString();
+                return UnitOfWork == null ? "" : UnitOfWork.CurrentDbType.ToString();
             }
         }
 
@@ -33,10 +31,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             get
             {
-                if (UnitOfWork == null)
-                    return "";
-
-                return UnitOfWork.CurrentDbFilename.ToString();
+                return UnitOfWork == null ? "" : UnitOfWork.CurrentDbFilename.ToString();
             }
         }
         #endregion
@@ -45,17 +40,19 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="ribbonVM">Root Element</param>
-        public ApplicationMenuVM(RibbonVM RibbonVM = null) : base (RibbonVM)         
+        /// <param name="RibbonViewModel">Root Element</param>
+        public ApplicationMenuVM(RibbonViewModel RibbonViewModel = null) : base(RibbonViewModel)         
         {
             Label = "";
-            SmallImageSourceFile = LargeImageSourceFile = "DB.ico";
+            ChangeDatabaseCommand = new DelegateCommand((object p) => ChangeDatabase((p ?? "").ToString()));
             OnDatabaseChanged();             
         }
+
+        
         #endregion
 
         #region Database-Handling
-        public override void OnDatabaseChanged()
+        protected override void OnDatabaseChanged()
         {
             // invalidate all database relevant properties            
             OnPropertyChanged("CurrentDbType");
@@ -65,5 +62,34 @@ namespace Groll.Schule.SchulDB.ViewModels
       
         #endregion
 
+        #region Commands
+
+        public DelegateCommand ChangeDatabaseCommand {get; private set;}
+
+        // Führt das Command "ChangeDatabase" aus
+        private void ChangeDatabase(string p)
+        {
+            switch (p.ToLower())
+            {
+                case "custom":
+                    // User custom database selected
+                    MessageBox.Show("Funktion noch nicht implementiert!");
+                    break;
+
+                case "dev":
+                    UnitOfWork.ConnectDatabase(UowSchuleDB.DatabaseType.Development);
+                    Properties.Settings.Default.UsedDatabase = "<Dev>";
+                    Properties.Settings.Default.Save();
+                    break;
+
+                default:
+                    UnitOfWork.ConnectDatabase(UowSchuleDB.DatabaseType.Standard);
+                    Properties.Settings.Default.UsedDatabase = "<Default>";
+                    Properties.Settings.Default.Save();
+                    break;
+            }
+        }
+       
+        #endregion
     }
 }
