@@ -20,7 +20,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Ribbon x:Name="Ribbon" Title="Ribbon Title" >
+        <Ribbon x:Name="Ribbon" Title="Ribbon Title" DataContext="{Binding Ribbon}">
             <Ribbon.HelpPaneContent>
                 <RibbonButton SmallImageSource="/Images/i1.bmp" />
             </Ribbon.HelpPaneContent>
@@ -32,7 +32,7 @@
             </Ribbon.QuickAccessToolBar>
 
             <Ribbon.ApplicationMenu>
-                <RibbonApplicationMenu DataContext="{Binding Ribbon.ApplicationMenu}" SmallImageSource="Images/DB.ico" >
+                <RibbonApplicationMenu DataContext="{Binding ApplicationMenu}" SmallImageSource="Images/DB.ico" >
                     <RibbonApplicationMenu.AuxiliaryPaneContent>
                         <StackPanel  VerticalAlignment="Center" HorizontalAlignment="Center">
                             <TextBlock Text="SchulDB v1.1" FontSize="32" HorizontalAlignment="Center" />
@@ -69,16 +69,16 @@
 
 
             <RibbonTab DataContext="{Binding TabStandard}"  >
-                <RibbonGroup Header="Stammdaten">
-                    <RibbonButton Label="Schüler" SmallImageSource="/Images/Schüler.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="schuelerdetails" LargeImageSource="/Images/Schüler.ico"  />
-                    <RibbonButton Label="Klassen" SmallImageSource="/Images/Klasse.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="klassendetails" LargeImageSource="/Images/Klasse.ico" />
-                    <RibbonButton Label="Fächer" SmallImageSource="/Images/Schultafel_Schulfaecher_320986.jpg" Command="comm:BasicCommands.NavigateTo" CommandParameter="faecherdetails" LargeImageSource="/Images/Mappe.ico" />
-                    <RibbonButton Label="Schuljahre" SmallImageSource="/Images/neues-jahr-2012.jpg" Command="comm:BasicCommands.NavigateTo" CommandParameter="schuljahredetails" LargeImageSource="/Images/neues-jahr-2012.jpg" />
+                <RibbonGroup Header="Stammdaten" DataContext="{StaticResource MainViewModel}">
+                    <RibbonButton Label="Schüler" SmallImageSource="/Images/Schüler.ico" Command="{Binding NavigateToCommand}" CommandParameter="schuelerdetails" LargeImageSource="/Images/Schüler.ico"  />
+                    <RibbonButton Label="Klassen" SmallImageSource="/Images/Klasse.ico" Command="{Binding NavigateToCommand}" CommandParameter="klassendetails" LargeImageSource="/Images/Klasse.ico" />
+                    <RibbonButton Label="Fächer" SmallImageSource="/Images/Schultafel_Schulfaecher_320986.jpg" Command="{Binding NavigateToCommand}" CommandParameter="faecherdetails" LargeImageSource="/Images/Mappe.ico" />
+                    <RibbonButton Label="Schuljahre" SmallImageSource="/Images/neues-jahr-2012.jpg" Command="{Binding NavigateToCommand}" CommandParameter="schuljahredetails" LargeImageSource="/Images/neues-jahr-2012.jpg" />
                 </RibbonGroup>
                 <RibbonGroup Header="Beobachtungen" DataContext="{StaticResource MainViewModel}">
                     <RibbonButton Label="Eingeben" SmallImageSource="/Images/Schüler.ico" Command="{Binding NavigateToCommand}" CommandParameter="beobachtungeneingabe" LargeImageSource="/Images/Schultafel_Schulfaecher_320986.jpg"  />
-                    <RibbonButton Label="Exportieren" SmallImageSource="/Images/Klasse.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe"  />
-                    <RibbonButton Label="Korrigieren" SmallImageSource="/Images/Mappe.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungeneingabe"  />
+                    <RibbonButton Label="Exportieren" SmallImageSource="/Images/Klasse.ico" Command="{Binding NavigateToCommand}" CommandParameter="beobachtungeneingabe"  />
+                    <RibbonButton Label="Korrigieren" SmallImageSource="/Images/Mappe.ico" Command="{Binding NavigateToCommand}" CommandParameter="beobachtungeneingabe"  />
                 </RibbonGroup>
             </RibbonTab>
 
@@ -86,11 +86,11 @@
                 <RibbonGroup Header="Schüler-Listen">
                     <RibbonButton Label="Klassenliste" SmallImageSource="/Images/i1.bmp" />
                     <RibbonButton Label="Notenliste" SmallImageSource="/Images/i1.bmp" />
-                    <RibbonButton Label="Dump Context" Command="comm:BasicCommands.DumpContext" />
+                    <RibbonButton Label="Dump Context" Command="{Binding DumpContextCommand}" />
 
                 </RibbonGroup>
                 <RibbonGroup Header="Reports" >
-                    <RibbonButton Label="Beobachtungen" SmallImageSource="/Images/Word_Doc1.ico" Command="comm:BasicCommands.NavigateTo" CommandParameter="beobachtungenansicht" />
+                    <RibbonButton Label="Beobachtungen" SmallImageSource="/Images/Word_Doc1.ico" Command="{Binding NavigateToCommand}" CommandParameter="beobachtungenansicht" />
                 </RibbonGroup>
             </RibbonTab>
             

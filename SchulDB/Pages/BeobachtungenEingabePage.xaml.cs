@@ -253,7 +253,7 @@ namespace Groll.Schule.SchulDB.Pages
         {
             // Navigated toward Page
             var mw = Tag as MainWindow;
-            if (mw != null && mw.RibbonViewModel != null)
+            if (mw != null && mw.MainViewModel.Ribbon != null)
             {
                 ViewModels.RibbonViewModel.Default.IsContextTabBeobachtungenVisible = true;
                 ViewModels.RibbonViewModel.Default.TabBeobachtungen.IsSelected = true;

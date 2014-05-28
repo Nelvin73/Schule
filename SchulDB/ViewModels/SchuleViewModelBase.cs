@@ -61,12 +61,12 @@ namespace Groll.Schule.SchulDB.ViewModels
             
         }
 
-        protected virtual void OnDatabaseChanged()
+        public virtual void OnDatabaseChanged()
         {
             RefreshData();
         }
 
-        protected virtual void RefreshData()  {  }
+        public virtual void RefreshData() { }
 
        
 

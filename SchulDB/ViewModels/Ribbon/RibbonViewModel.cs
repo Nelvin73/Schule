@@ -7,7 +7,7 @@ using Groll.Schule.SchulDB.Helper;
 using Groll.Schule.DataManager;
 using Groll.Schule.Model;
 using System.Collections.ObjectModel;
-
+using Groll.Schule.SchulDB.Commands;
 
 namespace Groll.Schule.SchulDB.ViewModels
 {
@@ -121,16 +121,39 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         public RibbonViewModel()
         {
-            // Initialization            
+            // Initialization 
+
+            SaveCommand = new DelegateCommand((x) => Save());
+            DumpContextCommand = new DelegateCommand((x) => DumpContext());
         }
 
-        protected override void RefreshData()
+        public override void RefreshData()
         {
             base.RefreshData();
 
             // Inform RibbonTabs
-            foreach (RibbonTabVM tab in tabs.Values)
-                tab.OnDatabaseChanged();
-        }           
+            foreach (object tab in tabs.Values)
+                if (tab is RibbonTabViewModel)
+                    (tab as RibbonTabViewModel).OnDatabaseChanged();
+                else if (tab is RibbonTabVM )
+                    (tab as RibbonTabVM).OnDatabaseChanged();
+        }
+
+        #region Commands
+        public DelegateCommand SaveCommand { get; private set; }
+        public DelegateCommand DumpContextCommand { get; private set; }
+
+
+        public void Save()
+        {
+            UnitOfWork.Save();
+        }
+
+        public void DumpContext()
+        {
+            UnitOfWork.DumpContext();
+        }
+        
+        #endregion
     }
 }

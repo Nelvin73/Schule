@@ -52,7 +52,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         #endregion
 
         #region Database-Handling
-        protected override void OnDatabaseChanged()
+        public override void OnDatabaseChanged()
         {
             // invalidate all database relevant properties            
             OnPropertyChanged("CurrentDbType");
@@ -67,7 +67,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         public DelegateCommand ChangeDatabaseCommand {get; private set;}
 
         // Führt das Command "ChangeDatabase" aus
-        private void ChangeDatabase(string p)
+        public void ChangeDatabase(string p = "")
         {
             switch (p.ToLower())
             {

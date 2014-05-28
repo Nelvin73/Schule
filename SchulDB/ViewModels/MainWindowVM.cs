@@ -58,6 +58,8 @@ namespace Groll.Schule.SchulDB.ViewModels
         //  Konstructor
         public MainWindowVM() : base()
         {   
+            // Connect to database
+            ConnectDatabase();
 
             // Define Commands
             NavigateToCommand = new DelegateCommand((object p) => ShowPage(p.ToString()), (object p) => CanNavigateTo(p.ToString()));
@@ -66,7 +68,7 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         #region Verhalten bei Änderungen der Daten              
 
-        protected override void RefreshData()
+        public override void RefreshData()
         {
             // Datenbank wurde geändert
           
@@ -78,67 +80,29 @@ namespace Groll.Schule.SchulDB.ViewModels
         #endregion
 
 
+        private void ConnectDatabase()
+        {
+            string db = Properties.Settings.Default.UsedDatabase;
+            if (db == "<Default>")
+                UnitOfWork.ConnectDatabase(DataManager.UowSchuleDB.DatabaseType.Standard);
+            else if (db == "<Dev>")
+                UnitOfWork.ConnectDatabase(DataManager.UowSchuleDB.DatabaseType.Development);
+            else
+                UnitOfWork.ConnectDatabase(DataManager.UowSchuleDB.DatabaseType.Custom, db);
+        }
+
+
         // Commands
 
         #region Commands
         public DelegateCommand NavigateToCommand {get; private set;}
-        public DelegateCommand SaveCommand { get; private set; }                
-
+      
         public bool CanNavigateTo(string p)
         {
             return true;
         }
 
-        #endregion
-  
-    
-    
-    
-        /*
-                this.CommandBindings.AddRange( new List<CommandBinding>
-                {
-                    new CommandBinding(BasicCommands.NavigateTo, Executed_NavigateTo, CanExecute_TRUE),
-                    new CommandBinding(ApplicationCommands.Save, Executed_Save, CanExecute_TRUE),
-                    new CommandBinding(BasicCommands.DumpContext, Executed_DumpContext, CanExecute_TRUE),
-                    new CommandBinding(BasicCommands.ChangeDatabase, Executed_ChangeDatabase, CanExecute_TRUE)
-
-                });
-
-                // Initialisiere Datenbank
-                UnitOfWork = this.FindResource("UnitOfWork") as Groll.Schule.DataManager.UowSchuleDB;
-                ConnectDatabase();
-               
-                ShowPage("welcome");   
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw;
-            }
-           
-
-                     */
-       
-        /*
-        private void ConnectDatabase()
-        {
-            string db = Properties.Settings.Default.UsedDatabase;
-            if (db == "<Default>")
-                ConnectDatabase( DataManager.UowSchuleDB.DatabaseType.Standard);
-            else if (db == "<Dev>")
-                ConnectDatabase( DataManager.UowSchuleDB.DatabaseType.Development);
-            else
-                ConnectDatabase(  DataManager.UowSchuleDB.DatabaseType.Custom, db);
-        }
-       
-
-        private void ConnectDatabase(DataManager.UowSchuleDB.DatabaseType DBtype, string Filename = "")
-        {
-            if (UnitOfWork.CurrentDbType != DBtype || Filename != UnitOfWork.CurrentDbFilename)            
-                UnitOfWork.ConnectDatabase(DBtype, Filename);                           
-        }
-         */
-
+      
         private void ShowPage(string p, bool CreateNew = false)
         {
             ISchulDBPage page = null;
@@ -196,47 +160,10 @@ namespace Groll.Schule.SchulDB.ViewModels
             CurrentPage = page as Page;         
         }
 
-     /*
+    #endregion                       
 
-        /// <summary>
-        /// Führt das Command "ChangeDatabase" aus
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Executed_ChangeDatabase(object sender, ExecutedRoutedEventArgs e)
-        {            
-            switch ((e.Parameter ?? "").ToString())
-            {
-                case "custom":
-                    // User custom database selected
-                    MessageBox.Show("Funktion noch nicht implementiert!");
-                    break;
-
-                case "dev":
-                    ConnectDatabase(DataManager.UowSchuleDB.DatabaseType.Development);
-                    Properties.Settings.Default.UsedDatabase = "<Dev>";
-                    Properties.Settings.Default.Save();
-                    break;
-
-                default:
-                    ConnectDatabase(DataManager.UowSchuleDB.DatabaseType.Standard);
-                    Properties.Settings.Default.UsedDatabase = "<Default>";
-                    Properties.Settings.Default.Save();
-                    break;
-            }
-        }
-
-        private void Executed_DumpContext(object sender, ExecutedRoutedEventArgs e)
-        {
-            UnitOfWork.DumpContext();
-        }
-
-
-        private void CanExecute_TRUE(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-        */
+    
+       
     }
 }
 
