@@ -98,11 +98,8 @@ namespace Groll.Schule.SchulDB.ViewModels
         }
         #endregion       
         
-        public RibbonTabViewModel(RibbonViewModel Ribbon = null)
-        {
-            // Set RibbonViewModel to Default, if it is null
-            RibbonVM = Ribbon ?? RibbonViewModel.Default;
-            
+        public RibbonTabViewModel()
+        {            
             // Im Designermode anzeigen
             if (App.Current.MainWindow == null)
             {

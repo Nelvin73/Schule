@@ -41,7 +41,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// Konstruktor
         /// </summary>
         /// <param name="RibbonViewModel">Root Element</param>
-        public ApplicationMenuVM(RibbonViewModel RibbonViewModel = null) : base(RibbonViewModel)         
+        public ApplicationMenuVM()
         {
             Label = "";
             ChangeDatabaseCommand = new DelegateCommand((object p) => ChangeDatabase((p ?? "").ToString()));

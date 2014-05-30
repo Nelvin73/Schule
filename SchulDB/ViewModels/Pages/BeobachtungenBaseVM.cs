@@ -13,10 +13,9 @@ namespace Groll.Schule.SchulDB.ViewModels
     /// <summary>
     /// ViewModel für die Beobachtungs-Eingabe-Seite
     /// </summary>
-    public class BeobachtungenBaseVM : ObservableObject
+    public class BeobachtungenBaseVM : SchuleViewModelBase
     {
         // internal Member
-        private UowSchuleDB uow;
         private DateTime? beoDatum;
         private string beoText;
         private Schuljahr selectedSchuljahr;
@@ -29,19 +28,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         private ObservableCollection<Schuljahr> schuljahrListe;
               
         #region Properties
-
-        // Unit of Work
-        public UowSchuleDB UnitOfWork
-        {
-            get { return uow; }
-            set
-            {
-                if (uow == value)
-                    return;
-                uow = value; OnUnitOfWorkChanged();
-            }
-        }
-
+       
         public Schuljahr SelectedSchuljahr
         {
             get { return selectedSchuljahr; }
@@ -64,10 +51,10 @@ namespace Groll.Schule.SchulDB.ViewModels
                 if (schuljahrListe.Count > 0)
                 {
                     // Default = Aktuelles Schuljahr
-                    var sj = uow.Settings["Global.AktuellesSchuljahr"];
+                    var sj = UnitOfWork.Settings["Global.AktuellesSchuljahr"];
                     if (sj != null)
                     {
-                        SelectedSchuljahr = uow.Schuljahre.GetById(sj.GetInt(Schuljahr.GetCurrent().Startjahr));
+                        SelectedSchuljahr = UnitOfWork.Schuljahre.GetById(sj.GetInt(Schuljahr.GetCurrent().Startjahr));
                     }
                     if (selectedSchuljahr == null)
                         SelectedSchuljahr = schuljahrListe[0];
@@ -189,42 +176,28 @@ namespace Groll.Schule.SchulDB.ViewModels
         public BeobachtungenBaseVM()
         {
             BeoDatum = DateTime.Now;
-            beoText = "";
+            beoText = "";            
         }
 
-        #region Verhalten bei Änderungen der Auswahl
+        #region Verhalten bei Änderungen der Auswahl       
 
-        protected virtual void OnUnitOfWorkChanged()
+        public override void RefreshData()
         {
-            uow.DatabaseChanged += uow_DatabaseChanged;
-            RefreshData();
-        }
-
-        /// <summary>
-        /// EventHandler für das DatabaseChanged event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected virtual void uow_DatabaseChanged(object sender, EventArgs e)
-        {
-            RefreshData();
-        }
-
-        protected virtual void RefreshData()
-        {
+            base.RefreshData();
+            
             // Initialisierung
-            if (uow != null)
+            if (UnitOfWork != null)
             {
                 // Aktuelle Fächer holen
-                var fl = new ObservableCollection<Fach>(uow.Fächer.GetActiveFächer());
+                var fl = new ObservableCollection<Fach>(UnitOfWork.Fächer.GetActiveFächer());
                 fl.Insert(0, new Fach("<kein Fach>") { FachId = -1000 });
                 Fächerliste = fl;
 
                 // SCHULJAHRE LISTE LADEN
-                SchuljahrListe = uow.Schuljahre.GetObservableCollection();                                               
+                SchuljahrListe = UnitOfWork.Schuljahre.GetObservableCollection();                                               
             }
-        }
-
+        } 
+       
         protected virtual void OnSelectedSchuljahrChanged()
         {
             // Ein anderes Schuljahr wurde ausgewählt => Klassenliste aktualisieren
@@ -232,7 +205,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                 KlassenListe = new ObservableCollection<Klasse>();
             else
                 // Klassen des Schuljahres holen
-                KlassenListe = new ObservableCollection<Klasse>(uow.Klassen.GetList(k => k.Schuljahr.Startjahr == selectedSchuljahr.Startjahr));
+                KlassenListe = new ObservableCollection<Klasse>(UnitOfWork.Klassen.GetList(k => k.Schuljahr.Startjahr == selectedSchuljahr.Startjahr));
 
         }
 
@@ -268,7 +241,7 @@ namespace Groll.Schule.SchulDB.ViewModels
       
         public void Refresh()
         {
-            OnUnitOfWorkChanged();
+            RefreshData();
         }
 
         #endregion

@@ -7,16 +7,28 @@ using System.Threading.Tasks;
 using Groll.Schule.Model;
 using Groll.Schule.DataManager;
 using System.Collections.ObjectModel;
+using Groll.Schule.SchulDB.Commands;
 
 namespace Groll.Schule.SchulDB.ViewModels
 {
     /// <summary>
     /// ViewModel-Basisklasse
+    /// 
+    /// Biete zentrale UnitOfWork, RibbonVM und MainWindowVM Properties und Database-Change-Handling
     /// </summary>
     public class SchuleViewModelBase : ObservableObject
     {
               
         #region Properties
+        
+        // ViewModel von Mainwindow        
+        private static MainWindowVM mainWndVM;
+
+        public MainWindowVM MainWindowViewModel 
+        {
+            get { return mainWndVM; }
+            protected set { mainWndVM = value; }
+        }        
 
         #region Unit of Work
         
@@ -40,15 +52,36 @@ namespace Groll.Schule.SchulDB.ViewModels
         
         #endregion       
 
+        #region Ribbon
+        private static RibbonViewModel ribbon;
+
+        public RibbonViewModel Ribbon
+        {
+            get
+            {
+                if (ribbon == null)
+                {
+                    // Get global Ribbon Object
+                    ribbon = System.Windows.Application.Current.TryFindResource("Ribbon") as RibbonViewModel;
+                }
+                return ribbon;
+            }
+        }
+        #endregion
         #endregion
 
         //  Konstructor
         public SchuleViewModelBase()
-        {          
-        }
+        {
+            // Save ViewModel of MainWindow
+            if (this is MainWindowVM)
+                MainWindowViewModel = this as MainWindowVM;
 
-        #region Verhalten bei Änderung der Datenbank
-      
+            // Initialize data
+            RefreshData();
+        }
+       
+        #region Verhalten bei Änderung der Datenbank      
 
         /// <summary>
         /// EventHandler für das DatabaseChanged event
@@ -63,6 +96,7 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         public virtual void OnDatabaseChanged()
         {
+            // Datenbank wurde geändert => Daten neu laden
             RefreshData();
         }
 
@@ -73,11 +107,7 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         #endregion
 
-
-        // Commands
-
-        #region Public Interface für Commands
+      
        
-        #endregion
     }
 }

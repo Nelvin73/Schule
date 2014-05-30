@@ -15,7 +15,7 @@
 
     <Page.Resources>
 
-        <VM:BeobachtungenEditVM x:Key="ViewModel" UnitOfWork="{StaticResource UnitOfWork}" />
+        <VM:BeobachtungenEditVM x:Key="ViewModel" />
     </Page.Resources>
 
 

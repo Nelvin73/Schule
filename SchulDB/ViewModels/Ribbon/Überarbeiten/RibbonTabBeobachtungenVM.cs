@@ -14,7 +14,7 @@ using Groll.Schule.SchulDB.Commands;
 
 namespace Groll.Schule.SchulDB.ViewModels
 {
-    public class RibbonTabBeobachtungenVM : RibbonTabVM
+    public class RibbonTabBeobachtungenVM : RibbonTabViewModel
     {
         private ObservableCollection<Beobachtung> beobachtungenCollection;
         private ObservableCollection<Textbaustein> texteCollection;
@@ -29,7 +29,62 @@ namespace Groll.Schule.SchulDB.ViewModels
 
 
         #region Properties für Bindings
-        
+
+        // History-View Menu
+         public RibbonMenuSelectedItemEntryVM HistoryViewMenuButton
+        {
+            get
+            {
+                string Key = "HistoryViewMenuButton";
+                RibbonMenuSelectedItemEntryVM t = GetElement(Key) as RibbonMenuSelectedItemEntryVM;
+                if (t == null)
+                {
+                    t = new RibbonMenuSelectedItemEntryVM()
+                    {
+                        
+                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        {
+                            new RibbonMenuEntryVM()
+                            {                                
+                                Tag = "ID",
+                                LongHeader = "Die zuletzt eingegebenen Beobachtungen",                                                                
+                                SmallImageSourceFile = "Keys.ico",
+                                LargeImageSourceFile = "Keys.ico",                    
+                                IsSelected = true,              
+                                ToolTipTitle = "Die zuletzt eingegebenen Beobachtungen",
+                                ToolTipDescription = "Zeigt die zuletzt eingegebenen Beobachtungen an.",
+                                ToolTipImageSourceFile = "Keys.ico"                  
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Tag = "Schüler",
+                                LongHeader = "Die letzten Beobachtungen des ausgewählten Schülers",                                
+                                SmallImageSourceFile = "Schüler.ico",
+                                LargeImageSourceFile = "Schüler.ico",   
+                                ToolTipTitle = "Ausgewählter Schüler",
+                                ToolTipDescription = "Zeigt die letzten Beobachtungen des ausgewählten Schülers an.",
+                                //ToolTipImageSourceFile = "Schüler.ico"                          
+                            },
+                            new RibbonMenuEntryVM()
+                            {
+                                Tag = "Datum",                                
+                                LongHeader = "Aktuellste Beobachtungen nach Datum",
+                                SmallImageSourceFile = "Kalender3.png",
+                                LargeImageSourceFile = "Kalender3.png",   
+                                ToolTipTitle = "Anzeige nach Datum",
+                                ToolTipDescription = "Die aktuellsten Beobachtungen werden nach Datum sortiert angezeigt.",
+                                //ToolTipImageSourceFile = "Kalender3.png"                   
+                            }
+                        }
+                    };
+                    t.SelectedItem = t.ItemsSource[0];
+                    SetElement(Key, (RibbonBaseVM)t);
+                }
+
+                return t;
+            }
+        }
+
         /// <summary>
         /// Button zum Wechseln zur View-Page
         /// </summary>
@@ -234,60 +289,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
        
-        public RibbonMenuSelectedItemEntryVM HistoryViewMenuButton
-        {
-            get
-            {
-                string Key = "HistoryViewMenuButton";
-                RibbonMenuSelectedItemEntryVM t = GetElement(Key) as RibbonMenuSelectedItemEntryVM;
-                if (t == null)
-                {
-                    t = new RibbonMenuSelectedItemEntryVM()
-                    {
-                        
-                        ItemsSource = new List<RibbonMenuEntryVM>()
-                        {
-                            new RibbonMenuEntryVM()
-                            {                                
-                                Tag = "ID",
-                                LongHeader = "Die zuletzt eingegebenen Beobachtungen",                                                                
-                                SmallImageSourceFile = "Keys.ico",
-                                LargeImageSourceFile = "Keys.ico",                    
-                                IsSelected = true,              
-                                ToolTipTitle = "Die zuletzt eingegebenen Beobachtungen",
-                                ToolTipDescription = "Zeigt die zuletzt eingegebenen Beobachtungen an.",
-                                ToolTipImageSourceFile = "Keys.ico"                  
-                            },
-                            new RibbonMenuEntryVM()
-                            {
-                                Tag = "Schüler",
-                                LongHeader = "Die letzten Beobachtungen des ausgewählten Schülers",                                
-                                SmallImageSourceFile = "Schüler.ico",
-                                LargeImageSourceFile = "Schüler.ico",   
-                                ToolTipTitle = "Ausgewählter Schüler",
-                                ToolTipDescription = "Zeigt die letzten Beobachtungen des ausgewählten Schülers an.",
-                                //ToolTipImageSourceFile = "Schüler.ico"                          
-                            },
-                            new RibbonMenuEntryVM()
-                            {
-                                Tag = "Datum",                                
-                                LongHeader = "Aktuellste Beobachtungen nach Datum",
-                                SmallImageSourceFile = "Kalender3.png",
-                                LargeImageSourceFile = "Kalender3.png",   
-                                ToolTipTitle = "Anzeige nach Datum",
-                                ToolTipDescription = "Die aktuellsten Beobachtungen werden nach Datum sortiert angezeigt.",
-                                //ToolTipImageSourceFile = "Kalender3.png"                   
-                            }
-                        }
-                    };
-                    t.SelectedItem = t.ItemsSource[0];
-                    SetElement(Key, (RibbonBaseVM)t);
-                }
-
-                return t;
-            }
-        }
-
+       
         public RibbonMenuEntryVM SelectedGrouping
         {
             get
@@ -606,17 +608,11 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// Konstruktor
         /// </summary>
         /// <param name="RibbonViewModel">Root Element</param>
-        public RibbonTabBeobachtungenVM(RibbonViewModel RibbonViewModel = null)
-            : base(RibbonViewModel)
+        public RibbonTabBeobachtungenVM() : base()
         {
             Label = "Beobachtungen eingeben";
             IsVisible = false;  // per Default unsichtbar
-            ContextualTabGroupHeader = "Beobachtungen";
-            
-           
-           // SelectedExportFilter = ExportFilterItemSource[0];
-                
-                      
+            ContextualTabGroupHeader = "Beobachtungen";                                                
         }
         #endregion
 

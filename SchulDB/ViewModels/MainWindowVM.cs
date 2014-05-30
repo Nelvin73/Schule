@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Groll.Schule.SchulDB.Pages;
 using System.Windows.Controls;
+using System.Windows;
 
 namespace Groll.Schule.SchulDB.ViewModels
 {
@@ -19,15 +20,11 @@ namespace Groll.Schule.SchulDB.ViewModels
         #region Private Fields
        
         private Dictionary<string, ISchulDBPage> pages = new Dictionary<string, ISchulDBPage>();
-        private Page currentPage;
-        private static RibbonViewModel RibbonViewModel;
-
+        private Page currentPage;        
 
         #endregion
 
-        #region Properties
-
-        
+        #region Properties        
         public Page CurrentPage
         {
             get { return currentPage; }
@@ -35,34 +32,18 @@ namespace Groll.Schule.SchulDB.ViewModels
                 currentPage = value;
                 OnPropertyChanged();
             }
-        }
-
-        // Static member to have one common UnitOfWork
-
-        public RibbonViewModel Ribbon
-        {
-            get
-            {
-                if (RibbonViewModel == null)
-                {
-                    // Try to get UnitOfWork Global Ressource; if not successful, it stays <null>
-                    RibbonViewModel = RibbonViewModel.Default;
-                }
-                return RibbonViewModel;
-            }          
-        }
-
-     
+        }       
         #endregion
 
         //  Konstructor
         public MainWindowVM() : base()
-        {   
-            // Connect to database
+        {               
+            // Connect to database            
             ConnectDatabase();
 
             // Define Commands
             NavigateToCommand = new DelegateCommand((object p) => ShowPage(p.ToString()), (object p) => CanNavigateTo(p.ToString()));
+
             ShowPage("welcome"); 
         }
 
@@ -73,9 +54,6 @@ namespace Groll.Schule.SchulDB.ViewModels
             // Datenbank wurde geändert
           
         }
-
-      
-
 
         #endregion
 
@@ -95,13 +73,13 @@ namespace Groll.Schule.SchulDB.ViewModels
         // Commands
 
         #region Commands
+           
         public DelegateCommand NavigateToCommand {get; private set;}
       
         public bool CanNavigateTo(string p)
         {
             return true;
         }
-
       
         private void ShowPage(string p, bool CreateNew = false)
         {
@@ -160,10 +138,51 @@ namespace Groll.Schule.SchulDB.ViewModels
             CurrentPage = page as Page;         
         }
 
-    #endregion                       
+        #endregion                       
 
-    
-       
+        #region Central Commands
+        
+        // zentral Commands deklarieren, damit sie von hier gebunden, aber in anderen VMs definiert werden können.  
+        private DelegateCommand command_BeoClearInput;
+        private DelegateCommand command_BeoAdd;
+        private DelegateCommand command_BeoHistoryViewChanged;
+        private DelegateCommand command_BeoStartExport;
+        private DelegateCommand command_BeoInsertText;
+        private DelegateCommand command_BeoInsertTextbaustein;
+
+
+        public DelegateCommand Command_BeoClearInput
+        {
+            get { return command_BeoClearInput; }
+            set { command_BeoClearInput = value; OnPropertyChanged(); }
+        }        
+        public DelegateCommand Command_BeoAdd
+        {
+            get { return command_BeoAdd; }
+            set { command_BeoAdd = value; OnPropertyChanged(); }
+        }
+
+        public DelegateCommand Command_BeoHistoryViewChanged
+        {
+            get { return command_BeoHistoryViewChanged; }
+            set { command_BeoHistoryViewChanged = value; OnPropertyChanged(); }
+        }
+        public DelegateCommand Command_BeoStartExport
+        {
+            get { return command_BeoStartExport; }
+            set { command_BeoStartExport = value; OnPropertyChanged(); }
+        }
+        public DelegateCommand Command_BeoInsertText
+        {
+            get { return command_BeoInsertText; }
+            set { command_BeoInsertText = value; OnPropertyChanged(); }
+        }
+        public DelegateCommand Command_BeoInsertTextbaustein
+        {
+            get { return command_BeoInsertTextbaustein; }
+            set { command_BeoInsertTextbaustein = value; OnPropertyChanged(); }
+        }    
+        #endregion
     }
 }
 

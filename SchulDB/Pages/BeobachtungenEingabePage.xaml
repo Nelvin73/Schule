@@ -14,7 +14,7 @@
 	    Title="" Loaded="Page_Loaded" Unloaded="Page_Unloaded" Initialized="Page_Initialized" >
 
     <Page.Resources>
-        <VM:BeobachtungenEingabeVM x:Key="ViewModel" UnitOfWork="{StaticResource UnitOfWork}" />
+        <VM:BeobachtungenEingabeVM x:Key="ViewModel" />
         <CollectionViewSource x:Key="SchülerListeViewSource" Source="{Binding SchülerListe, Source={StaticResource ViewModel}}" Filter="s_Filter"  />
     </Page.Resources>
 

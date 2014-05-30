@@ -86,19 +86,19 @@
     </Compile>
     <Compile Include="Reports\BeobachtungenExport.cs" />
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabViewModel.cs" />
-    <Compile Include="ViewModels\SchuleViewModelBase.cs" />
+    <Compile Include="ViewModels\Base\SchuleViewModelBase.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
     <Compile Include="ViewModels\Pages\BeobachtungenBaseVM.cs" />
     <Compile Include="ViewModels\Pages\BeobachtungenEditVM.cs" />
-    <Compile Include="ViewModels\Ribbon\ApplicationMenuVM.cs" />
-    <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabBeobachtungenViewVM.cs" />
-    <Compile Include="ViewModels\Ribbon\RibbonMenuSelectedItemEntryVM.cs" />
+    <Compile Include="ViewModels\Ribbon\OK\ApplicationMenuVM.cs" />
+    <Compile Include="ViewModels\Ribbon\Überarbeiten\RibbonTabBeobachtungenViewVM.cs" />
+    <Compile Include="ViewModels\Ribbon\Überarbeiten\RibbonMenuSelectedItemEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabStandardVM.cs" />
-    <Compile Include="ViewModels\Ribbon\RibbonBaseVM.cs" />
-    <Compile Include="ViewModels\Ribbon\RibbonMenuEntryVM.cs" />
-    <Compile Include="ViewModels\Ribbon\RibbonTabVM.cs" />
-    <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabBeobachtungenVM.cs" />
-    <Compile Include="ViewModels\Ribbon\RibbonViewModel.cs" />
+    <Compile Include="ViewModels\Ribbon\Überarbeiten\RibbonBaseVM.cs" />
+    <Compile Include="ViewModels\Ribbon\Überarbeiten\RibbonMenuEntryVM.cs" />
+    <Compile Include="ViewModels\Ribbon\Obsolete\RibbonTabVM.cs" />
+    <Compile Include="ViewModels\Ribbon\Überarbeiten\RibbonTabBeobachtungenVM.cs" />
+    <Compile Include="ViewModels\Ribbon\OK\RibbonViewModel.cs" />
     <Compile Include="Properties\Settings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -252,7 +252,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Testen\" />
-    <Folder Include="ViewModels\Ribbon\neu\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Trash.ico" />

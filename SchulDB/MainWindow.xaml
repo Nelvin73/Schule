@@ -102,7 +102,7 @@
                     <!-- Change History-View Button-->
                     <RibbonMenuButton Label="History" DataContext="{Binding HistoryViewMenuButton }"  >
                         <RibbonGallery SelectedItem="{Binding SelectedItem}" ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                                       Command="comm:BeobachtungenCommands.HistoryViewChanged" CommandParameter="{Binding Tag}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}">
+                                       Command="{Binding com}" CommandParameter="{Binding Tag}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}">
                             <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}" />                            
                         </RibbonGallery>
                     </RibbonMenuButton>
@@ -110,11 +110,11 @@
 
                 </RibbonGroup>
 
-                <RibbonGroup Header="Eingabe" >
-                    <RibbonButton Label="Eingabe löschen" Command="comm:BeobachtungenCommands.ClearInput" LargeImageSource="/Images/Trash.ico"  />
-                    <RibbonSplitButton Label="Beobachtung speichern" Command="comm:BeobachtungenCommands.Add" LargeImageSource="/Images/Add_Comment.ico"  >
-                        <RibbonMenuItem Header="Speichern (STRG+Enter)"  Command="comm:BeobachtungenCommands.Add" ImageSource="/Images/Add_Comment.ico" />
-                        <RibbonMenuItem Header="Speichern ohne Löschen" Command="comm:BeobachtungenCommands.Add" CommandParameter="noClear" ImageSource="/Images/Add_Comment.ico" />
+                <RibbonGroup Header="Eingabe" DataContext="{StaticResource MainViewModel}" >
+                    <RibbonButton Label="Eingabe löschen" Command="{Binding Command_BeoClearInput}" LargeImageSource="/Images/Trash.ico"  />
+                    <RibbonSplitButton Label="Beobachtung speichern" Command="{Binding Command_BeoAdd}" LargeImageSource="/Images/Add_Comment.ico"  >
+                        <RibbonMenuItem Header="Speichern (STRG+Enter)"  Command="{Binding Command_BeoAdd}" ImageSource="/Images/Add_Comment.ico" />
+                        <RibbonMenuItem Header="Speichern ohne Löschen" Command="{Binding Command_BeoAdd}" CommandParameter="noClear" ImageSource="/Images/Add_Comment.ico" />
                     </RibbonSplitButton>
                 </RibbonGroup>
 

@@ -38,7 +38,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             {
                 string Key = "ApplicationMenu";
                 ApplicationMenuVM t = GetElement(Key) as ApplicationMenuVM;
-                return t ?? SetElement(Key, new ApplicationMenuVM(this)) as ApplicationMenuVM;
+                return t ?? SetElement(Key, new ApplicationMenuVM()) as ApplicationMenuVM;
             }
         }
 
@@ -48,7 +48,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             {
                 string Key = "TabStandard";
                 RibbonTabStandardVM t = GetElement(Key) as RibbonTabStandardVM;
-                return t ?? SetElement(Key, new RibbonTabStandardVM(this)) as RibbonTabStandardVM;
+                return t ?? SetElement(Key, new RibbonTabStandardVM()) as RibbonTabStandardVM;
             }
         }
 
@@ -58,7 +58,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             {
                 string Key = "TabBeobachtungen";
                 RibbonTabBeobachtungenVM t = GetElement(Key) as RibbonTabBeobachtungenVM;
-                return t ?? SetElement(Key, new RibbonTabBeobachtungenVM(this)) as RibbonTabBeobachtungenVM;
+                return t ?? SetElement(Key, new RibbonTabBeobachtungenVM()) as RibbonTabBeobachtungenVM;
             }
         }
 
@@ -89,15 +89,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                 tabs.Add(Key, Element);
 
             return Element;
-        }
-
-
-        private RibbonTabBeobachtungenVM beobachtungenTabVM;
-        public RibbonTabBeobachtungenVM aBeobachtungenTabVM
-        {
-            get { return beobachtungenTabVM; }
-            set { beobachtungenTabVM = value; }
-        }
+        }       
 
         #endregion
 
@@ -126,7 +118,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             SaveCommand = new DelegateCommand((x) => Save());
             DumpContextCommand = new DelegateCommand((x) => DumpContext());
         }
-
+/*
         public override void RefreshData()
         {
             base.RefreshData();
@@ -138,6 +130,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                 else if (tab is RibbonTabVM )
                     (tab as RibbonTabVM).OnDatabaseChanged();
         }
+        */
 
         #region Commands
         public DelegateCommand SaveCommand { get; private set; }

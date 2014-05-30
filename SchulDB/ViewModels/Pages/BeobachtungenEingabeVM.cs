@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Groll.Schule.Model;
 using Groll.Schule.DataManager;
 using System.Collections.ObjectModel;
+using Groll.Schule.SchulDB.Commands;
 
 namespace Groll.Schule.SchulDB.ViewModels
 {
@@ -60,13 +61,16 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         //  Konstructor
         public BeobachtungenEingabeVM()
-        {          
+        {
+            // Define Commands
+            MainWindowViewModel.Command_BeoClearInput = new DelegateCommand((a) => ClearInput());
+            MainWindowViewModel.Command_BeoAdd = new DelegateCommand((a) => AddCurrentComment(a == null));         
         }
 
         #region Verhalten bei Änderungen der Auswahl        
 
-        protected override void RefreshData()
-        {
+        public override void RefreshData()
+        {            
             base.RefreshData();
             UpdateHistory();
         }
@@ -104,7 +108,26 @@ namespace Groll.Schule.SchulDB.ViewModels
         // Commands
 
         #region Public Interface für Commands
-      
+
+        public void UpdateHistoryView()
+        {
+
+            string type = Ribbon.TabBeobachtungen.HistoryViewMenuButton.SelectedItem.Tag.ToString();
+            switch (type)
+            {
+                case "Schüler":
+                    BeobachtungenHistoryType = BeoHistoryMode.CurrentSchueler;
+                    break;
+                case "Datum":
+                    BeobachtungenHistoryType = BeoHistoryMode.SortDate;
+                    break;
+                default: // "ID"
+                    BeobachtungenHistoryType = BeoHistoryMode.LastEntered;
+                    break;
+            }            
+
+        }
+
         public void AddCurrentComment(bool clear = true)
         {
             // Save current comment

@@ -50,8 +50,6 @@ namespace Groll.Schule.SchulDB.Pages
             // Command Bindings
             this.CommandBindings.AddRange(new List<CommandBinding>
                 {
-                    new CommandBinding(BeobachtungenCommands.ClearInput, Executed_ClearInput, BasicCommands.CanExecute_TRUE),
-                    new CommandBinding(BeobachtungenCommands.Add, Executed_Add, CanExecute_Add),
                     new CommandBinding(BeobachtungenCommands.InsertText, Executed_InsertText, BasicCommands.CanExecute_TRUE),
                     new CommandBinding(BeobachtungenCommands.InsertTextbaustein, Executed_InsertTextbaustein, BasicCommands.CanExecute_TRUE),
                     new CommandBinding(BeobachtungenCommands.ExportBeobachtungen, Executed_Export, BasicCommands.CanExecute_TRUE),
@@ -217,10 +215,11 @@ namespace Groll.Schule.SchulDB.Pages
             ViewModel.AddCurrentComment();
         }
 
+        #region Filter in Schüler-Liste
         // Liste neuladen beim Ändern des Filters
         private void Filter_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var s = TryFindResource("SchülerListeViewSource") as CollectionViewSource;
+            var s = FindResource("SchülerListeViewSource") as CollectionViewSource;
             s.View.Refresh();
             if (cbSchülerListe.Items.Count > 0)
                 cbSchülerListe.SelectedIndex = 0;
@@ -233,14 +232,18 @@ namespace Groll.Schule.SchulDB.Pages
             e.Accepted = i != null && (Filter.Text == "" || i.DisplayName.ToLower().Contains(Filter.Text.ToLower()));
         }
 
+        #endregion
 
         #region Navigation / Initialization
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             // Navigated away from Page
             // Hide Context Tab
-            ViewModels.RibbonViewModel.Default.IsContextTabBeobachtungenVisible = false;
-            ViewModels.RibbonViewModel.Default.TabBeobachtungen.IsVisible = false;                        
+            if (ViewModel.Ribbon != null)
+            {
+                ViewModel.Ribbon.IsContextTabBeobachtungenVisible = false;
+                ViewModel.Ribbon.TabBeobachtungen.IsVisible = false;
+            }
         }
 
         private void Page_Initialized(object sender, EventArgs e)
@@ -252,26 +255,25 @@ namespace Groll.Schule.SchulDB.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             // Navigated toward Page
-            var mw = Tag as MainWindow;
-            if (mw != null && mw.MainViewModel.Ribbon != null)
+            if (ViewModel.Ribbon != null)
             {
-                ViewModels.RibbonViewModel.Default.IsContextTabBeobachtungenVisible = true;
-                ViewModels.RibbonViewModel.Default.TabBeobachtungen.IsSelected = true;
-                ViewModels.RibbonViewModel.Default.TabBeobachtungen.IsVisible = true;
+                ViewModel.Ribbon.IsContextTabBeobachtungenVisible = true;
+                ViewModel.Ribbon.TabBeobachtungen.IsSelected = true;
+                ViewModel.Ribbon.TabBeobachtungen.IsVisible = true;
                 txtBeoText.Focus();
             }
         }
         #endregion
 
-        private void txtBeoText_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+       /* private void txtBeoText_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             var i = e.Source as TextBox;
 
-        }
+        } */
 
         private void cbSchülerListe_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Auswahl geändert ... SelectedSchülerList anpassen
+            // SelectedItems kann nicht gebunden werden => Auswahl geändert ... SelectedSchülerList manuell anpassen
             ViewModel.SelectedSchülerList = cbSchülerListe.SelectedItems.Cast<Schueler>().ToList();
         }
 
