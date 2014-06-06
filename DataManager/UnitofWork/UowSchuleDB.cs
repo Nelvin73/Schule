@@ -213,9 +213,10 @@ namespace Groll.Schule.DataManager
         
         public void ConnectDatabase(DatabaseType DBtype, string Filename = "")
         {
+                        
             if (CurrentDbType == DBtype && Filename == CurrentDbFilename)
                 return;
-           
+            
             switch (DBtype)
             {
                 case DatabaseType.Standard:
@@ -234,7 +235,7 @@ namespace Groll.Schule.DataManager
             currentDBtype = DBtype;
             PreloadDatabase();
             ResetRepositories();
-            
+
             // Fire event
             OnDatabaseChanged();
             

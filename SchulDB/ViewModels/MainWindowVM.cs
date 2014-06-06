@@ -38,7 +38,8 @@ namespace Groll.Schule.SchulDB.ViewModels
         //  Konstructor
         public MainWindowVM() : base()
         {               
-            // Connect to database            
+            // Connect to database (if not in Designer mode)
+            if (Application.Current.MainWindow != null)
             ConnectDatabase();
 
             // Define Commands
