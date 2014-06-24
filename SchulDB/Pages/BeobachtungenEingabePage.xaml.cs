@@ -47,17 +47,50 @@ namespace Groll.Schule.SchulDB.Pages
         {
             InitializeComponent();
 
+            ViewModel.MainWindowViewModel.Command_BeoInsertText = new DelegateCommand((a) => InsertText(a));
+            ViewModel.MainWindowViewModel.Command_BeoInsertTextbaustein = new DelegateCommand((a) => InsertTextbaustein(a));
+            
             // Command Bindings
             this.CommandBindings.AddRange(new List<CommandBinding>
                 {
-                    new CommandBinding(BeobachtungenCommands.InsertText, Executed_InsertText, BasicCommands.CanExecute_TRUE),
-                    new CommandBinding(BeobachtungenCommands.InsertTextbaustein, Executed_InsertTextbaustein, BasicCommands.CanExecute_TRUE),
-                    new CommandBinding(BeobachtungenCommands.ExportBeobachtungen, Executed_Export, BasicCommands.CanExecute_TRUE),
-                    new CommandBinding(BeobachtungenCommands.HistoryViewChanged, Executed_HistoryViewChanged, BasicCommands.CanExecute_TRUE)
+               //     new CommandBinding(BeobachtungenCommands.InsertText, Executed_InsertText, BasicCommands.CanExecute_TRUE),
+                 //   new CommandBinding(BeobachtungenCommands.InsertTextbaustein, Executed_InsertTextbaustein, BasicCommands.CanExecute_TRUE),
+              //      new CommandBinding(BeobachtungenCommands.ExportBeobachtungen, Executed_Export, BasicCommands.CanExecute_TRUE),
+              //      new CommandBinding(BeobachtungenCommands.HistoryViewChanged, Executed_HistoryViewChanged, BasicCommands.CanExecute_TRUE)
                 });
         }
 
-      
+        private void InsertText(object a)
+        {
+            string t = (a ?? "").ToString();
+
+            if (txtBeoText.IsSelectionActive)
+            {
+                string x = txtBeoText.Text;
+                x = x.Remove(txtBeoText.SelectionStart, txtBeoText.SelectionLength).Insert(txtBeoText.SelectionStart, t);
+                txtBeoText.Text = x;
+            }   
+        }
+
+        private void InsertTextbaustein(object a)
+        {            
+            if (a == null)
+                return;
+
+            int i = (int)a;
+
+            if (txtBeoText.IsSelectionActive)
+            {
+                Textbaustein t = ViewModel.UnitOfWork.Textbausteine.GetById(i);
+                if (t != null)
+                {
+                    t.UsageCount++;
+                    txtBeoText.Text = txtBeoText.Text.Remove(txtBeoText.SelectionStart, txtBeoText.SelectionLength).Insert(txtBeoText.SelectionStart, t.Text);
+
+                }
+
+            }   
+        }
        
        
 

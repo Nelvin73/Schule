@@ -103,8 +103,8 @@ namespace Groll.Schule.SchulDB.ViewModels
                         LargeImageSourceFile = "Word_Doc1.ico",
                         Command = MainWindowViewModel.Command_Navigate,
                         CommandParameter = "beobachtungenansicht",
-                        ToolTipTitle = "Startet den Exportvorgang",
-                        ToolTipDescription = "Exportiert die Beobachtungen nach Word,\nentsprechend der eingestellten Vorgaben.",
+                        ToolTipTitle = "Geht zur Beobachtungen-Ansicht",
+                        ToolTipDescription = "Ausgabe der Beobachtungen mit Möglichkeit zur nachträglichen Änderung.",
                         ToolTipImageSourceFile = "Word_Doc1.ico"
                     });                               
             }

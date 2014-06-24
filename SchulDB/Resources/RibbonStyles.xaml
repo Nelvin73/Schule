@@ -89,9 +89,9 @@
 
 
 
-    <Style TargetType="RibbonGalleryItem" x:Key="MenuItemsDataWithCheckmark" >
+    <Style TargetType="{x:Type RibbonGalleryItem}" x:Key="MenuItemsDataWithCheckmark" >
         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-        <Setter Property="ContentTemplate" >
+         <Setter Property="ContentTemplate" >
             <Setter.Value>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" >

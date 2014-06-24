@@ -64,7 +64,9 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             // Define Commands
             MainWindowViewModel.Command_BeoClearInput = new DelegateCommand((a) => ClearInput());
-            MainWindowViewModel.Command_BeoAdd = new DelegateCommand((a) => AddCurrentComment(a == null));         
+            MainWindowViewModel.Command_BeoAdd = new DelegateCommand((a) => AddCurrentComment(a == null));
+            MainWindowViewModel.Command_BeoHistoryViewChanged = new DelegateCommand((a) => UpdateHistoryView(a));
+            MainWindowViewModel.Command_BeoInsertText = new DelegateCommand((a) => InsertText(a));
         }
 
         #region Verhalten bei Änderungen der Auswahl        
@@ -108,11 +110,9 @@ namespace Groll.Schule.SchulDB.ViewModels
         // Commands
 
         #region Public Interface für Commands
-
-        public void UpdateHistoryView()
+        public void UpdateHistoryView(object f)
         {
-
-            string type = Ribbon.TabBeobachtungen.HistoryViewMenuButton.SelectedItem.Tag.ToString();
+            string type = (f ?? "").ToString();
             switch (type)
             {
                 case "Schüler":
@@ -124,7 +124,14 @@ namespace Groll.Schule.SchulDB.ViewModels
                 default: // "ID"
                     BeobachtungenHistoryType = BeoHistoryMode.LastEntered;
                     break;
-            }            
+            }          
+
+        }
+
+        public void InsertText(object t)
+        {
+            string x = (t ?? "").ToString();
+
 
         }
 
