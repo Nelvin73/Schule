@@ -70,15 +70,15 @@
 
             <RibbonTab DataContext="{Binding TabStandard}"  >
                 <RibbonGroup Header="Stammdaten" DataContext="{StaticResource MainViewModel}">
-                    <RibbonButton Label="Schüler" SmallImageSource="/Images/Schüler.ico" Command="{Binding NavigateToCommand}" CommandParameter="schuelerdetails" LargeImageSource="/Images/Schüler.ico"  />
-                    <RibbonButton Label="Klassen" SmallImageSource="/Images/Klasse.ico" Command="{Binding NavigateToCommand}" CommandParameter="klassendetails" LargeImageSource="/Images/Klasse.ico" />
-                    <RibbonButton Label="Fächer" SmallImageSource="/Images/Schultafel_Schulfaecher_320986.jpg" Command="{Binding NavigateToCommand}" CommandParameter="faecherdetails" LargeImageSource="/Images/Mappe.ico" />
-                    <RibbonButton Label="Schuljahre" SmallImageSource="/Images/neues-jahr-2012.jpg" Command="{Binding NavigateToCommand}" CommandParameter="schuljahredetails" LargeImageSource="/Images/neues-jahr-2012.jpg" />
+                    <RibbonButton Label="Schüler" SmallImageSource="/Images/Schüler.ico" Command="{Binding Command_Navigate}" CommandParameter="schuelerdetails" LargeImageSource="/Images/Schüler.ico"  />
+                    <RibbonButton Label="Klassen" SmallImageSource="/Images/Klasse.ico" Command="{Binding Command_Navigate}" CommandParameter="klassendetails" LargeImageSource="/Images/Klasse.ico" />
+                    <RibbonButton Label="Fächer" SmallImageSource="/Images/Schultafel_Schulfaecher_320986.jpg" Command="{Binding Command_Navigate}" CommandParameter="faecherdetails" LargeImageSource="/Images/Mappe.ico" />
+                    <RibbonButton Label="Schuljahre" SmallImageSource="/Images/neues-jahr-2012.jpg" Command="{Binding Command_Navigate}" CommandParameter="schuljahredetails" LargeImageSource="/Images/neues-jahr-2012.jpg" />
                 </RibbonGroup>
                 <RibbonGroup Header="Beobachtungen" DataContext="{StaticResource MainViewModel}">
-                    <RibbonButton Label="Eingeben" SmallImageSource="/Images/Schüler.ico" Command="{Binding NavigateToCommand}" CommandParameter="beobachtungeneingabe" LargeImageSource="/Images/Schultafel_Schulfaecher_320986.jpg"  />
-                    <RibbonButton Label="Exportieren" SmallImageSource="/Images/Klasse.ico" Command="{Binding NavigateToCommand}" CommandParameter="beobachtungeneingabe"  />
-                    <RibbonButton Label="Korrigieren" SmallImageSource="/Images/Mappe.ico" Command="{Binding NavigateToCommand}" CommandParameter="beobachtungeneingabe"  />
+                    <RibbonButton Label="Eingeben" SmallImageSource="/Images/Schüler.ico" Command="{Binding Command_Navigate}" CommandParameter="beobachtungeneingabe" LargeImageSource="/Images/Schultafel_Schulfaecher_320986.jpg"  />
+                    <RibbonButton Label="Exportieren" SmallImageSource="/Images/Klasse.ico" Command="{Binding Command_Navigate}" CommandParameter="beobachtungeneingabe"  />
+                    <RibbonButton Label="Korrigieren" SmallImageSource="/Images/Mappe.ico" Command="{Binding Command_Navigate}" CommandParameter="beobachtungeneingabe"  />
                 </RibbonGroup>
             </RibbonTab>
 
@@ -102,7 +102,7 @@
                     <!-- Change History-View Button-->
                     <RibbonMenuButton Label="History" DataContext="{Binding HistoryViewMenuButton }"  >
                         <RibbonGallery SelectedItem="{Binding SelectedItem}" ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                                       Command="{Binding com}" CommandParameter="{Binding Tag}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}">
+                                       Command="{Binding Command_BeoHistoryViewChanged}" CommandParameter="{Binding Tag}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}">
                             <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}" />                            
                         </RibbonGallery>
                     </RibbonMenuButton>

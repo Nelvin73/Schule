@@ -76,9 +76,9 @@ namespace Groll.Schule.SchulDB.ViewModels
 
 
         #region Element retrieval
-        protected Dictionary<string, RibbonBaseVM> elementCache = new Dictionary<string,RibbonBaseVM>();
+        protected Dictionary<string, RibbonItemViewModel> elementCache = new Dictionary<string, RibbonItemViewModel>();
 
-        protected RibbonBaseVM GetElement(string Key)
+        protected RibbonItemViewModel GetElement(string Key)
         {
             if (Key != null && elementCache.ContainsKey(Key))
                 return elementCache[Key];
@@ -86,7 +86,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                 return null;            
         }
 
-        protected RibbonBaseVM SetElement(string Key, RibbonBaseVM Element, bool Overwrite = true)
+        protected RibbonItemViewModel SetElement(string Key, RibbonItemViewModel Element, bool Overwrite = true)
         {
             if (string.IsNullOrEmpty(Key) || Element == null)
                 return null;

@@ -43,7 +43,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             ConnectDatabase();
 
             // Define Commands
-            NavigateToCommand = new DelegateCommand((object p) => ShowPage(p.ToString()), (object p) => CanNavigateTo(p.ToString()));
+            Command_Navigate = new DelegateCommand((object p) => ShowPage(p.ToString()), (object p) => CanNavigateTo((p ?? "").ToString()));
 
             ShowPage("welcome"); 
         }
@@ -74,8 +74,8 @@ namespace Groll.Schule.SchulDB.ViewModels
         // Commands
 
         #region Commands
-           
-        public DelegateCommand NavigateToCommand {get; private set;}
+
+        public DelegateCommand Command_Navigate { get; private set; }
       
         public bool CanNavigateTo(string p)
         {

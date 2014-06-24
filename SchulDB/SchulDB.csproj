@@ -91,11 +91,14 @@
     <Compile Include="ViewModels\Pages\BeobachtungenBaseVM.cs" />
     <Compile Include="ViewModels\Pages\BeobachtungenEditVM.cs" />
     <Compile Include="ViewModels\Ribbon\OK\ApplicationMenuVM.cs" />
+    <Compile Include="ViewModels\Ribbon\OK\RibbonItemViewModel.cs" />
+    <Compile Include="ViewModels\Ribbon\OK\RibbonMenuItemVM.cs" />
+    <Compile Include="ViewModels\Ribbon\OK\RibbonSelectedItemMenuItemVM.cs" />
     <Compile Include="ViewModels\Ribbon\Überarbeiten\RibbonTabBeobachtungenViewVM.cs" />
-    <Compile Include="ViewModels\Ribbon\Überarbeiten\RibbonMenuSelectedItemEntryVM.cs" />
+    <Compile Include="ViewModels\Ribbon\Obsolete\RibbonMenuSelectedItemEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabStandardVM.cs" />
-    <Compile Include="ViewModels\Ribbon\Überarbeiten\RibbonBaseVM.cs" />
-    <Compile Include="ViewModels\Ribbon\Überarbeiten\RibbonMenuEntryVM.cs" />
+    <Compile Include="ViewModels\Ribbon\Obsolete\RibbonBaseVM.cs" />
+    <Compile Include="ViewModels\Ribbon\Obsolete\RibbonMenuEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\Obsolete\RibbonTabVM.cs" />
     <Compile Include="ViewModels\Ribbon\Überarbeiten\RibbonTabBeobachtungenVM.cs" />
     <Compile Include="ViewModels\Ribbon\OK\RibbonViewModel.cs" />

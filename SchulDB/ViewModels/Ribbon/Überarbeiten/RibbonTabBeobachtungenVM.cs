@@ -18,12 +18,13 @@ namespace Groll.Schule.SchulDB.ViewModels
     {
         private ObservableCollection<Beobachtung> beobachtungenCollection;
         private ObservableCollection<Textbaustein> texteCollection;
-        private RibbonMenuEntryVM selectedGrouping;
-        private RibbonMenuEntryVM selectedSorting;
-        private RibbonMenuEntryVM selectedTextBreakKlasse;
-        private RibbonMenuEntryVM selectedTextBreakSchüler;
+        
+        private RibbonMenuItemVM selectedGrouping;
+        private RibbonMenuItemVM selectedSorting;
+        private RibbonMenuItemVM selectedTextBreakKlasse;
+        private RibbonMenuItemVM selectedTextBreakSchüler;
         private Textbaustein selectedTextBaustein;
-        private RibbonMenuEntryVM selectedTextBreakDatum;        
+        private RibbonMenuItemVM selectedTextBreakDatum;        
         private bool paragraphAfterEveryEntry = false;
         private bool repeatSameName = false;
 
@@ -31,20 +32,20 @@ namespace Groll.Schule.SchulDB.ViewModels
         #region Properties für Bindings
 
         // History-View Menu
-         public RibbonMenuSelectedItemEntryVM HistoryViewMenuButton
+        public RibbonSelectedItemMenuItemVM HistoryViewMenuButton
         {
             get
             {
                 string Key = "HistoryViewMenuButton";
-                RibbonMenuSelectedItemEntryVM t = GetElement(Key) as RibbonMenuSelectedItemEntryVM;
+                RibbonSelectedItemMenuItemVM t = GetElement(Key) as RibbonSelectedItemMenuItemVM;
                 if (t == null)
                 {
-                    t = new RibbonMenuSelectedItemEntryVM()
+                    t = new RibbonSelectedItemMenuItemVM()
                     {
                         
-                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        ItemsSource = new List<RibbonMenuItemVM>()
                         {
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM
                             {                                
                                 Tag = "ID",
                                 LongHeader = "Die zuletzt eingegebenen Beobachtungen",                                                                
@@ -55,7 +56,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                                 ToolTipDescription = "Zeigt die zuletzt eingegebenen Beobachtungen an.",
                                 ToolTipImageSourceFile = "Keys.ico"                  
                             },
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Tag = "Schüler",
                                 LongHeader = "Die letzten Beobachtungen des ausgewählten Schülers",                                
@@ -65,7 +66,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                                 ToolTipDescription = "Zeigt die letzten Beobachtungen des ausgewählten Schülers an.",
                                 //ToolTipImageSourceFile = "Schüler.ico"                          
                             },
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Tag = "Datum",                                
                                 LongHeader = "Aktuellste Beobachtungen nach Datum",
@@ -78,7 +79,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                         }
                     };
                     t.SelectedItem = t.ItemsSource[0];
-                    SetElement(Key, (RibbonBaseVM)t);
+                    SetElement(Key, t);
                 }
 
                 return t;
@@ -88,19 +89,19 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// <summary>
         /// Button zum Wechseln zur View-Page
         /// </summary>
-        public RibbonBaseVM ViewBeobachtungenButton
+        public RibbonItemViewModel ViewBeobachtungenButton
         {
             get
             {
                 string Key = "ViewBeobachtungenButton";
-                RibbonBaseVM t = GetElement(Key);
+                RibbonItemViewModel t = GetElement(Key) as RibbonItemViewModel;
 
-                return t ?? SetElement(Key, 
-                    new RibbonBaseVM()
+                return t ?? SetElement(Key,
+                    new RibbonItemViewModel()
                     {
                         Label = "Beobachtungen anzeigen",
                         LargeImageSourceFile = "Word_Doc1.ico",
-                        Command = BasicCommands.NavigateTo,
+                        Command = MainWindowViewModel.Command_Navigate,
                         CommandParameter = "beobachtungenansicht",
                         ToolTipTitle = "Startet den Exportvorgang",
                         ToolTipDescription = "Exportiert die Beobachtungen nach Word,\nentsprechend der eingestellten Vorgaben.",
@@ -112,19 +113,19 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// <summary>
         /// Button zum Start des Exports
         /// </summary>
-        public RibbonBaseVM ExportButton
+        public RibbonItemViewModel ExportButton
         {
             get
             {
                 string Key = "ExportButton";
-                RibbonBaseVM t = GetElement(Key);
+                RibbonItemViewModel t = GetElement(Key);
 
-                return t ?? SetElement(Key, 
-                    new RibbonBaseVM()
+                return t ?? SetElement(Key,
+                    new RibbonItemViewModel()
                     {
                         Label = "Exportieren",
                         LargeImageSourceFile = "Word_Doc2.ico",
-                        Command = BeobachtungenCommands.ExportBeobachtungen,
+                   //     Command = MainWindowViewModel.com BeobachtungenCommands.ExportBeobachtungen,
                         ToolTipTitle = "Startet den Exportvorgang",
                         ToolTipDescription = "Exportiert die Beobachtungen nach Word,\nentsprechend der eingestellten Vorgaben.",
                         ToolTipImageSourceFile = "Word_Doc1.ico"
@@ -135,19 +136,19 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// <summary>
         /// Menu zum Setzen des Filters
         /// </summary>
-        public RibbonMenuSelectedItemEntryVM FilterMenuButton
+        public RibbonSelectedItemMenuItemVM FilterMenuButton
         {
             get
             {
                 string Key = "FilterMenuButton";
-                RibbonMenuSelectedItemEntryVM t = GetElement(Key) as RibbonMenuSelectedItemEntryVM;
+                RibbonSelectedItemMenuItemVM t = GetElement(Key) as RibbonSelectedItemMenuItemVM;
                 if (t == null)
                 {
-                    t = new RibbonMenuSelectedItemEntryVM()
+                    t = new RibbonSelectedItemMenuItemVM()
                     {
-                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        ItemsSource = new List<RibbonMenuItemVM>()
                         {
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Alles",
                                 LongHeader = "Alle Beobachtungen exportieren",
@@ -157,7 +158,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                                 ToolTipDescription = "Exportiert alle vorhandenen Schülerbeobachtungen.",
                                 ToolTipImageSourceFile = "Word_Doc1.ico"                  
                             },
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Schuljahr", 
                                 LongHeader = "Alle Beobachtungen des aktuellen Schuljahrs",
@@ -167,7 +168,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                                 ToolTipDescription = "Alle Beobachtungen aus dem aktuellen Schuljahr werden exportiert.",
                                 ToolTipImageSourceFile = "Word_Doc1.ico"                          
                             },
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Klasse",   
                                 LongHeader = "Beobachtungen von Schülern der ausgewählten \nKlasse exportieren",
@@ -177,7 +178,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                                 ToolTipDescription = "Nur Beobachtungen der ausgewählten Klasse werden exportiert.",
                                 ToolTipImageSourceFile = "Word_Doc1.ico"                   
                             },                
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Schüler", 
                                 LongHeader = "Beobachtungen des markierten Schülers\n aus diesem Schuljahr",
@@ -187,7 +188,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                                 ToolTipDescription = "Aktuelle Beobachtungen des ausgewählten Schülers werden exportiert.\n\nNur aktuelles Schuljahr!",
                                 ToolTipImageSourceFile = "Word_Doc1.ico"     
                             },
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Schüler",  
                                 LongHeader = "Beobachtungen des markierten Schülers",
@@ -200,27 +201,27 @@ namespace Groll.Schule.SchulDB.ViewModels
                         }
                     };
                     t.SelectedItem = t.ItemsSource[0];
-                    SetElement(Key, (RibbonBaseVM)t);
+                    SetElement(Key, t);
                 }
 
                 return t;
             }
         }
 
-        public RibbonMenuEntryVM GroupingSettingsMenuButton
+        public RibbonMenuItemVM GroupingSettingsMenuButton
         {
             get
             {
                 string Key = "GroupingSettingsMenuButton";
-                RibbonMenuEntryVM t = GetElement(Key) as RibbonMenuEntryVM;
+                RibbonMenuItemVM t = GetElement(Key) as RibbonMenuItemVM;
                 if (t == null)
                 {
-                    t = new RibbonMenuEntryVM()
+                    t = new RibbonMenuItemVM()
                     {
-                        Label = "Gruppieren",                       
-                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        Label = "Gruppieren",
+                        ItemsSource = new List<RibbonMenuItemVM>()
                         {
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Schüler",
                                 LongHeader = "Gruppiert nach Schüler",
@@ -229,7 +230,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                                 SmallImageSourceFile = "Schüler.ico",                    
                                 IsSelected = true,                                                 
                             },
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Datum",
                                 LongHeader = "Gruppiert nach Datum",
@@ -240,28 +241,28 @@ namespace Groll.Schule.SchulDB.ViewModels
                         }
                     };
                     t.SelectedItem = SelectedGrouping = t.ItemsSource[0];
-                    SetElement(Key, (RibbonBaseVM)t);
+                    SetElement(Key, t);
                 }
 
                 return t;
             }
         }
-  
-        public RibbonMenuEntryVM SortSettingsMenuButton
+
+        public RibbonMenuItemVM SortSettingsMenuButton
         {
             get
             {
                 string Key = "SortSettingsMenuButton";
-                RibbonMenuEntryVM t = GetElement(Key) as RibbonMenuEntryVM;
+                RibbonMenuItemVM t = GetElement(Key) as RibbonMenuItemVM;
                 if (t == null)
                 {
-                    t = new RibbonMenuEntryVM()
+                    t = new RibbonMenuItemVM()
                     {
                         Label = "Sortieren",
                         StaysOpenOnClick = true,
-                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        ItemsSource = new List<RibbonMenuItemVM>()
                         {
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Absteigend",
                                 LongHeader = "Absteigend- Neueste Einträge zuerst",
@@ -270,7 +271,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                          //       SmallImageSourceFile = "SortDesc.ico",                    
                                 IsSelected = true,                                                 
                             },
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Aufsteigend",
                                 LongHeader = "Aufsteigend - Älteste Einträge zuerst",
@@ -282,15 +283,15 @@ namespace Groll.Schule.SchulDB.ViewModels
                     };
 
                     t.SelectedItem = SelectedSorting = t.ItemsSource[0];
-                    SetElement(Key, (RibbonBaseVM)t);
+                    SetElement(Key, t);
                 }
 
                 return t;
             }
         }
-       
-       
-        public RibbonMenuEntryVM SelectedGrouping
+
+
+        public RibbonMenuItemVM SelectedGrouping
         {
             get
             {
@@ -321,7 +322,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-        public RibbonMenuEntryVM SelectedSorting
+        public RibbonMenuItemVM SelectedSorting
         {
             get
             {
@@ -382,8 +383,8 @@ namespace Groll.Schule.SchulDB.ViewModels
                 }
             }
         }
-        
-        public RibbonMenuEntryVM SelectedTextBreakKlasse
+
+        public RibbonMenuItemVM SelectedTextBreakKlasse
         {
             get
             {
@@ -398,7 +399,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-        public RibbonMenuEntryVM SelectedTextBreakSchüler
+        public RibbonMenuItemVM SelectedTextBreakSchüler
         {
             get
             {
@@ -412,9 +413,9 @@ namespace Groll.Schule.SchulDB.ViewModels
                 }
             }
         }
-     
 
-        public RibbonMenuEntryVM SelectedTextBreakDatum
+
+        public RibbonMenuItemVM SelectedTextBreakDatum
         {
             get
             {
@@ -430,28 +431,28 @@ namespace Groll.Schule.SchulDB.ViewModels
         }
 
 
-        public RibbonMenuEntryVM TextBreakKlasseMenuButton
+        public RibbonMenuItemVM TextBreakKlasseMenuButton
         {
             get
             {
                 string Key = "TextBreakKlasseMenuButton";
-                RibbonMenuEntryVM t = GetElement(Key) as RibbonMenuEntryVM;
+                RibbonMenuItemVM t = GetElement(Key) as RibbonMenuItemVM;
                 if (t == null)
                 {
-                    t = new RibbonMenuEntryVM()
+                    t = new RibbonMenuItemVM()
                     {
                         Label = "Klasse",
                         StaysOpenOnClick = true,
-                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        ItemsSource = new List<RibbonMenuItemVM>()
                         {
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Seite",
                                 LongHeader = "Jede Klasse auf einer neuen Seite\nanfangen lassen",
                                 Tag = "Seite",
                                 IsSelected = true,                                                 
                             },
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Absatz",
                                 LongHeader = "Fortlaufend\n(neuer Absatz)",
@@ -460,41 +461,41 @@ namespace Groll.Schule.SchulDB.ViewModels
                         }
                     };
                     t.SelectedItem =  t.ItemsSource[0];
-                    SetElement(Key, (RibbonBaseVM)t);
+                    SetElement(Key, t);
                 }
 
                 return t;
             }
         }
 
-        public RibbonMenuEntryVM TextBreakSchülerMenuButton
+        public RibbonMenuItemVM TextBreakSchülerMenuButton
         {
             get
             {
                 string Key = "TextBreakSchülerMenuButton";
-                RibbonMenuEntryVM t = GetElement(Key) as RibbonMenuEntryVM;
+                RibbonMenuItemVM t = GetElement(Key) as RibbonMenuItemVM;
                 if (t == null)
                 {
-                    t = new RibbonMenuEntryVM()
+                    t = new RibbonMenuItemVM()
                     {
                         Label = "Schüler",
                         StaysOpenOnClick = true,
-                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        ItemsSource = new List<RibbonMenuItemVM>()
                         {
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Seite",
                                 LongHeader = "Jeden Schüler auf einer neuen Seite\nanfangen lassen",
                                 Tag = "Seite",
                                 IsSelected = true,                                                 
                             },
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Absatz",
                                 LongHeader = "Fortlaufend\n(neuer Absatz)",
                                 Tag = "Absatz",
                             },
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Fortlaufend",
                                 LongHeader = "Fortlaufend\n (ohne Trennung)",
@@ -503,40 +504,40 @@ namespace Groll.Schule.SchulDB.ViewModels
                         }
                     };
                     t.SelectedItem =  t.ItemsSource[0];
-                    SetElement(Key, (RibbonBaseVM)t);
+                    SetElement(Key, t);
                 }
 
                 return t;
             }
         }
-  
-        public RibbonMenuEntryVM TextBreakDatumMenuButton
+
+        public RibbonMenuItemVM TextBreakDatumMenuButton
         {
             get
             {
                 string Key = "TextBreakDatumMenuButton";
-                RibbonMenuEntryVM t = GetElement(Key) as RibbonMenuEntryVM;
+                RibbonMenuItemVM t = GetElement(Key) as RibbonMenuItemVM;
                 if (t == null)
                 {
-                    t = new RibbonMenuEntryVM()
+                    t = new RibbonMenuItemVM()
                     {
                         Label = "Datum",
                         StaysOpenOnClick = true,
-                        ItemsSource = new List<RibbonMenuEntryVM>()
+                        ItemsSource = new List<RibbonMenuItemVM>()
                         {                      
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Seite",
                                 LongHeader = "Neues Datum in einer neuen Seite\nanfangen lassen",
                                 Tag = "Seite",                                                                              
                             },
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Absatz",
                                 LongHeader = "Neuer Absatz nach neuem Datum",
                                 Tag = "Absatz",                                
                             },
-                            new RibbonMenuEntryVM()
+                            new RibbonMenuItemVM()
                             {
                                 Label = "Fortlaufend",
                                 LongHeader = "Fortlaufend\n (ohne Trennung)",
@@ -546,7 +547,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                         }
                     };
                     t.SelectedItem = SelectedTextBreakDatum = t.ItemsSource[02];
-                    SetElement(Key, (RibbonBaseVM)t);
+                    SetElement(Key, t);
                 }
 
                 return t;
@@ -611,7 +612,9 @@ namespace Groll.Schule.SchulDB.ViewModels
         public RibbonTabBeobachtungenVM() : base()
         {
             Label = "Beobachtungen eingeben";
-            IsVisible = false;  // per Default unsichtbar
+            
+            
+          //  IsVisible = true;  // per Default unsichtbar
             ContextualTabGroupHeader = "Beobachtungen";                                                
         }
         #endregion
