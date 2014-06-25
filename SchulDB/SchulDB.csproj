@@ -77,6 +77,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\SchuleCommands.cs" />
+    <Compile Include="Commands\BeobachtungenCommands_old.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Helper\Converters.cs" />
     <Compile Include="Helper\Extensions.cs" />

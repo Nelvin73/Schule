@@ -1,52 +1,67 @@
-﻿using System;
+﻿using Groll.Schule.SchulDB.Helper;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Groll.Schule.SchulDB.Commands
 {
-    public class BeobachtungenCommands
+    
+    public class BeobachtungenCommands : SchuleCommandsBase
     {
-
-        private static RoutedUICommand historyViewChanged = new RoutedUICommand("HistoryViewChanged", "ChangeHistoryView", typeof(BeobachtungenCommands));
-        private static RoutedUICommand clearInput = new RoutedUICommand("ClearInput", "ClearInput", typeof(BeobachtungenCommands));
-        private static RoutedUICommand add = new RoutedUICommand("Add", "Add", typeof(BeobachtungenCommands), new InputGestureCollection() { new KeyGesture(Key.Enter, ModifierKeys.Control)});
-        private static RoutedUICommand insertText = new RoutedUICommand("InsertText", "InsertText", typeof(BeobachtungenCommands));
-        private static RoutedUICommand insertTextbaustein = new RoutedUICommand("InsertTextbaustein", "InsertTextbaustein", typeof(BeobachtungenCommands));
-        private static RoutedUICommand export = new RoutedUICommand("ExportBeobachtungen", "ExportBeobachtungen", typeof(BeobachtungenCommands));
+        private DelegateCommand changeHistoryView;
+        private DelegateCommand clearInput;
+        private DelegateCommand addComment;
+        private DelegateCommand insertText;
+        private DelegateCommand insertTextbaustein ;
+        private DelegateCommand exportToWord;
         private static RoutedUICommand updateView = new RoutedUICommand("UpdateBeobachtungenView", "UpdateBeobachtungenView", typeof(BeobachtungenCommands));
         private static RoutedUICommand editModeChanged = new RoutedUICommand("EditModeChanged", "EditModeChanged", typeof(BeobachtungenCommands));
 
-
-        public static RoutedUICommand HistoryViewChanged
+        public BeobachtungenCommands()
         {
-            get { return historyViewChanged; }
+            ChangeHistoryView = ClearInput = AddComment = InsertText = InsertTextbaustein = ExportToWord =
+                new DelegateCommand((o) => ExecuteCommand(o), (o) => CanExecute(o));
         }
-        public static RoutedUICommand ClearInput
+
+        public DelegateCommand ChangeHistoryView
+        {
+            get { return changeHistoryView; }
+            set { changeHistoryView = value; OnPropertyChanged(); }
+        }
+
+        public DelegateCommand ClearInput
         {
             get { return clearInput; }
+            set { clearInput = value; OnPropertyChanged(); }
         }
 
-        public static RoutedUICommand Add
+        public DelegateCommand AddComment
         {
-            get { return add; }
+            get { return addComment; }
+            set { addComment = value; OnPropertyChanged(); }
         }
 
-        public static RoutedUICommand InsertText
+        public DelegateCommand InsertText
         {
             get { return insertText; }
+            set { insertText = value; OnPropertyChanged(); }
         }
 
-        public static RoutedUICommand InsertTextbaustein
+        public DelegateCommand InsertTextbaustein
         {
             get { return insertTextbaustein; }
+            set { insertTextbaustein = value; OnPropertyChanged(); }
         }
 
-        public static RoutedUICommand ExportBeobachtungen
+        public DelegateCommand ExportToWord
         {
-            get { return export; }
+            get { return exportToWord; }
+            set { exportToWord = value; OnPropertyChanged(); }
         }
 
         public static RoutedUICommand UpdateBeobachtungenView

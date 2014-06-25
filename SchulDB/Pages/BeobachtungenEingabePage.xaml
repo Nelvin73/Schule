@@ -7,12 +7,17 @@
         xmlns:UI="clr-namespace:Groll.UserControls;assembly=UserControls"
         x:Class="Groll.Schule.SchulDB.Pages.BeobachtungenEingabePage" 
         xmlns:VM="clr-namespace:Groll.Schule.SchulDB.ViewModels"
+        xmlns:comm="clr-namespace:Groll.Schule.SchulDB.Commands"
         xmlns:loc="clr-namespace:Groll.Schule.SchulDB.Pages"
         xmlns:ext="clr-namespace:Groll.Schule.SchulDB.Helper"
         mc:Ignorable="d" 
         d:DesignHeight="460" d:DesignWidth="800"
 	    Title="" Loaded="Page_Loaded" Unloaded="Page_Unloaded" Initialized="Page_Initialized" >
-
+    <Page.InputBindings>
+        <KeyBinding Command="{Binding Path=AddComment, Source={x:Static comm:SchuleCommands.Beobachtungen}}" Key="Enter" Modifiers="Control" />
+    </Page.InputBindings>
+    
+    
     <Page.Resources>
         <VM:BeobachtungenEingabeVM x:Key="ViewModel" />
         <CollectionViewSource x:Key="SchülerListeViewSource" Source="{Binding SchülerListe, Source={StaticResource ViewModel}}" Filter="s_Filter"  />

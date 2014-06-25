@@ -13,7 +13,7 @@ namespace Groll.Schule.SchulDB.Helper
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             if (PropertyChanged != null)

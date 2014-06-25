@@ -63,10 +63,10 @@ namespace Groll.Schule.SchulDB.ViewModels
         public BeobachtungenEingabeVM()
         {
             // Define Commands
-            MainWindowViewModel.Command_BeoClearInput = new DelegateCommand((a) => ClearInput());
-            MainWindowViewModel.Command_BeoAdd = new DelegateCommand((a) => AddCurrentComment(a == null));
-            MainWindowViewModel.Command_BeoHistoryViewChanged = new DelegateCommand((a) => UpdateHistoryView(a));
-            MainWindowViewModel.Command_BeoInsertText = new DelegateCommand((a) => InsertText(a));
+            SchuleCommands.Beobachtungen.ClearInput = new DelegateCommand((a) => ClearInput());
+            SchuleCommands.Beobachtungen.AddComment = new DelegateCommand((a) => AddCurrentComment(a == null));
+            SchuleCommands.Beobachtungen.ChangeHistoryView = new DelegateCommand((a) => ChangeHistoryView(a));   
+            SchuleCommands.Beobachtungen.ExportToWord = new DelegateCommand((o) => ExportToWord(o));
         }
 
         #region Verhalten bei Änderungen der Auswahl        
@@ -109,8 +109,8 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         // Commands
 
-        #region Public Interface für Commands
-        public void UpdateHistoryView(object f)
+        #region Implementation of Commands
+        public void ChangeHistoryView(object f)
         {
             string type = (f ?? "").ToString();
             switch (type)
@@ -127,14 +127,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             }          
 
         }
-
-        public void InsertText(object t)
-        {
-            string x = (t ?? "").ToString();
-
-
-        }
-
+        
         public void AddCurrentComment(bool clear = true)
         {
             // Save current comment
@@ -164,6 +157,51 @@ namespace Groll.Schule.SchulDB.ViewModels
             BeoText = "";
         }       
 
+        private Reports.BeobachtungenExport.TextBreakType ConvertToTextBreakType(object o)
+        {            
+            switch ((o ?? "").ToString())
+            {
+                case "Seite":
+                    return Reports.BeobachtungenExport.TextBreakType.Page;
+                case "Absatz":
+                    return Reports.BeobachtungenExport.TextBreakType.Paragraph;
+                default:
+                    return Reports.BeobachtungenExport.TextBreakType.None;
+            }            
+        }
+
+        public void ExportToWord(object o)
+        {   // Get settings from Ribbon               
+            var r = Ribbon.TabBeobachtungen;
+            var exp = new Reports.BeobachtungenExport();
+
+            exp.DateSortDirection = (r.SelectedSorting.Tag ?? "ASC").ToString() == "ASC" ? System.ComponentModel.ListSortDirection.Ascending : System.ComponentModel.ListSortDirection.Descending;
+            exp.BreakOnNewKlasse = ConvertToTextBreakType(r.SelectedTextBreakKlasse.Tag);
+            exp.BreakOnNewSchüler = ConvertToTextBreakType(r.SelectedTextBreakSchüler.Tag);
+            exp.BreakOnNewDate = ConvertToTextBreakType(r.SelectedTextBreakDatum.Tag);
+            exp.GroupBy = (r.SelectedGrouping.Tag ?? "").ToString() == "S" ? Reports.BeobachtungenExport.GroupByType.GroupBySchüler : Reports.BeobachtungenExport.GroupByType.GroupByDatum;
+            exp.ParagraphAfterEveryEntry = r.ParagraphAfterEveryEntry;
+            exp.RepeatSameName = r.RepeatSameName;
+
+            switch ((r.FilterMenuButton.Tag ?? "").ToString())
+            {
+                case "ALL":   // Alle
+                    exp.ExportToWord();
+                    break;
+                case "SJ": // Aktuelles Schuljahr
+                    exp.ExportToWord(SelectedSchuljahr);
+                    break;
+                case "KL": // Aktuelle Klasse
+                    exp.ExportToWord(SelectedKlasse);
+                    break;
+                case "SSJ":  // Aktueller Schüler (nur dieses Schuljahr)
+                    exp.ExportToWord(SelectedSchüler, SelectedSchuljahr);
+                    break;
+                case "SCH":  // Aktueller Schüler (Komplett)                
+                    exp.ExportToWord(SelectedSchüler);
+                    break;
+            }
+        }
         #endregion
     }
 }

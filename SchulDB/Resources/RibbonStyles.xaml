@@ -118,5 +118,20 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    
+    <!-- Style zur Anzeige von Auto-Text Einträgen -->
+    <Style TargetType="{x:Type RibbonMenuItem}" x:Key="AutoTextRibbonMenuItem">
+        <Setter Property="Header" Value="{Binding Name}" />
+        <Setter Property="Command" Value="{Binding Command_BeoInsertTextbaustein, Source={StaticResource MainViewModel}}" />
+        <Setter Property="ToolTipTitle" Value="{Binding Name}" />
+        <Setter Property="ToolTipDescription" Value="{Binding Text}" />
+        <Setter Property="ToolTipFooterTitle" Value="Benutzt:" />
+        <Setter Property="ToolTipImageSource" Value="/Images/Notiz2.ico" />
+        <Setter Property="ToolTipFooterDescription" Value="{Binding UsageCount}" />
+        <Setter Property="CommandParameter" Value="{Binding TextbausteinId}" />
+        <Setter Property="Tag" Value="{Binding Text}" />
+        <Setter Property="ImageSource" Value="/Images/Notiz2.ico" />
+    </Style>
 
 </ResourceDictionary>

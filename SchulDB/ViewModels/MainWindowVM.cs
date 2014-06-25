@@ -141,48 +141,18 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         #endregion                       
 
-        #region Central Commands
+        #region Common Commands
         
         // zentral Commands deklarieren, damit sie von hier gebunden, aber in anderen VMs definiert werden können.  
-        private DelegateCommand command_BeoClearInput;
-        private DelegateCommand command_BeoAdd;
-        private DelegateCommand command_BeoHistoryViewChanged;
         private DelegateCommand command_BeoStartExport;
-        private DelegateCommand command_BeoInsertText;
-        private DelegateCommand command_BeoInsertTextbaustein;
+      
 
-
-        public DelegateCommand Command_BeoClearInput
-        {
-            get { return command_BeoClearInput; }
-            set { command_BeoClearInput = value; OnPropertyChanged(); }
-        }        
-        public DelegateCommand Command_BeoAdd
-        {
-            get { return command_BeoAdd; }
-            set { command_BeoAdd = value; OnPropertyChanged(); }
-        }
-
-        public DelegateCommand Command_BeoHistoryViewChanged
-        {
-            get { return command_BeoHistoryViewChanged; }
-            set { command_BeoHistoryViewChanged = value; OnPropertyChanged(); }
-        }
         public DelegateCommand Command_BeoStartExport
         {
             get { return command_BeoStartExport; }
             set { command_BeoStartExport = value; OnPropertyChanged(); }
         }
-        public DelegateCommand Command_BeoInsertText
-        {
-            get { return command_BeoInsertText; }
-            set { command_BeoInsertText = value; OnPropertyChanged(); }
-        }
-        public DelegateCommand Command_BeoInsertTextbaustein
-        {
-            get { return command_BeoInsertTextbaustein; }
-            set { command_BeoInsertTextbaustein = value; OnPropertyChanged(); }
-        }    
+       
         #endregion
     }
 }

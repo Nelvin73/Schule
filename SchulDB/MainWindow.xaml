@@ -9,7 +9,7 @@
         Title="SchulDB"
         x:Name="RibbonWindow"
         Width="1024" Height="800">
-
+    
     <RibbonWindow.Resources>
         <ViewModels:MainWindowVM x:Key="MainViewModel" />
     </RibbonWindow.Resources>
@@ -102,7 +102,7 @@
                     <!-- Change History-View Button-->
                     <RibbonMenuButton Label="History" DataContext="{Binding HistoryViewMenuButton }"  >
                         <RibbonGallery SelectedItem="{Binding SelectedItem}" ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                                       Command="{Binding Command_BeoHistoryViewChanged, Source={StaticResource MainViewModel}}" CommandParameter="{Binding Tag}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}">
+                                       Command="{Binding Path=ChangeHistoryView, Source={x:Static comm:SchuleCommands.Beobachtungen}}" CommandParameter="{Binding Tag}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}">
                             <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}" />                            
                         </RibbonGallery>
                     </RibbonMenuButton>
@@ -110,21 +110,21 @@
                     <RibbonButton DataContext="{Binding ViewBeobachtungenButton}" />
 
                 </RibbonGroup>
-
-                <RibbonGroup Header="Eingabe" DataContext="{StaticResource MainViewModel}" >
-                    <RibbonButton Label="Eingabe löschen" Command="{Binding Command_BeoClearInput}" LargeImageSource="/Images/Trash.ico"  />
-                    <RibbonSplitButton Label="Beobachtung speichern" Command="{Binding Command_BeoAdd}" LargeImageSource="/Images/Add_Comment.ico"  >
-                        <RibbonMenuItem Header="Speichern (STRG+Enter)"  Command="{Binding Command_BeoAdd}" ImageSource="/Images/Add_Comment.ico" />
-                        <RibbonMenuItem Header="Speichern ohne Löschen" Command="{Binding Command_BeoAdd}" CommandParameter="noClear" ImageSource="/Images/Add_Comment.ico" />
+                
+                <RibbonGroup Header="Eingabe" DataContext="{x:Static comm:SchuleCommands.Beobachtungen}"  >
+                    <RibbonButton Label="Eingabe löschen" Command="{Binding ClearInput}" LargeImageSource="/Images/Trash.ico"  />
+                    <RibbonSplitButton Label="Beobachtung speichern" Command="{Binding AddComment}" LargeImageSource="/Images/Add_Comment.ico"  >
+                        <RibbonMenuItem Header="Speichern (STRG+Enter)"  Command="{Binding AddComment}" ImageSource="/Images/Add_Comment.ico" KeyTip="S" />
+                        <RibbonMenuItem Header="Speichern ohne Löschen" Command="{Binding AddComment}" CommandParameter="noClear" ImageSource="/Images/Add_Comment.ico" />
                     </RibbonSplitButton>
                 </RibbonGroup>
 
                 <RibbonGroup Header="Einfügen" >
-                    <RibbonMenuButton Label="Letzte Kommentare" LargeImageSource="/Images/Aktenschrank.ico" ItemsSource="{Binding Last10Beobachtungen}" >
+                    <RibbonMenuButton Label="Letzte Kommentare" LargeImageSource="/Images/Aktenschrank.ico" ItemsSource="{Binding Last10Beobachtungen}"  >
                         <RibbonMenuButton.ItemContainerStyle>                            
                             <Style TargetType="{x:Type RibbonMenuItem}">                                
                                 <Setter Property="Header" Value="{Binding Text}" />
-                                <Setter Property="Command" Value="{Binding Command_BeoInsertText, Source={StaticResource MainViewModel}}" />
+                                <Setter Property="Command" Value="{Binding InsertText, Source={x:Static comm:SchuleCommands.Beobachtungen}}" />
                                 <Setter Property="CommandParameter" Value="{Binding Text}" />
                                 <Setter Property="ImageSource" Value="/Images/Notiz2.ico" />
                             </Style>
@@ -135,7 +135,7 @@
                         <RibbonMenuButton.ItemContainerStyle>
                             <Style TargetType="{x:Type RibbonMenuItem}">
                                 <Setter Property="Header" Value="{Binding Name}" />
-                                <Setter Property="Command" Value="{Binding Command_BeoInsertTextbaustein, Source={StaticResource MainViewModel}}" />
+                                <Setter Property="Command" Value="{Binding InsertTextbaustein, Source={x:Static comm:SchuleCommands.Beobachtungen}}" />
                                 <Setter Property="ToolTipTitle" Value="{Binding Name}" />
                                 <Setter Property="ToolTipDescription" Value="{Binding Text}" />
                                 <Setter Property="ToolTipFooterTitle" Value="Benutzt:" />
@@ -152,7 +152,7 @@
 
                 <RibbonGroup Header="Exportieren" >
                     <!-- Export Button-->
-                    <RibbonButton DataContext="{Binding ExportButton}"  />
+                    <RibbonButton DataContext="{Binding ExportButton}" Command="{Binding ExportToWord, Source={x:Static comm:SchuleCommands.Beobachtungen}}"  />
                     
                     <!-- Filterauswahl Button-->
                     <RibbonMenuButton MinWidth="55"  DataContext="{Binding FilterMenuButton}" >
@@ -173,30 +173,30 @@
                     <RibbonMenuButton Label="Einstellungen" LargeImageSource="/Images/Settings1.ico">
                                                 
                         <RibbonMenuItem  DataContext="{Binding GroupingSettingsMenuButton}" ItemsSource="{x:Null}">
-                            <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonViewModel.Default}, Path=TabBeobachtungen.SelectedGrouping}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <RibbonGallery  SelectedItem="{Binding Ribbon.TabBeobachtungen.SelectedGrouping, Source={StaticResource MainViewModel}}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                 <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />                                
                             </RibbonGallery>
                         </RibbonMenuItem>
 
                         <RibbonMenuItem DataContext="{Binding SortSettingsMenuButton}" ItemsSource="{x:Null}" >
-                            <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonViewModel.Default}, Path=TabBeobachtungen.SelectedSorting}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <RibbonGallery  SelectedItem="{Binding Ribbon.TabBeobachtungen.SelectedSorting, Source={StaticResource MainViewModel}}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                 <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                             </RibbonGallery>
                          </RibbonMenuItem>
 
                         <RibbonMenuItem Header="Formatierung" >
                             <RibbonMenuItem DataContext="{Binding TextBreakKlasseMenuButton}" ItemsSource="{x:Null}" >
-                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonViewModel.Default}, Path=TabBeobachtungen.SelectedTextBreakKlasse}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <RibbonGallery  SelectedItem="{Binding SelectedItem}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>
                             <RibbonMenuItem DataContext="{Binding TextBreakSchülerMenuButton}" ItemsSource="{x:Null}" >
-                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonViewModel.Default}, Path=TabBeobachtungen.SelectedTextBreakSchüler}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <RibbonGallery  SelectedItem="{Binding Source={StaticResource MainViewModel}, Path=Ribbon.TabBeobachtungen.SelectedTextBreakSchüler}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>
                             <RibbonMenuItem DataContext="{Binding TextBreakDatumMenuButton}" ItemsSource="{x:Null}" >
-                                <RibbonGallery  SelectedItem="{Binding Source={x:Static ViewModels:RibbonViewModel.Default}, Path=TabBeobachtungen.SelectedTextBreakDatum}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <RibbonGallery  SelectedItem="{Binding Source={StaticResource MainViewModel}, Path=Ribbon.TabBeobachtungen.SelectedTextBreakDatum}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>                            

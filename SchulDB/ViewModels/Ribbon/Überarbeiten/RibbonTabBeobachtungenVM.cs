@@ -124,8 +124,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                     new RibbonItemViewModel()
                     {
                         Label = "Exportieren",
-                        LargeImageSourceFile = "Word_Doc2.ico",
-                   //     Command = MainWindowViewModel.com BeobachtungenCommands.ExportBeobachtungen,
+                        LargeImageSourceFile = "Word_Doc2.ico",                        
                         ToolTipTitle = "Startet den Exportvorgang",
                         ToolTipDescription = "Exportiert die Beobachtungen nach Word,\nentsprechend der eingestellten Vorgaben.",
                         ToolTipImageSourceFile = "Word_Doc1.ico"
@@ -388,13 +387,16 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             get
             {
+                return TextBreakKlasseMenuButton.SelectedItem;
                 return selectedTextBreakKlasse;
             }
             set
             {
                 if (selectedTextBreakKlasse != value)
                 {
-                    selectedTextBreakKlasse = value; OnPropertyChanged();
+                    TextBreakKlasseMenuButton.SelectedItem = value;
+                    // selectedTextBreakKlasse = value; 
+                    OnPropertyChanged();
                 }
             }
         }
@@ -597,11 +599,11 @@ namespace Groll.Schule.SchulDB.ViewModels
        
 
       
-  
-               
-       
         
 
+        #endregion
+
+        #region Command Implementation
         #endregion
 
         #region Konstruktor
@@ -611,11 +613,11 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// <param name="RibbonViewModel">Root Element</param>
         public RibbonTabBeobachtungenVM() : base()
         {
-            Label = "Beobachtungen eingeben";
-            
+            Label = "Beobachtungen eingeben";            
             
           //  IsVisible = true;  // per Default unsichtbar
-            ContextualTabGroupHeader = "Beobachtungen";                                                
+            ContextualTabGroupHeader = "Beobachtungen";
+           
         }
         #endregion
 
