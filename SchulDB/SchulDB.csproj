@@ -96,13 +96,13 @@
     <Compile Include="ViewModels\Ribbon\OK\RibbonItemViewModel.cs" />
     <Compile Include="ViewModels\Ribbon\OK\RibbonMenuItemVM.cs" />
     <Compile Include="ViewModels\Ribbon\OK\RibbonSelectedItemMenuItemVM.cs" />
-    <Compile Include="ViewModels\Ribbon\Überarbeiten\RibbonTabBeobachtungenViewVM.cs" />
+    <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabBeobachtungenViewVM.cs" />
     <Compile Include="ViewModels\Ribbon\Obsolete\RibbonMenuSelectedItemEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabStandardVM.cs" />
     <Compile Include="ViewModels\Ribbon\Obsolete\RibbonBaseVM.cs" />
     <Compile Include="ViewModels\Ribbon\Obsolete\RibbonMenuEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\Obsolete\RibbonTabVM.cs" />
-    <Compile Include="ViewModels\Ribbon\Überarbeiten\RibbonTabBeobachtungenVM.cs" />
+    <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabBeobachtungenVM.cs" />
     <Compile Include="ViewModels\Ribbon\OK\RibbonViewModel.cs" />
     <Compile Include="Properties\Settings.cs" />
     <Page Include="MainWindow.xaml">
@@ -257,6 +257,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Testen\" />
+    <Folder Include="ViewModels\Ribbon\Überarbeiten\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Trash.ico" />

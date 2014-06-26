@@ -52,30 +52,8 @@ namespace Groll.Schule.SchulDB.Pages
             SchuleCommands.Beobachtungen.InsertTextbaustein = new DelegateCommand((a) => InsertTextbaustein(a));            
         }
 
-      
-
-
-
         #region ICommand implementierungen
-        private void Executed_HistoryViewChanged(object sender, ExecutedRoutedEventArgs e)
-        {
-            var type = ViewModels.BeobachtungenEingabeVM.BeoHistoryMode.LastEntered;
-            switch (e.Parameter.ToString())
-            {
-                case "Schüler":
-                    type = ViewModels.BeobachtungenEingabeVM.BeoHistoryMode.CurrentSchueler;
-                    break;
-                case "Datum":
-                    type = ViewModels.BeobachtungenEingabeVM.BeoHistoryMode.SortDate;
-                    break;
-                default: // "ID"
-                    break;
-            }
-            ViewModel.BeobachtungenHistoryType = type;
-            
-
-        }
-       
+        
         private void InsertText(object a)
         {
             string t = (a ?? "").ToString();
@@ -103,92 +81,8 @@ namespace Groll.Schule.SchulDB.Pages
                 }
 
             }
-        }
-       
-       
-       
-        private void Executed_ClearInput(object sender, ExecutedRoutedEventArgs e)
-        {
-            // Eingabe im Model löschen
-            ViewModel.ClearInput();
-
-            // Anzeigefilter zurücksetzen
-            Filter.Text = "";
-
-            // Falls Textfeld Fokus hat, auch den angezeigten Text löschen
-            if (txtBeoText.IsFocused)
-                txtBeoText.Text = "";
-        }
-
-        private Reports.BeobachtungenExport.TextBreakType ConvertToTextBreakType(object o)
-        {
-            string tag = "";
-            if (o is RibbonBaseVM)
-                tag = ((RibbonBaseVM)o).Tag.ToString();
-            else
-                tag = o.ToString();
-
-            switch (tag)
-            {
-                case "Seite":
-                    return Reports.BeobachtungenExport.TextBreakType.Page;                    
-                case "Absatz":
-                    return Reports.BeobachtungenExport.TextBreakType.Paragraph;                   
-                default:
-                    return Reports.BeobachtungenExport.TextBreakType.None;
-            }
-        }
-
-        private void Executed_Export(object sender, ExecutedRoutedEventArgs e)
-        {          
-            // Get settings from Ribbon               
-            var vm = RibbonViewModel.Default.TabBeobachtungen;
-            var exp = new Reports.BeobachtungenExport();
-
-            exp.DateSortDirection = vm.SelectedSorting.Tag == null || vm.SelectedSorting.Tag.ToString() == "ASC" ? System.ComponentModel.ListSortDirection.Ascending : System.ComponentModel.ListSortDirection.Descending;
-            exp.BreakOnNewKlasse = ConvertToTextBreakType(vm.SelectedTextBreakKlasse);
-            exp.BreakOnNewSchüler = ConvertToTextBreakType(vm.SelectedTextBreakSchüler);
-            exp.BreakOnNewDate = ConvertToTextBreakType(vm.SelectedTextBreakDatum);
-            exp.GroupBy = vm.SelectedSorting.Tag == null || vm.SelectedGrouping.Tag.ToString() == "S" ? Reports.BeobachtungenExport.GroupByType.GroupBySchüler : Reports.BeobachtungenExport.GroupByType.GroupByDatum;
-            exp.ParagraphAfterEveryEntry = vm.ParagraphAfterEveryEntry;
-            exp.RepeatSameName = vm.RepeatSameName;
-
-            switch (vm.FilterMenuButton.Tag.ToString())
-            {
-                case "ALL":   // Alle
-                    exp.ExportToWord();
-                    break;
-                case "SJ": // Aktuelles Schuljahr
-                    exp.ExportToWord(ViewModel.SelectedSchuljahr);
-                    break;
-                case "KL": // Aktuelle Klasse
-                    exp.ExportToWord(ViewModel.SelectedKlasse);
-                    break;
-                case "SSJ":  // Aktueller Schüler (nur dieses Schuljahr)
-                    exp.ExportToWord(ViewModel.SelectedSchüler, ViewModel.SelectedSchuljahr);
-                    break;
-                case "SCH":  // Aktueller Schüler (Komplett)                
-                    exp.ExportToWord(ViewModel.SelectedSchüler);
-                    break;
-            }
-
-       
-        }
-
-        private void Executed_Add(object sender, ExecutedRoutedEventArgs e)
-        {            
-            // Beobachtung speichern
-            ViewModel.AddCurrentComment((e.Parameter ?? "").ToString() != "noClear");            
-
-            // Zu Person Filter springen
-            Filter.SelectAll();
-            Filter.Focus();            
-        }
-
-        private void CanExecute_Add(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = ViewModel.ValidateCurrent();
-        }
+        }                        
+      
         #endregion
 
         #region ISchulDBPage Implementierung
@@ -204,11 +98,7 @@ namespace Groll.Schule.SchulDB.Pages
         }
         #endregion
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            ViewModel.AddCurrentComment();
-        }
-
+      
         #region Filter in Schüler-Liste
         // Liste neuladen beim Ändern des Filters
         private void Filter_TextChanged(object sender, TextChangedEventArgs e)

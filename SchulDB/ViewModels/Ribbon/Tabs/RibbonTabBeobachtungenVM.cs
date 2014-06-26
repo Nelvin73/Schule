@@ -21,16 +21,13 @@ namespace Groll.Schule.SchulDB.ViewModels
         
         private RibbonMenuItemVM selectedGrouping;
         private RibbonMenuItemVM selectedSorting;
-        private RibbonMenuItemVM selectedTextBreakKlasse;
-        private RibbonMenuItemVM selectedTextBreakSchüler;
-        private Textbaustein selectedTextBaustein;
-        private RibbonMenuItemVM selectedTextBreakDatum;        
         private bool paragraphAfterEveryEntry = false;
         private bool repeatSameName = false;
 
 
         #region Properties für Bindings
 
+        #region Ribbon Elements
         // History-View Menu
         public RibbonSelectedItemMenuItemVM HistoryViewMenuButton
         {
@@ -288,151 +285,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                 return t;
             }
         }
-
-
-        public RibbonMenuItemVM SelectedGrouping
-        {
-            get
-            {
-                return selectedGrouping;
-            }
-            set
-            {
-                if (selectedGrouping != value)
-                {
-                    selectedGrouping = value; OnPropertyChanged();
-                    if (selectedGrouping.Tag.ToString() == "S")
-                    {
-                       // TextBreakSchülerMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
-                      //  TextBreakDatumMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
-                        SelectedTextBreakSchüler = TextBreakSchülerMenuButton.ItemsSource[0];
-                        SelectedTextBreakDatum = TextBreakDatumMenuButton.ItemsSource[2];
-                    }else
-                    {
-                    //   TextBreakSchülerMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
-                     //   TextBreakDatumMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
-                        SelectedTextBreakSchüler = TextBreakSchülerMenuButton.ItemsSource[2];
-                        SelectedTextBreakDatum = TextBreakDatumMenuButton.ItemsSource[0];
-
-                    }
-                 //   OnPropertyChanged("SelectedTextBreakSchüler");
-                //    OnPropertyChanged("SelectedTextBreakDatum");
-                }
-            }
-        }
-
-        public RibbonMenuItemVM SelectedSorting
-        {
-            get
-            {
-                return selectedSorting;
-            }
-            set
-            {
-                if (selectedSorting != value)
-                {
-                    selectedSorting = value; OnPropertyChanged();
-                }
-            }
-        }
-
-        public Textbaustein SelectedTextBaustein
-        {
-            get
-            {
-                return selectedTextBaustein;
-            }
-            set
-            {
-                if (selectedTextBaustein != value)
-                {
-                    selectedTextBaustein = value; OnPropertyChanged();
-                    SelectedTextBaustein = null;
-
-                }
-            }
-        }
-
-        public bool ParagraphAfterEveryEntry
-        {
-            get
-            {
-                return paragraphAfterEveryEntry;
-            }
-            set
-            {
-                if (paragraphAfterEveryEntry != value)
-                {
-                    paragraphAfterEveryEntry = value; OnPropertyChanged();
-                }
-            }
-        }
-
-        public bool RepeatSameName
-        {
-            get
-            {
-                return repeatSameName;
-            }
-            set
-            {
-                if (repeatSameName != value)
-                {
-                    repeatSameName = value; OnPropertyChanged();
-                }
-            }
-        }
-
-        public RibbonMenuItemVM SelectedTextBreakKlasse
-        {
-            get
-            {
-                return TextBreakKlasseMenuButton.SelectedItem;
-                return selectedTextBreakKlasse;
-            }
-            set
-            {
-                if (selectedTextBreakKlasse != value)
-                {
-                    TextBreakKlasseMenuButton.SelectedItem = value;
-                    // selectedTextBreakKlasse = value; 
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public RibbonMenuItemVM SelectedTextBreakSchüler
-        {
-            get
-            {
-                return selectedTextBreakSchüler;
-            }
-            set
-            {
-                if (selectedTextBreakSchüler != value)
-                {
-                    selectedTextBreakSchüler = value; OnPropertyChanged();
-                }
-            }
-        }
-
-
-        public RibbonMenuItemVM SelectedTextBreakDatum
-        {
-            get
-            {
-                return selectedTextBreakDatum;
-            }
-            set
-            {
-                if (selectedTextBreakDatum != value)
-                {
-                    selectedTextBreakDatum = value; OnPropertyChanged();
-                }
-            }
-        }
-
-
+     
         public RibbonMenuItemVM TextBreakKlasseMenuButton
         {
             get
@@ -548,14 +401,141 @@ namespace Groll.Schule.SchulDB.ViewModels
                             }
                         }
                     };
-                    t.SelectedItem = SelectedTextBreakDatum = t.ItemsSource[02];
+                    t.SelectedItem = t.ItemsSource[02];
                     SetElement(Key, t);
                 }
 
                 return t;
             }
         }
+        #endregion
 
+        #region Settings
+
+        public RibbonMenuItemVM SelectedGrouping
+        {
+            get
+            {
+                return selectedGrouping;
+            }
+            set
+            {
+                if (selectedGrouping != value)
+                {
+                    selectedGrouping = value; OnPropertyChanged();
+                    if (selectedGrouping.Tag.ToString() == "S")
+                    {
+                       // TextBreakSchülerMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
+                      //  TextBreakDatumMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
+                        SelectedTextBreakSchüler = TextBreakSchülerMenuButton.ItemsSource[0];
+                        SelectedTextBreakDatum = TextBreakDatumMenuButton.ItemsSource[2];
+                    }else
+                    {
+                    //   TextBreakSchülerMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
+                     //   TextBreakDatumMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
+                        SelectedTextBreakSchüler = TextBreakSchülerMenuButton.ItemsSource[2];
+                        SelectedTextBreakDatum = TextBreakDatumMenuButton.ItemsSource[0];
+
+                    }
+                 //   OnPropertyChanged("SelectedTextBreakSchüler");
+                //    OnPropertyChanged("SelectedTextBreakDatum");
+                }
+            }
+        }
+
+        public RibbonMenuItemVM SelectedSorting
+        {
+            get
+            {
+                return selectedSorting;
+            }
+            set
+            {
+                if (selectedSorting != value)
+                {
+                    selectedSorting = value; OnPropertyChanged();
+                }
+            }
+        }
+      
+        public bool ParagraphAfterEveryEntry
+        {
+            get
+            {
+                return paragraphAfterEveryEntry;
+            }
+            set
+            {
+                if (paragraphAfterEveryEntry != value)
+                {
+                    paragraphAfterEveryEntry = value; OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool RepeatSameName
+        {
+            get
+            {
+                return repeatSameName;
+            }
+            set
+            {
+                if (repeatSameName != value)
+                {
+                    repeatSameName = value; OnPropertyChanged();
+                }
+            }
+        }
+
+        public RibbonMenuItemVM SelectedTextBreakKlasse
+        {
+            get
+            {
+                return TextBreakKlasseMenuButton.SelectedItem;                
+            }
+            set
+            {
+                if (TextBreakKlasseMenuButton.SelectedItem != value)
+                {
+                    TextBreakKlasseMenuButton.SelectedItem = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public RibbonMenuItemVM SelectedTextBreakSchüler
+        {
+            get
+            {
+                return TextBreakSchülerMenuButton.SelectedItem;
+            }
+            set
+            {
+                if (TextBreakKlasseMenuButton.SelectedItem != value)
+                {
+                    TextBreakSchülerMenuButton.SelectedItem = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public RibbonMenuItemVM SelectedTextBreakDatum
+        {
+            get
+            {
+                return TextBreakDatumMenuButton.SelectedItem;
+            }
+            set
+            {
+                if (TextBreakKlasseMenuButton.SelectedItem != value)
+                {
+                    TextBreakDatumMenuButton.SelectedItem = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+      
         /// <summary>
         /// Liste der 10 letzten Beobachtungen
         /// </summary>
@@ -597,10 +577,8 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         }
        
-
-      
+        #endregion
         
-
         #endregion
 
         #region Command Implementation

@@ -19,12 +19,12 @@ namespace Groll.Schule.SchulDB.Commands
         private DelegateCommand insertText;
         private DelegateCommand insertTextbaustein ;
         private DelegateCommand exportToWord;
-        private static RoutedUICommand updateView = new RoutedUICommand("UpdateBeobachtungenView", "UpdateBeobachtungenView", typeof(BeobachtungenCommands));
-        private static RoutedUICommand editModeChanged = new RoutedUICommand("EditModeChanged", "EditModeChanged", typeof(BeobachtungenCommands));
+        private DelegateCommand updateView ;
+        private DelegateCommand editModeChanged ;
 
         public BeobachtungenCommands()
         {
-            ChangeHistoryView = ClearInput = AddComment = InsertText = InsertTextbaustein = ExportToWord =
+            ChangeHistoryView = ClearInput = AddComment = InsertText = InsertTextbaustein = ExportToWord = UpdateBeobachtungenView = EditModeChanged = 
                 new DelegateCommand((o) => ExecuteCommand(o), (o) => CanExecute(o));
         }
 
@@ -64,13 +64,15 @@ namespace Groll.Schule.SchulDB.Commands
             set { exportToWord = value; OnPropertyChanged(); }
         }
 
-        public static RoutedUICommand UpdateBeobachtungenView
+        public DelegateCommand UpdateBeobachtungenView
         {
             get { return updateView; }
+            set { updateView = value; OnPropertyChanged(); }
         }
-        public static RoutedUICommand EditModeChanged
+        public DelegateCommand EditModeChanged
         {
             get { return editModeChanged; }
+            set { editModeChanged = value; OnPropertyChanged(); }
         }
 
     }

@@ -64,7 +64,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             // Define Commands
             SchuleCommands.Beobachtungen.ClearInput = new DelegateCommand((a) => ClearInput());
-            SchuleCommands.Beobachtungen.AddComment = new DelegateCommand((a) => AddCurrentComment(a == null));
+            SchuleCommands.Beobachtungen.AddComment = new DelegateCommand((a) => AddCurrentComment(a == null), b => ValidateCurrent());
             SchuleCommands.Beobachtungen.ChangeHistoryView = new DelegateCommand((a) => ChangeHistoryView(a));   
             SchuleCommands.Beobachtungen.ExportToWord = new DelegateCommand((o) => ExportToWord(o));
         }

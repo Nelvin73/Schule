@@ -190,13 +190,14 @@
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>
+                            
                             <RibbonMenuItem DataContext="{Binding TextBreakSchülerMenuButton}" ItemsSource="{x:Null}" >
-                                <RibbonGallery  SelectedItem="{Binding Source={StaticResource MainViewModel}, Path=Ribbon.TabBeobachtungen.SelectedTextBreakSchüler}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <RibbonGallery  SelectedItem="{Binding SelectedItem}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>
                             <RibbonMenuItem DataContext="{Binding TextBreakDatumMenuButton}" ItemsSource="{x:Null}" >
-                                <RibbonGallery  SelectedItem="{Binding Source={StaticResource MainViewModel}, Path=Ribbon.TabBeobachtungen.SelectedTextBreakDatum}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <RibbonGallery  SelectedItem="{Binding SelectedItem}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>                            
@@ -220,8 +221,8 @@
         <!-- RibbonTab Beobachtungen-Ansicht -->
             <RibbonTab DataContext="{Binding TabBeobachtungenAnsicht}" >
                 <RibbonGroup Header="Ansicht">
-                <RibbonToggleButton Label="Schüler auf neuer Seite"  IsChecked="{Binding NewPageOnSchüler}" Command="comm:BeobachtungenCommands.UpdateBeobachtungenView" />
-                    <RibbonToggleButton Label="Ändern"  IsChecked="{Binding EditMode}" Command="comm:BeobachtungenCommands.EditModeChanged" />
+                    <RibbonToggleButton Label="Schüler auf neuer Seite"  IsChecked="{Binding NewPageOnSchüler}" Command="{Binding UpdateBeobachtungenView, Source={x:Static comm:SchuleCommands.Beobachtungen}}" />
+                    <RibbonToggleButton Label="Ändern"  IsChecked="{Binding EditMode}" Command="{Binding EditModeChanged, Source={x:Static comm:SchuleCommands.Beobachtungen}}" />
                 </RibbonGroup>
             </RibbonTab>
             

@@ -15,20 +15,10 @@ using Groll.Schule.SchulDB.Commands;
 namespace Groll.Schule.SchulDB.ViewModels
 {
     public class RibbonTabBeobachtungenViewVM : RibbonTabVM
-    {
-        private ObservableCollection<Beobachtung> beobachtungenCollection;
-        private RibbonBaseVM selectedExportFilter;
-        private List<RibbonMenuEntryVM> exportFilterItemSource;
-        private RibbonMenuEntryVM selectedGrouping;
-        private RibbonMenuEntryVM selectedSorting;
-        private RibbonMenuEntryVM selectedTextBreakKlasse;
-        private RibbonMenuEntryVM selectedTextBreakSchueler;
-        private RibbonMenuEntryVM selectedTextBreakDatum;
-        private bool paragraphAfterEveryEntry = false;
-        private bool repeatSameName = false;
-
+    {     
 
         private bool newPageOnSchüler;
+        private bool editMode;
 
         public bool NewPageOnSchüler
         {
@@ -40,8 +30,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-        private bool editMode;
-
+       
         public bool EditMode
         {
             get { return editMode; }
@@ -81,16 +70,9 @@ namespace Groll.Schule.SchulDB.ViewModels
         public override void OnDatabaseChanged()
         {
             // invalidate all database relevant properties
-            beobachtungenCollection = null;
-            OnPropertyChanged("Last10Beobachtungen");
             base.OnDatabaseChanged();
         }
-
-        void beo_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            // Beobachtungen changed            
-            OnPropertyChanged("Last10Beobachtungen");
-        }
+       
         #endregion
 
     }
