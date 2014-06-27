@@ -221,8 +221,8 @@
         <!-- RibbonTab Beobachtungen-Ansicht -->
             <RibbonTab DataContext="{Binding TabBeobachtungenAnsicht}" >
                 <RibbonGroup Header="Ansicht">
-                    <RibbonToggleButton Label="Schüler auf neuer Seite"  IsChecked="{Binding NewPageOnSchüler}" Command="{Binding UpdateBeobachtungenView, Source={x:Static comm:SchuleCommands.Beobachtungen}}" />
-                    <RibbonToggleButton Label="Ändern"  IsChecked="{Binding EditMode}" Command="{Binding EditModeChanged, Source={x:Static comm:SchuleCommands.Beobachtungen}}" />
+                    <RibbonToggleButton DataContext="{Binding UpdateViewButton}" Command="{Binding UpdateBeobachtungenView, Source={x:Static comm:SchuleCommands.Beobachtungen}}" />
+                    <RibbonToggleButton DataContext="{Binding EditModeButton}" Command="{Binding EditModeChanged, Source={x:Static comm:SchuleCommands.Beobachtungen}}" />
                 </RibbonGroup>
             </RibbonTab>
             

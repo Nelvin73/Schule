@@ -59,6 +59,13 @@
         <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
     </Style>
 
+    <!-- RibbonToggleButton -->
+    <Style TargetType="{x:Type RibbonToggleButton}" BasedOn="{StaticResource RibbonControlStyle}">
+        <Setter Property="Command" Value="{Binding Command}" />
+        <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
+        <Setter Property="IsChecked" Value="{Binding IsChecked}" />
+    </Style>
+
     <!-- RibbonMenuButton -->
     <Style TargetType="{x:Type RibbonMenuButton}" BasedOn="{StaticResource RibbonControlStyle}">
         <Setter Property="QuickAccessToolBarId" Value="{Binding Command}" />

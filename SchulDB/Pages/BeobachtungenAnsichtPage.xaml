@@ -29,7 +29,7 @@
         <Border Grid.Row="0" Background="AliceBlue" CornerRadius="5" BorderThickness="1" BorderBrush="DarkBlue" >
             <TextBlock Text="Schülerbeobachtungen" FontSize="14" HorizontalAlignment="Center" />
         </Border>
-        <FlowDocumentReader Grid.Row="1" x:Name="Reader" MouseDoubleClick="Reader_MouseDoubleClick">
+        <FlowDocumentReader Grid.Row="1" x:Name="Reader" MouseDoubleClick="Reader_MouseDoubleClick" Document="{Binding Document}" >
             <FlowDocumentReader.Resources>
                 <Style TargetType="Paragraph">
                     <EventSetter Event="MouseLeftButtonDown" Handler="Document_Click" />
@@ -80,8 +80,8 @@
 
                 </StackPanel>
                  
-                <Button Margin="10" Content="Speichern" Click="btChange_Click" Grid.Row="0" Grid.Column="2"  Width="100"  />
-                <Button Margin="10"  Content="Abbrechen" Click="btCancel_Click" Grid.Row="1" Grid.Column="2" />                 
+                <Button Margin="10" Content="Speichern" Command="{Binding Command_UpdateBeobachtung}" Grid.Row="0" Grid.Column="2"  Width="100"  />
+                <Button Margin="10"  Content="Abbrechen" Command="{Binding Command_CancelEdit}" Grid.Row="1" Grid.Column="2" />                 
                 <TextBox Grid.RowSpan="2" Grid.Column="1" AcceptsReturn="True" x:Name="EditBox" Text="{Binding BeoText}"  SpellCheck.IsEnabled="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
                   
                           

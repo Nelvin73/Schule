@@ -18,6 +18,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         #region Private Fields        
         private bool isSelected = false;
         private bool isVisible = true;
+        private bool isChecked = false;
         private string label = null;
         private string largeImageSourceFile = "";
         private string smallImageSourceFile = "";
@@ -42,6 +43,18 @@ namespace Groll.Schule.SchulDB.ViewModels
                 if (isSelected != value)
                 {
                     isSelected = value; OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsChecked
+        {
+            get { return isChecked; }
+            set
+            {
+                if (isChecked != value)
+                {
+                    isChecked = value; OnPropertyChanged();
                 }
             }
         }

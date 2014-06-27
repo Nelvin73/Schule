@@ -16,34 +16,70 @@ namespace Groll.Schule.SchulDB.ViewModels
 {
     public class RibbonTabBeobachtungenViewVM : RibbonTabVM
     {     
-
-        private bool newPageOnSchüler;
-        private bool editMode;
+        #region Properties für Bindings
 
         public bool NewPageOnSchüler
         {
-            get { return newPageOnSchüler; }
+            get { return UpdateViewButton.IsChecked; }
             set
             {
-                if (newPageOnSchüler != value)
-                { newPageOnSchüler = value; OnPropertyChanged(); }
+                if (UpdateViewButton.IsChecked != value)
+                { UpdateViewButton.IsChecked = value; OnPropertyChanged(); }
             }
         }
 
        
         public bool EditMode
         {
-            get { return editMode; }
+            get { return EditModeButton.IsChecked; }
             set
             {
-                if (editMode != value)
-                { editMode = value; OnPropertyChanged(); }
+                if (EditModeButton.IsChecked != value)
+                { EditModeButton.IsChecked = value; OnPropertyChanged(); }
             }
         }
 
-        #region Properties für Bindings
+        
+        #region Ribbon Elements
 
-   
+        public RibbonBaseVM UpdateViewButton
+        {
+            get
+            {
+                string Key = "UpdateViewButton";
+                RibbonBaseVM t = GetElement(Key) as RibbonBaseVM;
+                if (t == null)
+                {
+                    t = new RibbonBaseVM()
+                    {
+                        Label = "Schüler auf neuer Seite",                                               
+                    };                 
+                    SetElement(Key, t);
+                }
+                return t;                
+            }
+        }
+
+        public RibbonBaseVM EditModeButton
+        {
+            get
+            {
+                string Key = "EditModeButton";
+                RibbonBaseVM t = GetElement(Key) as RibbonBaseVM;
+                if (t == null)
+                {
+                    t = new RibbonBaseVM()
+                    {
+                        Label = "Ändern",
+                    };
+                    SetElement(Key, t);
+                }
+                return t;
+            }
+        }
+
+        #endregion
+
 
         #endregion
 

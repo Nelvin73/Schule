@@ -57,11 +57,7 @@ namespace Groll.Schule.SchulDB.Pages
             InitializeComponent();
 
             // Command Bindings
-            this.CommandBindings.AddRange(new List<CommandBinding>
-            {
-                new CommandBinding(BeobachtungenCommands.UpdateBeobachtungenView, Executed_UpdateView, BasicCommands.CanExecute_TRUE),
-                new CommandBinding(BeobachtungenCommands.EditModeChanged, Executed_EditModeChanged, BasicCommands.CanExecute_TRUE),            
-            });
+            
         }
         
 
@@ -83,8 +79,8 @@ namespace Groll.Schule.SchulDB.Pages
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             // Navigated away from Page
-            ViewModels.RibbonViewModel.Default.IsContextTabBeobachtungenVisible = false;
-            ViewModels.RibbonViewModel.Default.TabBeobachtungenAnsicht.IsVisible = false;                     
+            ViewModel.Ribbon.IsContextTabBeobachtungenVisible = false;
+            ViewModel.Ribbon.TabBeobachtungenAnsicht.IsVisible = false;                     
         }
 
         private void Page_Initialized(object sender, EventArgs e)
@@ -97,239 +93,42 @@ namespace Groll.Schule.SchulDB.Pages
         {
             // Navigated toward Page
             // Load FlowDocument
-            ViewModels.RibbonViewModel.Default.IsContextTabBeobachtungenVisible = true;
-            ViewModels.RibbonViewModel.Default.TabBeobachtungenAnsicht.IsSelected = true;
-            ViewModels.RibbonViewModel.Default.TabBeobachtungenAnsicht.IsVisible = true;
-            EditBox.Focus();
-            if (Reader.Document == null)
-                LoadDocument();
+            ViewModel.Ribbon.IsContextTabBeobachtungenVisible = true;
+            ViewModel.Ribbon.TabBeobachtungenAnsicht.IsVisible = true;
+            ViewModel.Ribbon.TabBeobachtungenAnsicht.IsSelected = true;
+            EditBox.Focus();         
         }
         #endregion
 
-        private void LoadDocument()
-        {
-            // Dokument konfigurieren
-            FlowDocument doc = new FlowDocument();
-            doc.ColumnWidth = 600;
-            doc.ColumnGap = 50;
-            doc.ColumnRuleBrush = Brushes.Red;
-            doc.ColumnRuleWidth = 2;
-            doc.IsColumnWidthFlexible = true;
-            doc.FontSize = 10;
-            doc.FontFamily = new FontFamily("Verdana");
-
-            List<Beobachtung> beos = RibbonViewModel.Default.UnitOfWork.Beobachtungen.GetList().
-                OrderBy(x => x.SchuljahrId).
-                ThenBy(y => y.Klasse == null ? "" : y.Klasse.Name).
-                ThenBy(z => z.Schueler == null ? "" : z.Schueler.DisplayName).
-                ThenBy(zz => zz.Datum ?? DateTime.MinValue).ToList();
-
-            Paragraph p;
-
-            // Datensätze durchgehen 
-            Schueler lastSchueler = null;
-            Klasse lastKlasse = null;
-            DateTime? lastDatum = DateTime.MinValue;
-            Klasse nullKlasse = new Klasse() { Name = "" };
-            
-
-            foreach (Beobachtung beo in beos)
-            {
-                bool newPage = false;
-                if (beo.Schueler == null)
-                    throw new ArgumentNullException("Schüler in der Beobachtung darf nicht null sein!");
-
-                // Neue Klasse ? --> Kopfzeile bzw. neue Seite 
-                var currKlasse = beo.Klasse ?? nullKlasse;
-                if (currKlasse != lastKlasse)
-                {
-                    // Neue Klasse
-                    p = new Paragraph() { FontSize = 16, Foreground = Brushes.Red };
-
-                    if (lastKlasse != null)
-                        newPage = p.BreakPageBefore = true;
-
-                    p.Inlines.Add(new Bold(new Run(currKlasse.ToString())));
-                    doc.Blocks.Add(p);
-                }
-
-                if (lastSchueler != beo.Schueler)
-                {
-                    // Neuer Schüler
-                    p = new Paragraph() { FontSize = 14, Foreground = Brushes.Blue };
-                    if (lastSchueler != null && RibbonViewModel.Default.TabBeobachtungenAnsicht.NewPageOnSchüler && !newPage)
-                        p.BreakPageBefore = true;
-
-                    p.Inlines.Add(new Bold(new Run(beo.Schueler.DisplayName)));
-                    doc.Blocks.Add(p);
-                    lastDatum = null;
-                }
-
-                // Text ausgeben
-                p = new Paragraph() { Tag = beo.BeobachtungId };
-                p.Margin = new Thickness(70F, 0, 0, 0);
-
-                if (!beo.Datum.HasValue && lastDatum.HasValue)
-                {
-                    p.Inlines.Add(new Run("Kein Datum\t"));
-                    p.TextIndent = -70F;
-                }
-                else if (beo.Datum.HasValue && (!lastDatum.HasValue || lastDatum.Value.Date != beo.Datum.Value.Date))
-                {
-                    p.Inlines.Add(new Run(beo.Datum.Value.ToString("dd.MM.yyyy") + "\t"));
-                    p.TextIndent = -70F;
-                }
-
-
-                p.Inlines.Add(new Run(beo.Text));
-                doc.Blocks.Add(p);
-                /*// Beobachtung ausgeben
-                
-                string beoText = beo.Text;
-                beoText = beoText.Replace("\r", "");
-                beoText = beoText.Replace("\n", "\v") + "\r";
-                */
-                lastKlasse = currKlasse;
-                lastSchueler = beo.Schueler;
-                lastDatum = beo.Datum;
-            }
-
-            Reader.Document = doc;
-        }
-
-        private void StartEdit(Paragraph p = null)
-        {
-            // Edit Mode EIN
-            RibbonViewModel.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = true;
-
-            // Markierung von vorherigen Paragraph zurücksetzen            
-            var oldP = EditBox.Tag as Paragraph;
-            if (oldP == p)
-                return;           
-            
-            if (oldP != null)            
-                oldP.Background = null;            
-
-            // Edit von Beobachtung aktivieren
-            EditBox.Tag = null;
-            if (p == null || p.Tag == null || !(p.Tag is int))
-            {
-                // Aktive Beobachtung entfernen                
-                ViewModel.ResetBeobachtung();
-            }
-            else
-            {
-                Beobachtung b = RibbonViewModel.Default.UnitOfWork.Beobachtungen.GetById((int)p.Tag);
-                if (b != null)
-                {
-                    p.Background = Brushes.Yellow;
-                    ViewModel.EditedBeobachtung = b;
-                    EditBox.Tag = p;
-                }
-            }
-                   
-        }
-
-        private void CancelEdit()
-        {            
-            // Edit Mode AUS
-            RibbonViewModel.Default.TabBeobachtungenAnsicht.EditMode = ViewModel.IsEditMode = false;
-            
-            // Evtl. Markierung wegnehmen
-            var oldP = EditBox.Tag as Paragraph;           
-            if (oldP != null)
-                oldP.Background = null; 
-
-            // Aktive Beobachtung entfernen
-            EditBox.Tag = null;
-            ViewModel.ResetBeobachtung();
-        }
-
         private void Reader_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            // Get Beobachtungen ID from current Selection             
-            StartEdit(Reader.Selection.Start.Paragraph as Paragraph);
+            // activate edit mode for selected paragraph
+            ViewModel.StartEdit(Reader.Selection.Start.Paragraph);
         }
-
-        private void btChange_Click(object sender, RoutedEventArgs e)
-        {
-            // Update View
-            var p = EditBox.Tag as Paragraph;
-            if (p != null && ViewModel.EditedBeobachtung != null)
-            {
-                bool Reload = ViewModel.IsSchülerChanged || ViewModel.IsSchuljahrChanged;
-                ViewModel.UpdateBeobachtung();
-                UpdateDocument(p, Reload);    
-                
-                            
-            }
-        }
+       
 
         private void Document_Click(object sender, MouseButtonEventArgs e)
         {
             System.Diagnostics.Debug.Print(e.OriginalSource.GetType().ToString());
+            
+            // Try to get paragraph
             Paragraph p = e.OriginalSource as Paragraph;
             if (p == null)
             {
+                // no paragraph clicked .. try to find parent paragraph
                 var run = e.OriginalSource as Run;
                 if (run != null)
                     p = run.Parent as Paragraph;
             }
-
+            
             if (ViewModel.IsEditMode && p != null)
             {                
-                StartEdit(p);
+                ViewModel.StartEdit(p);
             }            
         }
-        private void UpdateDocument(Paragraph p, bool Reload = false)
-        {
-            if (p == null || ViewModel.EditedBeobachtung == null)
-                // nothing to update
-                return;
-
-            if (Reload)
-                    // Komplett neu laden
-                LoadDocument();
-                    
-            else
-            {
-                // Inline ändern
-                string Text = (ViewModel.BeoDatum.HasValue ? ViewModel.BeoDatum.Value.ToString("dd.MM.yyyy") : "Kein Datum") + "\t";
-                if (p.Inlines.Count == 2)
-                    ((Run)p.Inlines.FirstInline).Text = Text;
-                else
-                    p.Inlines.InsertBefore(p.Inlines.FirstInline, new Run(Text));
-
-                p.TextIndent = -70F;
-                ((Run)p.Inlines.LastInline).Text = ViewModel.BeoText;                   
-            }               
-        }
-
-        private void btCancel_Click(object sender, RoutedEventArgs e)
-        {
-            CancelEdit();
-        }
-
-        
        
-        #region Commands
-        // View muss aktualisiert werden
-        private void Executed_UpdateView(object sender, ExecutedRoutedEventArgs e)
-        {
-            LoadDocument();
-        }
-
-        // Editmode über Ribbon geändert
-        private void Executed_EditModeChanged(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (RibbonViewModel.Default.TabBeobachtungenAnsicht.EditMode)
-                StartEdit();
-            else
-                CancelEdit();            
-        }
-
        
-
-        #endregion
+       
+       
     }
 }
