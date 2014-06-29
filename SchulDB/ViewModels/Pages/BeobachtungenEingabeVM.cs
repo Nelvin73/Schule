@@ -81,7 +81,8 @@ namespace Groll.Schule.SchulDB.ViewModels
         protected override void OnSelectedSchülerChanged()
         {
             base.OnSelectedSchülerChanged();
-            UpdateHistory();         
+            UpdateHistory();
+            
         }
        
 

@@ -89,8 +89,8 @@
                     <RibbonButton Label="Dump Context" Command="{Binding DumpContextCommand}" />
 
                 </RibbonGroup>
-                <RibbonGroup Header="Reports" >
-                    <RibbonButton Label="Beobachtungen" SmallImageSource="/Images/Word_Doc1.ico" Command="{Binding NavigateToCommand}" CommandParameter="beobachtungenansicht" />
+                <RibbonGroup Header="Reports" DataContext="{StaticResource MainViewModel}">
+                    <RibbonButton Label="Beobachtungen" SmallImageSource="/Images/Word_Doc1.ico" Command="{Binding Command_Navigate}" CommandParameter="beobachtungenansicht" />
                 </RibbonGroup>
             </RibbonTab>
             

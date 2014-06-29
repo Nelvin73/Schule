@@ -20,128 +20,35 @@ namespace Groll.Schule.SchulDB.Reports
 {
     public class BeobachtungenExport
     {
+        // Settings
+        public class BeobachtungenExportSettings
+        {
+            public TextBreakType TextBreakNewSchüler { get; set; }
+            public TextBreakType TextBreakNewKlasse { get; set; }
+            public TextBreakType TextBreakNewDatum { get; set; }
+            public ListSortDirection DateSortDirection { get; set; }    // Default = Ascending
+            public GroupByType GroupBy { get; set; }    // Default = Schüler 
+            public string TemplateFile { get; set; }
+            public string Header { get; set; }
+            public bool ParagraphAfterEveryEntry { get; set; }
+            public bool RepeatSameName { get; set; }
+
+            public BeobachtungenExportSettings()
+            {
+                Header = "Schülerbeobachtungen";
+            }
+        }
+
         public enum TextBreakType { None, Paragraph, Page }
-        public enum GroupByType { GroupByDatum, GroupBySchüler }
+        public enum GroupByType { GroupBySchüler, GroupByDatum  }
         
-        private bool useTemplate = false;
-        private string templatePath = "";
-        private TextBreakType breakNewKlasse = TextBreakType.Page;
-        private TextBreakType breakNewSchüler = TextBreakType.Paragraph;
-        private TextBreakType breakNewDate = TextBreakType.None;
-        private ListSortDirection dateSortDirection = ListSortDirection.Ascending;
-        private string reportHeader = "Schülerbeobachtungen";
-        private GroupByType groupBy = GroupByType.GroupBySchüler;
-        private bool paragraphAfterEveryEntry = false;
-        private bool repeatSameName = false;
-       
-       
-        
-
-        /// <summary>
-        /// Legt fest, ob ein vorhandenes Template für den Export verwendet werden soll
-        /// </summary>
-        public bool UseTemplate
+   
+        public BeobachtungenExportSettings ExportSettings { get; set; }
+      
+        public BeobachtungenExport(BeobachtungenExportSettings Settings = null)
         {
-            get { return useTemplate; }
-            set { useTemplate = value; }
+            ExportSettings = Settings ?? new BeobachtungenExportSettings();
         }
-
-        /// <summary>
-        /// Legt den Pfad des Templates fest, das verwendet werden soll
-        /// </summary>
-        public string TemplatePath
-        {
-            get { return templatePath; }
-            set { templatePath = value; }
-        }
-
-        /// <summary>
-        /// Legt fest, ob nach einer neuen Klasse umgebrochen werden soll
-        /// </summary>
-        public TextBreakType BreakOnNewKlasse
-        {
-            get { return breakNewKlasse; }
-            set { breakNewKlasse = value; }
-        }
-
-        /// <summary>
-        /// Legt fest, ob nach einem neuen Schüler umgebrochen werden soll
-        /// </summary>        
-        public TextBreakType BreakOnNewSchüler
-        {
-            get { return breakNewSchüler; }
-            set { breakNewSchüler = value; }
-        }
-
-        /// <summary>
-        /// Legt fest, ob nach einem neuen Datum umgebrochen werden soll
-        /// </summary>
-        public TextBreakType BreakOnNewDate
-        {
-            get { return breakNewDate; }
-            set { breakNewDate = value; }
-        }
-
-        /// <summary>
-        /// Reihenfolge nach dem das Datum sortiert werden soll
-        /// </summary>
-        public ListSortDirection DateSortDirection
-        {
-            get { return dateSortDirection; }
-            set { dateSortDirection = value; }
-        }
-
-       /// <summary>
-       /// Text der als Kopfzeilen-Überschrift verwendet werden soll
-       /// </summary>
-        public string ReportHeader
-        {
-            get { return reportHeader; }
-            set { reportHeader = value; }
-        }
-
-        /// <summary>
-        /// Legt fest, ob nach Schüler oder Datum gruppiert werden soll
-        /// </summary>
-        public GroupByType GroupBy
-        {
-            get { return groupBy; }
-            set { groupBy = value; }
-        }
-
-        /// <summary>
-        /// Legt fest, ob nach jedem Eintrag auf jeden Fall ein Absatz gemacht werden soll
-        /// </summary>
-        public bool ParagraphAfterEveryEntry
-        {
-            get
-            {
-                return paragraphAfterEveryEntry;
-            }
-            set
-            {
-                paragraphAfterEveryEntry = value;
-            }
-        }
-
-        public bool RepeatSameName
-        {
-            get
-            {
-                return repeatSameName;
-            }
-            set
-            {              
-                repeatSameName = value;                
-            }
-        }
-
-
-        public BeobachtungenExport()
-        {
-            // Default value
-        }
-
 
         /// <summary>
         /// Exportiert die übergebenen Beobachtungen in Word
@@ -155,19 +62,19 @@ namespace Groll.Schule.SchulDB.Reports
 
             #region Gruppierung / Sortierung der Daten
             // Sortierung zuerst nach Schuljahr ...
-            IOrderedEnumerable<Beobachtung> beos = DateSortDirection == ListSortDirection.Ascending ?
+            IOrderedEnumerable<Beobachtung> beos = ExportSettings.DateSortDirection == ListSortDirection.Ascending ?
                 Beobachtungen.OrderBy(x => x.SchuljahrId) : Beobachtungen.OrderByDescending(x => x.SchuljahrId);
 
             // ... dann nach Klasse
             beos = beos.ThenBy(x => x.Schueler.Klassen.FirstOrDefault(y => y.SchuljahrId == x.SchuljahrId).Name);
 
-            if (GroupBy == GroupByType.GroupBySchüler)
+            if (ExportSettings.GroupBy == GroupByType.GroupBySchüler)
             {
                 // ... anschließend nach Schülername
                 beos = beos.ThenBy(x => x.Schueler.DisplayName);
 
                 // ... und zuletzt nach Datum (null -> Anfang)
-                if (DateSortDirection == ListSortDirection.Ascending)
+                if (ExportSettings.DateSortDirection == ListSortDirection.Ascending)
                     beos = beos.ThenBy(x => x.Datum.HasValue ? x.Datum.Value : DateTime.MinValue);
                 else
                     beos = beos.ThenByDescending(x => x.Datum.HasValue ? x.Datum.Value : DateTime.MaxValue);
@@ -175,7 +82,7 @@ namespace Groll.Schule.SchulDB.Reports
             else
             {
                 // ... oder erst nach Datum (null -> Anfang)
-                if (DateSortDirection == ListSortDirection.Ascending)
+                if (ExportSettings.DateSortDirection == ListSortDirection.Ascending)
                     beos = beos.ThenBy(x => x.Datum);
                 else
                     beos = beos.ThenByDescending(x => x.Datum ?? DateTime.MaxValue);
@@ -249,7 +156,7 @@ namespace Groll.Schule.SchulDB.Reports
                 s.Font.Name = "Calibri";
                 s.Font.Size = 10;
                 s.Font.Bold = 0;
-                float Indent = groupBy == GroupByType.GroupBySchüler ? 70F : 120F;
+                float Indent = ExportSettings.GroupBy == GroupByType.GroupBySchüler ? 70F : 120F;
                 s.ParagraphFormat.TabStops.Add(Indent);
                 s.ParagraphFormat.LeftIndent = Indent;
                 s.ParagraphFormat.FirstLineIndent = -Indent;
@@ -283,7 +190,7 @@ namespace Groll.Schule.SchulDB.Reports
             //r.ParagraphFormat.TabStops.Add(300, ref TABcenter, ref missing);
             //r.ParagraphFormat.TabStops.Add(550, ref TABright, ref missing);
             r.Font.Size = 12;
-            r.Text = "\t" + reportHeader + "\t" + DateTime.Now.ToShortDateString();
+            r.Text = "\t" + ExportSettings.Header + "\t" + DateTime.Now.ToShortDateString();
             #endregion
         
             #endregion
@@ -314,15 +221,15 @@ namespace Groll.Schule.SchulDB.Reports
                 if (currKlasse != lastKlasse)
                 {
                     // Neue Klasse
-                    if (lastKlasse != null && breakNewKlasse != TextBreakType.None && breakNewKlasse > breakDone)
+                    if (lastKlasse != null && ExportSettings.TextBreakNewKlasse != TextBreakType.None && ExportSettings.TextBreakNewKlasse > breakDone)
                     {
                         // Umbruch nach jeder folgenden Klasse (außer der ersten)
-                        if (breakNewKlasse == TextBreakType.Page)
+                        if (ExportSettings.TextBreakNewKlasse == TextBreakType.Page)
                             app.Selection.InsertBreak(Word.WdBreakType.wdSectionBreakNextPage);
                         else
                             app.Selection.TypeParagraph();
 
-                        breakDone = breakNewKlasse;
+                        breakDone = ExportSettings.TextBreakNewKlasse;
                     }
 
                     // Header ausgeben
@@ -335,19 +242,19 @@ namespace Groll.Schule.SchulDB.Reports
                 if (lastSchueler != beo.Schueler) // && groupBy == GroupByType.GroupBySchüler)
                 {
                     // Neuer Schüler
-                    if (lastSchueler != null && breakNewSchüler != TextBreakType.None && breakNewSchüler > breakDone)
+                    if (lastSchueler != null && ExportSettings.TextBreakNewSchüler != TextBreakType.None && ExportSettings.TextBreakNewSchüler > breakDone)
                     {
                         // Umbruch Bei jedem weiteren Schüler (außer dem ersten)
-                        if (breakNewSchüler == TextBreakType.Page)
+                        if (ExportSettings.TextBreakNewSchüler == TextBreakType.Page)
                             app.Selection.InsertBreak(Word.WdBreakType.wdSectionBreakNextPage);
                         else
                             app.Selection.TypeParagraph();
 
-                        breakDone = breakNewSchüler;
+                        breakDone = ExportSettings.TextBreakNewSchüler;
                     }
 
                     // Schülername ausgeben
-                    if (groupBy == GroupByType.GroupBySchüler)
+                    if (ExportSettings.GroupBy == GroupByType.GroupBySchüler)
                     {
                         app.Selection.set_Style(FormatGruppenHeader);
                         app.Selection.TypeText(beo.Schueler.DisplayName);
@@ -360,19 +267,19 @@ namespace Groll.Schule.SchulDB.Reports
                 if ((lastDatum == null || lastDatum.Value.Date != beo.Datum.Value.Date)) // && groupBy == GroupByType.GroupByDatum)
                 {
                     // Neues Datum
-                    if (lastDatum != null && breakNewDate != TextBreakType.None && breakNewDate > breakDone)
+                    if (lastDatum != null && ExportSettings.TextBreakNewDatum != TextBreakType.None && ExportSettings.TextBreakNewDatum > breakDone)
                     {
                         // Umbruch Bei jedem weiteren Datum (außer dem ersten)
-                        if (breakNewDate == TextBreakType.Page)
+                        if (ExportSettings.TextBreakNewDatum == TextBreakType.Page)
                             app.Selection.InsertBreak(Word.WdBreakType.wdSectionBreakNextPage);
                         else
                             app.Selection.TypeParagraph();
 
-                        breakDone = breakNewDate;
+                        breakDone = ExportSettings.TextBreakNewDatum;
                     }
 
                     // Datum ausgeben
-                    if (groupBy == GroupByType.GroupByDatum)
+                    if (ExportSettings.GroupBy == GroupByType.GroupByDatum)
                     {
                         app.Selection.set_Style(FormatGruppenHeader);
                         app.Selection.TypeText(beo.Datum == null ? "Allgemein" : beo.Datum.Value.ToString("dd.MM.yyyy"));
@@ -382,40 +289,40 @@ namespace Groll.Schule.SchulDB.Reports
                 }
 
                 // Absatz auf jeden Fall nach Eintrag ?
-                if (paragraphAfterEveryEntry && breakDone == TextBreakType.None)
+                if (ExportSettings.ParagraphAfterEveryEntry && breakDone == TextBreakType.None)
                     app.Selection.TypeParagraph();
                
                 // Kopfzeile anpassen, wenn auf neuer Seite
                 if ((int)app.Selection.get_Information(Word.WdInformation.wdActiveEndPageNumber) != lastPageNumber &&
-                    (lastKlasse != currKlasse || (groupBy == GroupByType.GroupBySchüler && lastSchueler != beo.Schueler) ||
-                    (groupBy == GroupByType.GroupByDatum && lastDatum != beo.Datum)))
+                    (lastKlasse != currKlasse || (ExportSettings.GroupBy == GroupByType.GroupBySchüler && lastSchueler != beo.Schueler) ||
+                    (ExportSettings.GroupBy == GroupByType.GroupByDatum && lastDatum != beo.Datum)))
                 {
                     header = app.Selection.Sections[1].Headers[Word.WdHeaderFooterIndex.wdHeaderFooterPrimary];
                     header.LinkToPrevious = false;
                     r = header.Range;
-                    r.Text = "\t" + reportHeader + "\t" + DateTime.Now.ToShortDateString() + "\n\t" + currKlasse.ToString() + " - " + 
-                        (groupBy == GroupByType.GroupBySchüler ? beo.Schueler.DisplayName : (beo.Datum  == null ? "Allgemein" : beo.Datum.Value.ToShortDateString())) ;
+                    r.Text = "\t" + ExportSettings.Header + "\t" + DateTime.Now.ToShortDateString() + "\n\t" + currKlasse.ToString() + " - " +
+                        (ExportSettings.GroupBy == GroupByType.GroupBySchüler ? beo.Schueler.DisplayName : (beo.Datum == null ? "Allgemein" : beo.Datum.Value.ToShortDateString()));
                                
                     
                     lastPageNumber = (int)app.Selection.get_Information(Word.WdInformation.wdActiveEndPageNumber);
                 }
  #endregion
                 // Format je nach Beobachtungsart
-                if (beo.Datum == null && groupBy == GroupByType.GroupBySchüler)
+                if (beo.Datum == null && ExportSettings.GroupBy == GroupByType.GroupBySchüler)
                     app.Selection.set_Style(FormatDataListe);
 
                 else
                 {
                     app.Selection.set_Style(FormatData2Spalten);
-                    if (groupBy == GroupByType.GroupBySchüler)
+                    if (ExportSettings.GroupBy == GroupByType.GroupBySchüler)
                     {
-                        if (!lastDatum.HasValue || lastDatum.Value.Date != beo.Datum.Value.Date || repeatSameName)
+                        if (!lastDatum.HasValue || lastDatum.Value.Date != beo.Datum.Value.Date || ExportSettings.RepeatSameName)
                             app.Selection.TypeText(beo.Datum.Value.ToString("dd.MM.yyyy"));
                         app.Selection.TypeText("\t");
                     }
                     else
                     {
-                        if (lastSchueler != beo.Schueler || repeatSameName)
+                        if (lastSchueler != beo.Schueler || ExportSettings.RepeatSameName)
                             app.Selection.TypeText(beo.Schueler.DisplayName);
                         app.Selection.TypeText("\t");
                     }
@@ -497,7 +404,7 @@ namespace Groll.Schule.SchulDB.Reports
 
             if (UOW != null)
             {
-                groupBy = GroupByType.GroupBySchüler;
+                ExportSettings.GroupBy = GroupByType.GroupBySchüler;
                 var t = from b in UOW.Beobachtungen.GetList()
                         where (b.Schueler) == Schüler && (b.SchuljahrId == Schuljahr|| Schuljahr == 0)
                         select b;

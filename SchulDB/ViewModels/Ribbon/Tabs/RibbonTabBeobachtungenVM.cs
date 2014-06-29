@@ -425,20 +425,14 @@ namespace Groll.Schule.SchulDB.ViewModels
                     selectedGrouping = value; OnPropertyChanged();
                     if (selectedGrouping.Tag.ToString() == "S")
                     {
-                       // TextBreakSchülerMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
-                      //  TextBreakDatumMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
                         SelectedTextBreakSchüler = TextBreakSchülerMenuButton.ItemsSource[0];
                         SelectedTextBreakDatum = TextBreakDatumMenuButton.ItemsSource[2];
                     }else
                     {
-                    //   TextBreakSchülerMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
-                     //   TextBreakDatumMenuButton.ItemsSource.ForEach(x => x.IsSelected = false);
                         SelectedTextBreakSchüler = TextBreakSchülerMenuButton.ItemsSource[2];
                         SelectedTextBreakDatum = TextBreakDatumMenuButton.ItemsSource[0];
 
                     }
-                 //   OnPropertyChanged("SelectedTextBreakSchüler");
-                //    OnPropertyChanged("SelectedTextBreakDatum");
                 }
             }
         }

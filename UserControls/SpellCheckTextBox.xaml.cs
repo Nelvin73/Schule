@@ -34,6 +34,7 @@ namespace Groll.UserControls
         private void SpellCheckTextBox_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             // Define new Context Menu
+    
             contextMenu.Items.Clear();
 
             // Check for spelling errors
@@ -75,6 +76,16 @@ namespace Groll.UserControls
             contextMenu.Items.Add(new MenuItem() { Command = ApplicationCommands.Cut });
             contextMenu.Items.Add(new MenuItem() { Command = ApplicationCommands.Copy });
             contextMenu.Items.Add(new MenuItem() { Command = ApplicationCommands.Paste });
+
+            // Add custom Menuitems
+            
+            if (CustomContentMenuItems != null && CustomContentMenuItems.Count > 0)
+            {
+                contextMenu.Items.Add(new Separator());
+                foreach (var i in CustomContentMenuItems)
+                    contextMenu.Items.Add(i);
+                
+            }
         }
 
         private void AddToDictionary(string p)
@@ -108,6 +119,18 @@ namespace Groll.UserControls
             item.CommandTarget = target;           
             return item;
         }
+
+        public List<MenuItem> CustomContentMenuItems
+        {
+            get { return (List<MenuItem>)GetValue(CustomContentMenuItemsProperty); }
+            set { SetValue(CustomContentMenuItemsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CustomContentMenuItems.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CustomContentMenuItemsProperty = 
+        DependencyProperty.Register("CustomContentMenuItems", typeof(List<MenuItem>), typeof(SpellCheckTextBox), new PropertyMetadata(new List<MenuItem>()));
+    
+        
     }
 }
 

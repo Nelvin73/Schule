@@ -92,7 +92,11 @@ namespace Groll.Schule.SchulDB.Commands
         public event EventHandler CanExecuteChanged;
 
 
-
+        public void RaiseCanExecuteChanged()
+        {
+            if (CanExecuteChanged != null)
+                CanExecuteChanged(this, new EventArgs());
+        }
       
     }    
 }

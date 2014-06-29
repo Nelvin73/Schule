@@ -49,11 +49,20 @@ namespace Groll.Schule.SchulDB.Pages
             
             // Command Bindings
             SchuleCommands.Beobachtungen.InsertText = new DelegateCommand((a) => InsertText(a));
-            SchuleCommands.Beobachtungen.InsertTextbaustein = new DelegateCommand((a) => InsertTextbaustein(a));            
+            SchuleCommands.Beobachtungen.InsertTextbaustein = new DelegateCommand((a) => InsertTextbaustein(a));
+            Command_AutoTextSpeichern = new DelegateCommand((a) => SaveAutoTextEnry(), (a) => CanSaveAutoTextEntry());
+            txtBeoText.CustomContentMenuItems.Add(new MenuItem() { Header = "Als Autotext speichern", Command = Command_AutoTextSpeichern });
+        }
+
+        private bool CanSaveAutoTextEntry()
+        {
+            return txtBeoText.SelectedText != "";
         }
 
         #region ICommand implementierungen
-        
+        public DelegateCommand Command_AutoTextSpeichern { get; set; }
+
+
         private void InsertText(object a)
         {
             string t = (a ?? "").ToString();
@@ -81,8 +90,18 @@ namespace Groll.Schule.SchulDB.Pages
                 }
 
             }
-        }                        
-      
+        }
+
+
+        private void SaveAutoTextEnry()
+        {
+            if (txtBeoText.SelectedText != "")
+            {
+                ViewModel.UnitOfWork.Textbausteine.Add(new Textbaustein(txtBeoText.SelectedText.Substring(0, 10), txtBeoText.SelectedText));
+                ViewModel.UnitOfWork.Save();
+            }
+
+        }
         #endregion
 
         #region ISchulDBPage Implementierung
@@ -147,20 +166,19 @@ namespace Groll.Schule.SchulDB.Pages
                 txtBeoText.Focus();
             }
         }
-        #endregion
-
-       /* private void txtBeoText_ContextMenuOpening(object sender, ContextMenuEventArgs e)
-        {
-            var i = e.Source as TextBox;
-
-        } */
+        #endregion      
 
         private void cbSchülerListe_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // SelectedItems kann nicht gebunden werden => Auswahl geändert ... SelectedSchülerList manuell anpassen
             ViewModel.SelectedSchülerList = cbSchülerListe.SelectedItems.Cast<Schueler>().ToList();
         }
-
+       
+        private void txtBeoText_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            Command_AutoTextSpeichern.RaiseCanExecuteChanged();
+        }
+      
        
 
 

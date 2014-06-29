@@ -92,18 +92,14 @@
     <Compile Include="ViewModels\MainWindowVM.cs" />
     <Compile Include="ViewModels\Pages\BeobachtungenBaseVM.cs" />
     <Compile Include="ViewModels\Pages\BeobachtungenEditVM.cs" />
-    <Compile Include="ViewModels\Ribbon\OK\ApplicationMenuVM.cs" />
-    <Compile Include="ViewModels\Ribbon\OK\RibbonItemViewModel.cs" />
-    <Compile Include="ViewModels\Ribbon\OK\RibbonMenuItemVM.cs" />
-    <Compile Include="ViewModels\Ribbon\OK\RibbonSelectedItemMenuItemVM.cs" />
+    <Compile Include="ViewModels\Ribbon\ApplicationMenuVM.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonItemViewModel.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonMenuItemVM.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonSelectedItemMenuItemVM.cs" />
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabBeobachtungenViewVM.cs" />
-    <Compile Include="ViewModels\Ribbon\Obsolete\RibbonMenuSelectedItemEntryVM.cs" />
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabStandardVM.cs" />
-    <Compile Include="ViewModels\Ribbon\Obsolete\RibbonBaseVM.cs" />
-    <Compile Include="ViewModels\Ribbon\Obsolete\RibbonMenuEntryVM.cs" />
-    <Compile Include="ViewModels\Ribbon\Obsolete\RibbonTabVM.cs" />
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabBeobachtungenVM.cs" />
-    <Compile Include="ViewModels\Ribbon\OK\RibbonViewModel.cs" />
+    <Compile Include="ViewModels\Ribbon\RibbonViewModel.cs" />
     <Compile Include="Properties\Settings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -257,7 +253,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Testen\" />
-    <Folder Include="ViewModels\Ribbon\Überarbeiten\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Trash.ico" />
@@ -329,6 +324,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\Groll.SchulDB.sdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Debug\Groll.SchulDB_dev.sdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Pages\Info.txt" />

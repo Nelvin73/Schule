@@ -58,7 +58,7 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Beobachtung eingeben" Grid.Row="1" Grid.ColumnSpan="2" Margin="3">
-            <UI:SpellCheckTextBox Text="{Binding BeoText, UpdateSourceTrigger=PropertyChanged}" Margin="3" x:Name="txtBeoText" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" />
+            <UI:SpellCheckTextBox Text="{Binding BeoText, UpdateSourceTrigger=PropertyChanged}" Margin="3"  x:Name="txtBeoText" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" TextChanged="txtBeoText_TextChanged" ContextMenuOpening="txtBeoText_ContextMenuOpening" />
         </GroupBox>
         <GridSplitter Grid.Row="2" Grid.ColumnSpan="2" Height="10" ShowsPreview="True" HorizontalAlignment="Stretch" />
         <GroupBox Header="Die letzten Beobachtungen" Grid.Row="3" Margin="3" Grid.ColumnSpan="2" xml:lang="de-DE">

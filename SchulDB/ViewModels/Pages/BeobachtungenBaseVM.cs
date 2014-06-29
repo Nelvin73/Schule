@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Groll.Schule.Model;
 using Groll.Schule.DataManager;
 using System.Collections.ObjectModel;
+using Groll.Schule.SchulDB.Commands;
 
 namespace Groll.Schule.SchulDB.ViewModels
 {
@@ -85,7 +86,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             {
                 if (beoText == value)
                     return;
-                beoText = value; OnPropertyChanged();
+                beoText = value; SchuleCommands.Beobachtungen.AddComment.RaiseCanExecuteChanged(); OnPropertyChanged();
             }
         }
 
@@ -222,7 +223,8 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         protected virtual void OnSelectedSchülerChanged()
         {
-            // Ein Schüler wurde ausgewählt           
+            // Ein Schüler wurde ausgewählt  
+            SchuleCommands.Beobachtungen.AddComment.RaiseCanExecuteChanged();
         }
 
        
