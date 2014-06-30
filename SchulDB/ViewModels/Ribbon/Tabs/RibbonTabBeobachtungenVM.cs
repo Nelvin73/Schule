@@ -411,7 +411,36 @@ namespace Groll.Schule.SchulDB.ViewModels
         #endregion
 
         #region Settings
+        private Reports.BeobachtungenExport.TextBreakType ConvertToTextBreakType(object o)
+        {
+            switch ((o ?? "").ToString())
+            {
+                case "Seite":
+                    return Reports.BeobachtungenExport.TextBreakType.Page;
+                case "Absatz":
+                    return Reports.BeobachtungenExport.TextBreakType.Paragraph;
+                default:
+                    return Reports.BeobachtungenExport.TextBreakType.None;
+            }
+        }
 
+        public Reports.BeobachtungenExport.BeobachtungenExportSettings ExportSettings
+        {
+            get
+            {
+                var s = new Reports.BeobachtungenExport.BeobachtungenExportSettings();
+                s.DateSortDirection = (SelectedSorting.Tag ?? "ASC").ToString() == "ASC" ? System.ComponentModel.ListSortDirection.Ascending : System.ComponentModel.ListSortDirection.Descending;
+                s.TextBreakNewKlasse = ConvertToTextBreakType(SelectedTextBreakKlasse.Tag);
+                s.TextBreakNewSchüler = ConvertToTextBreakType(SelectedTextBreakSchüler.Tag);
+                s.TextBreakNewDatum = ConvertToTextBreakType(SelectedTextBreakDatum.Tag);
+                s.GroupBy = (SelectedGrouping.Tag ?? "").ToString() == "S" ? Reports.BeobachtungenExport.GroupByType.GroupBySchüler : Reports.BeobachtungenExport.GroupByType.GroupByDatum;
+                s.ParagraphAfterEveryEntry = ParagraphAfterEveryEntry;
+                s.RepeatSameName = RepeatSameName;
+
+               
+                return s;
+            }
+        }
         public RibbonMenuItemVM SelectedGrouping
         {
             get

@@ -158,32 +158,12 @@ namespace Groll.Schule.SchulDB.ViewModels
             BeoText = "";
         }       
 
-        private Reports.BeobachtungenExport.TextBreakType ConvertToTextBreakType(object o)
-        {            
-            switch ((o ?? "").ToString())
-            {
-                case "Seite":
-                    return Reports.BeobachtungenExport.TextBreakType.Page;
-                case "Absatz":
-                    return Reports.BeobachtungenExport.TextBreakType.Paragraph;
-                default:
-                    return Reports.BeobachtungenExport.TextBreakType.None;
-            }            
-        }
-
+       
         public void ExportToWord(object o)
         {   // Get settings from Ribbon               
             var r = Ribbon.TabBeobachtungen;
-            var exp = new Reports.BeobachtungenExport();
-
-            exp.DateSortDirection = (r.SelectedSorting.Tag ?? "ASC").ToString() == "ASC" ? System.ComponentModel.ListSortDirection.Ascending : System.ComponentModel.ListSortDirection.Descending;
-            exp.BreakOnNewKlasse = ConvertToTextBreakType(r.SelectedTextBreakKlasse.Tag);
-            exp.BreakOnNewSchüler = ConvertToTextBreakType(r.SelectedTextBreakSchüler.Tag);
-            exp.BreakOnNewDate = ConvertToTextBreakType(r.SelectedTextBreakDatum.Tag);
-            exp.GroupBy = (r.SelectedGrouping.Tag ?? "").ToString() == "S" ? Reports.BeobachtungenExport.GroupByType.GroupBySchüler : Reports.BeobachtungenExport.GroupByType.GroupByDatum;
-            exp.ParagraphAfterEveryEntry = r.ParagraphAfterEveryEntry;
-            exp.RepeatSameName = r.RepeatSameName;
-
+            var exp = new Reports.BeobachtungenExport(r.ExportSettings);
+         
             switch ((r.FilterMenuButton.Tag ?? "").ToString())
             {
                 case "ALL":   // Alle

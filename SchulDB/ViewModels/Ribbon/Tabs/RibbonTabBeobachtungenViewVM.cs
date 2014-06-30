@@ -14,7 +14,7 @@ using Groll.Schule.SchulDB.Commands;
 
 namespace Groll.Schule.SchulDB.ViewModels
 {
-    public class RibbonTabBeobachtungenViewVM : RibbonTabVM
+    public class RibbonTabBeobachtungenViewVM : RibbonTabViewModel
     {     
         #region Properties für Bindings
 
@@ -42,15 +42,15 @@ namespace Groll.Schule.SchulDB.ViewModels
         
         #region Ribbon Elements
 
-        public RibbonBaseVM UpdateViewButton
+        public RibbonItemViewModel UpdateViewButton
         {
             get
             {
                 string Key = "UpdateViewButton";
-                RibbonBaseVM t = GetElement(Key) as RibbonBaseVM;
+                RibbonItemViewModel t = GetElement(Key) as RibbonItemViewModel;
                 if (t == null)
                 {
-                    t = new RibbonBaseVM()
+                    t = new RibbonItemViewModel()
                     {
                         Label = "Schüler auf neuer Seite",                                               
                     };                 
@@ -60,15 +60,15 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-        public RibbonBaseVM EditModeButton
+        public RibbonItemViewModel EditModeButton
         {
             get
             {
                 string Key = "EditModeButton";
-                RibbonBaseVM t = GetElement(Key) as RibbonBaseVM;
+                RibbonItemViewModel t = GetElement(Key) as RibbonItemViewModel;
                 if (t == null)
                 {
-                    t = new RibbonBaseVM()
+                    t = new RibbonItemViewModel()
                     {
                         Label = "Ändern",
                     };
@@ -88,8 +88,8 @@ namespace Groll.Schule.SchulDB.ViewModels
         /// Konstruktor
         /// </summary>
         /// <param name="RibbonViewModel">Root Element</param>
-        public RibbonTabBeobachtungenViewVM(RibbonViewModel RibbonViewModel = null)
-            : base(RibbonViewModel)
+        public RibbonTabBeobachtungenViewVM()
+            : base()
         {
             Label = "Beobachtungen ansehen / bearbeiten";
             IsVisible = false;  // per Default unsichtbar
