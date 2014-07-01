@@ -207,8 +207,11 @@ namespace Groll.Schule.SchulDB.ViewModels
                     p.Inlines.Add(new Run(beo.Datum.Value.ToString("dd.MM.yyyy") + "\t"));
                     p.TextIndent = -70F;
                 }
-
+                
                 p.Inlines.Add(new Run(beo.Text));
+
+                // Tooltip setzen 
+                p.ToolTip =  beo.Fach == null ? "<kein Fach>" : beo.Fach.Name;
                 doc.Blocks.Add(p);
 
                 /*// Beobachtung ausgeben
@@ -237,8 +240,8 @@ namespace Groll.Schule.SchulDB.ViewModels
             // Initiere Commands
             Command_UpdateBeobachtung = new DelegateCommand((o) => UpdateBeobachtung(o));
             Command_CancelEdit = new DelegateCommand((o) => CancelEdit());
-
-            // SchuleCommands.Beobachtungen.UpdateBeobachtungenView = new DelegateCommand( )
+            SchuleCommands.Beobachtungen.UpdateBeobachtungenView = new DelegateCommand((o) => RefreshDocument());
+            SchuleCommands.Beobachtungen.EditModeChanged = new DelegateCommand((o) => IsEditMode = (bool) o);            
         }
 
        

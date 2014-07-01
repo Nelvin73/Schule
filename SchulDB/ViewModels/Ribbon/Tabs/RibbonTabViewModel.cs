@@ -15,7 +15,6 @@ namespace Groll.Schule.SchulDB.ViewModels
     {
 
         #region Private Fields
-        private RibbonViewModel RibbonVM;
         private bool isSelected = false;
         private bool isVisible = true;
         private string label = null;

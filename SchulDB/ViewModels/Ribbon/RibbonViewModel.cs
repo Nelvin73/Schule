@@ -68,7 +68,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             {
                 string Key = "TabBeobachtungenAnsicht";
                 RibbonTabBeobachtungenViewVM t = GetElement(Key) as RibbonTabBeobachtungenViewVM;
-                return t ?? SetElement(Key, new RibbonTabBeobachtungenViewVM(this)) as RibbonTabBeobachtungenViewVM;
+                return t ?? SetElement(Key, new RibbonTabBeobachtungenViewVM()) as RibbonTabBeobachtungenViewVM;
             }
         }
 

@@ -8,6 +8,7 @@
 
 
     <Style x:Key="RibbonControlStyle">
+
         <Setter Property="RibbonControlService.Label" Value="{Binding Label}" />
         <Setter Property="RibbonControlService.LargeImageSource" Value="{Binding LargeImageSource}" />
         <Setter Property="RibbonControlService.SmallImageSource" Value="{Binding SmallImageSource}" />
@@ -17,7 +18,8 @@
         <Setter Property="RibbonControlService.ToolTipFooterTitle" Value="{Binding ToolTipFooterTitle}" />
         <Setter Property="RibbonControlService.ToolTipFooterDescription" Value="{Binding ToolTipFooterDescription}" />
         <Setter Property="RibbonControlService.ToolTipFooterImageSource" Value="{Binding ToolTipFooterImageSource}" />
-        <Style.Triggers>
+        <Style.Triggers>          
+       
             <DataTrigger Binding="{Binding LargeImageSource}" Value="{x:Null}">
                 <Setter Property="RibbonControlService.LargeImageSource" Value="{x:Null}" />
             </DataTrigger>
@@ -32,13 +34,13 @@
             </DataTrigger>
             <Trigger Property="RibbonControlService.IsInQuickAccessToolBar" Value="False">
                 <Setter Property="KeyTipService.KeyTip" Value="{Binding KeyTip}" />
-            </Trigger>
+            </Trigger>          
         </Style.Triggers>
     </Style>
 
 
     <!-- RibbonApplicationMenu -->
-    <Style TargetType="{x:Type RibbonApplicationMenu}">
+    <Style TargetType="{x:Type RibbonApplicationMenu}" x:Key="RibbonApplicationMenuDefaultStyle">
         <Setter Property="Label" Value="{Binding Label}" />
         <Setter Property="LargeImageSource" Value="{Binding LargeImageSource}" />
         <Setter Property="SmallImageSource" Value="{Binding SmallImageSource}" />
@@ -46,7 +48,7 @@
 
 
     <!-- RibbonTab -->
-    <Style TargetType="{x:Type RibbonTab}">
+    <Style TargetType="{x:Type RibbonTab}" x:Key="RibbonTabDefaultStyle">
         <Setter Property="Header" Value="{Binding Label}" />
         <Setter Property="IsSelected" Value="{Binding IsSelected}" />
         <Setter Property="ContextualTabGroupHeader" Value="{Binding ContextualTabGroupHeader}" />
@@ -54,27 +56,26 @@
     </Style>
 
     <!-- RibbonButton -->
-    <Style TargetType="{x:Type RibbonButton}" BasedOn="{StaticResource RibbonControlStyle}">
+    <Style TargetType="{x:Type RibbonButton}" BasedOn="{StaticResource RibbonControlStyle}" x:Key="RibbonButtonDefaultStyle">
         <Setter Property="Command" Value="{Binding Command}" />
         <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
     </Style>
 
     <!-- RibbonToggleButton -->
-    <Style TargetType="{x:Type RibbonToggleButton}" BasedOn="{StaticResource RibbonControlStyle}">
+    <Style TargetType="{x:Type RibbonToggleButton}" BasedOn="{StaticResource RibbonControlStyle}" x:Key="RibbonToggleButtonDefaultStyle">
         <Setter Property="Command" Value="{Binding Command}" />
         <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
         <Setter Property="IsChecked" Value="{Binding IsChecked}" />
     </Style>
 
     <!-- RibbonMenuButton -->
-    <Style TargetType="{x:Type RibbonMenuButton}" BasedOn="{StaticResource RibbonControlStyle}">
+    <Style TargetType="{x:Type RibbonMenuButton}" BasedOn="{StaticResource RibbonControlStyle}" x:Key="RibbonMenuButtonDefaultStyle">
         <Setter Property="QuickAccessToolBarId" Value="{Binding Command}" />
-        <Setter Property="CanUserResizeVertically" Value="{Binding IsVerticallyResizable}" />
-        <Setter Property="CanUserResizeHorizontally" Value="{Binding IsHorizontallyResizable}" />
+        
     </Style>
 
     <!-- RibbonMenuItem -->
-    <Style TargetType="{x:Type RibbonMenuItem}" BasedOn="{StaticResource RibbonControlStyle}">
+    <Style TargetType="{x:Type RibbonMenuItem}" BasedOn="{StaticResource RibbonControlStyle}" x:Key="RibbonMenuItemDefaultStyle">
         <Setter Property="Header" Value="{Binding Label}" />
         <Setter Property="ImageSource" Value="{Binding ImageSource}" />
         <Setter Property="KeyTipService.KeyTip" Value="{Binding KeyTip}" />
@@ -82,8 +83,9 @@
         <Setter Property="CommandParameter" Value="{Binding CommandParameter}" />
         <Setter Property="ItemsSource" Value="{Binding ItemsSource}" />
         <Setter Property="StaysOpenOnClick" Value="{Binding StaysOpenOnClick}" />
-        <!--     <Setter Property="IsCheckable" Value="{Binding IsCheckable}" />
         <Setter Property="IsChecked" Value="{Binding IsChecked}" />
+        <!--     <Setter Property="IsCheckable" Value="{Binding IsCheckable}" />
+        
         <Setter Property="CanUserResizeVertically" Value="{Binding IsVerticallyResizable}" />
         <Setter Property="CanUserResizeHorizontally" Value="{Binding IsHorizontallyResizable}" />  -->
         <Style.Triggers>
@@ -127,18 +129,6 @@
     </Style>
     
     
-    <!-- Style zur Anzeige von Auto-Text Einträgen -->
-    <Style TargetType="{x:Type RibbonMenuItem}" x:Key="AutoTextRibbonMenuItem">
-        <Setter Property="Header" Value="{Binding Name}" />
-        <Setter Property="Command" Value="{Binding Command_BeoInsertTextbaustein, Source={StaticResource MainViewModel}}" />
-        <Setter Property="ToolTipTitle" Value="{Binding Name}" />
-        <Setter Property="ToolTipDescription" Value="{Binding Text}" />
-        <Setter Property="ToolTipFooterTitle" Value="Benutzt:" />
-        <Setter Property="ToolTipImageSource" Value="/Images/Notiz2.ico" />
-        <Setter Property="ToolTipFooterDescription" Value="{Binding UsageCount}" />
-        <Setter Property="CommandParameter" Value="{Binding TextbausteinId}" />
-        <Setter Property="Tag" Value="{Binding Text}" />
-        <Setter Property="ImageSource" Value="/Images/Notiz2.ico" />
-    </Style>
+    
 
 </ResourceDictionary>

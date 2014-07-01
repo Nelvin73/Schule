@@ -20,11 +20,11 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         public bool NewPageOnSchüler
         {
-            get { return UpdateViewButton.IsChecked; }
+            get { return NewPageOnSchülerButton.IsChecked; }
             set
             {
-                if (UpdateViewButton.IsChecked != value)
-                { UpdateViewButton.IsChecked = value; OnPropertyChanged(); }
+                if (NewPageOnSchülerButton.IsChecked != value)
+                { NewPageOnSchülerButton.IsChecked = value; OnPropertyChanged(); }
             }
         }
 
@@ -35,18 +35,21 @@ namespace Groll.Schule.SchulDB.ViewModels
             set
             {
                 if (EditModeButton.IsChecked != value)
-                { EditModeButton.IsChecked = value; OnPropertyChanged(); }
+                {                     
+                    EditModeButton.IsChecked = value; 
+                    OnPropertyChanged(); 
+                }
             }
         }
 
         
         #region Ribbon Elements
 
-        public RibbonItemViewModel UpdateViewButton
+        public RibbonItemViewModel NewPageOnSchülerButton
         {
             get
             {
-                string Key = "UpdateViewButton";
+                string Key = "NewPageOnSchülerButton";
                 RibbonItemViewModel t = GetElement(Key) as RibbonItemViewModel;
                 if (t == null)
                 {

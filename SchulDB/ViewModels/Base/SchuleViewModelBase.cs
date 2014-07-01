@@ -19,8 +19,8 @@ namespace Groll.Schule.SchulDB.ViewModels
     public class SchuleViewModelBase : ObservableObject
     {
               
-        #region Properties
-        
+        #region Properties        
+       
         // ViewModel von Mainwindow        
         private static MainWindowVM mainWndVM;
 

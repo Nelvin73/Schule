@@ -86,7 +86,10 @@ namespace Groll.Schule.SchulDB.ViewModels
             {
                 if (beoText == value)
                     return;
-                beoText = value; SchuleCommands.Beobachtungen.AddComment.RaiseCanExecuteChanged(); OnPropertyChanged();
+
+                beoText = value; 
+                SchuleCommands.Beobachtungen.AddComment.RaiseCanExecuteChanged();   // Update Command
+                OnPropertyChanged();
             }
         }
 
