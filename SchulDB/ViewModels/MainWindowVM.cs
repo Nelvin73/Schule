@@ -112,6 +112,10 @@ namespace Groll.Schule.SchulDB.ViewModels
                         page = new KlassenDetailsPage();
                         break;
 
+                    case "klassenedit":
+                        page = new KlassenEditPage();
+                        break;
+
                     case "schuljahredetails":
                         page = new SchuljahreDetailsPage();
                         break;

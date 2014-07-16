@@ -5,7 +5,7 @@
         xmlns:ViewModels="clr-namespace:Groll.Schule.SchulDB.ViewModels"
         xmlns:local="clr-namespace:Groll.Schule.SchulDB"
         xmlns:Model="clr-namespace:Groll.Schule.Model;assembly=Model"    
-    xmlns:Primitives="clr-namespace:System.Windows.Controls.Ribbon.Primitives;assembly=System.Windows.Controls.Ribbon" x:Class="Groll.Schule.SchulDB.MainWindow"
+    xmlns:Primitives="clr-namespace:System.Windows.Controls.Ribbon.Primitives;assembly=System.Windows.Controls.Ribbon" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Groll.Schule.SchulDB.MainWindow"
         Title="SchulDB"
         x:Name="RibbonWindow"
         Width="1024" Height="800">
@@ -68,10 +68,11 @@
             </Ribbon.ContextualTabGroups>
 
 
-            <RibbonTab DataContext="{Binding TabStandard}" Style="{StaticResource RibbonTabDefaultStyle }"  >
+            <RibbonTab DataContext="{Binding TabStandard}" Style="{StaticResource RibbonTabDefaultStyle}"  >
                 <RibbonGroup Header="Stammdaten" DataContext="{StaticResource MainViewModel}">
                     <RibbonButton Label="Schüler" SmallImageSource="/Images/Schüler.ico" Command="{Binding Command_Navigate}" CommandParameter="schuelerdetails" LargeImageSource="/Images/Schüler.ico"  />
-                    <RibbonButton Label="Klassen" SmallImageSource="/Images/Klasse.ico" Command="{Binding Command_Navigate}" CommandParameter="klassendetails" LargeImageSource="/Images/Klasse.ico" />
+                    <RibbonButton Label="Klassen_old" SmallImageSource="/Images/Klasse.ico" Command="{Binding Command_Navigate}" CommandParameter="klassendetails" LargeImageSource="/Images/Klasse.ico" />
+                    <RibbonButton Label="Klassen" SmallImageSource="/Images/Klasse.ico" Command="{Binding Command_Navigate}" CommandParameter="klassenedit" LargeImageSource="/Images/Klasse.ico" />
                     <RibbonButton Label="Fächer" SmallImageSource="/Images/Schultafel_Schulfaecher_320986.jpg" Command="{Binding Command_Navigate}" CommandParameter="faecherdetails" LargeImageSource="/Images/Mappe.ico" />
                     <RibbonButton Label="Schuljahre" SmallImageSource="/Images/neues-jahr-2012.jpg" Command="{Binding Command_Navigate}" CommandParameter="schuljahredetails" LargeImageSource="/Images/neues-jahr-2012.jpg" />
                 </RibbonGroup>
@@ -96,18 +97,18 @@
 
 
             <!-- RibbonTab Beobachtungen -->
-            <RibbonTab DataContext="{Binding TabBeobachtungen}"  Style="{StaticResource RibbonTabDefaultStyle }">
+            <RibbonTab DataContext="{Binding TabBeobachtungen}"  Style="{StaticResource RibbonTabDefaultStyle}">
                 <RibbonGroup Header="Ansicht" >
 
                     <!-- Change History-View Button-->
-                    <RibbonMenuButton Label="History" DataContext="{Binding HistoryViewMenuButton }" Style="{StaticResource RibbonMenuButtonDefaultStyle }" >
+                    <RibbonMenuButton Label="History" DataContext="{Binding HistoryViewMenuButton}" Style="{StaticResource RibbonMenuButtonDefaultStyle}" >
                         <RibbonGallery SelectedItem="{Binding SelectedItem}" ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                                       Command="{Binding Path=ChangeHistoryView, Source={x:Static comm:SchuleCommands.Beobachtungen}}" CommandParameter="{Binding Tag}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}">
+							Command="{Binding ChangeHistoryView, Source={x:Static comm:SchuleCommands.Beobachtungen}}" CommandParameter="{Binding Tag}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}">
                             <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}" />
                         </RibbonGallery>
                     </RibbonMenuButton>
 
-                    <RibbonButton DataContext="{Binding ViewBeobachtungenButton}" Style="{StaticResource RibbonButtonDefaultStyle }" />
+                    <RibbonButton DataContext="{Binding ViewBeobachtungenButton}" Style="{StaticResource RibbonButtonDefaultStyle}" />
 
                 </RibbonGroup>
 
@@ -152,10 +153,10 @@
 
                 <RibbonGroup Header="Exportieren" >
                     <!-- Export Button-->
-                    <RibbonButton DataContext="{Binding ExportButton}" Command="{Binding ExportToWord, Source={x:Static comm:SchuleCommands.Beobachtungen}}" Style="{StaticResource RibbonButtonDefaultStyle }"  />
+                    <RibbonButton DataContext="{Binding ExportButton}" Command="{Binding ExportToWord, Source={x:Static comm:SchuleCommands.Beobachtungen}}" Style="{StaticResource RibbonButtonDefaultStyle}"  />
 
                     <!-- Filterauswahl Button-->
-                    <RibbonMenuButton MinWidth="55"  DataContext="{Binding FilterMenuButton}" Style="{StaticResource RibbonMenuButtonDefaultStyle }">
+                    <RibbonMenuButton MinWidth="55"  DataContext="{Binding FilterMenuButton}" Style="{StaticResource RibbonMenuButtonDefaultStyle}">
                         <RibbonGallery SelectedItem="{Binding SelectedItem}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                             <RibbonGalleryCategory Header="Beobachtungen einschränken" ItemsSource="{Binding ItemsSource}" >
                                 <RibbonGalleryCategory.ItemTemplate>
@@ -172,31 +173,31 @@
 
                     <RibbonMenuButton Label="Einstellungen" LargeImageSource="/Images/Settings1.ico">
 
-                        <RibbonMenuItem  DataContext="{Binding GroupingSettingsMenuButton}" ItemsSource="{x:Null}" Style="{StaticResource RibbonMenuItemDefaultStyle }">
+                        <RibbonMenuItem  DataContext="{Binding GroupingSettingsMenuButton}" ItemsSource="{x:Null}" Style="{StaticResource RibbonMenuItemDefaultStyle}">
                             <RibbonGallery  SelectedItem="{Binding Ribbon.TabBeobachtungen.SelectedGrouping, Source={StaticResource MainViewModel}}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                 <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                             </RibbonGallery>
                         </RibbonMenuItem>
 
-                        <RibbonMenuItem DataContext="{Binding SortSettingsMenuButton}" ItemsSource="{x:Null}" Style="{StaticResource RibbonMenuItemDefaultStyle }">
+                        <RibbonMenuItem DataContext="{Binding SortSettingsMenuButton}" ItemsSource="{x:Null}" Style="{StaticResource RibbonMenuItemDefaultStyle}">
                             <RibbonGallery  SelectedItem="{Binding Ribbon.TabBeobachtungen.SelectedSorting, Source={StaticResource MainViewModel}}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                 <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                             </RibbonGallery>
                         </RibbonMenuItem>
 
                         <RibbonMenuItem Header="Formatierung" >
-                            <RibbonMenuItem DataContext="{Binding TextBreakKlasseMenuButton}" ItemsSource="{x:Null}" Style="{StaticResource RibbonMenuItemDefaultStyle }">
+                            <RibbonMenuItem DataContext="{Binding TextBreakKlasseMenuButton}" ItemsSource="{x:Null}" Style="{StaticResource RibbonMenuItemDefaultStyle}">
                                 <RibbonGallery  SelectedItem="{Binding SelectedItem}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>
 
-                            <RibbonMenuItem DataContext="{Binding TextBreakSchülerMenuButton}" ItemsSource="{x:Null}" Style="{StaticResource RibbonMenuItemDefaultStyle }">
+                            <RibbonMenuItem DataContext="{Binding TextBreakSchülerMenuButton}" ItemsSource="{x:Null}" Style="{StaticResource RibbonMenuItemDefaultStyle}">
                                 <RibbonGallery  SelectedItem="{Binding SelectedItem}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
                             </RibbonMenuItem>
-                            <RibbonMenuItem DataContext="{Binding TextBreakDatumMenuButton}" ItemsSource="{x:Null}" Style="{StaticResource RibbonMenuItemDefaultStyle }">
+                            <RibbonMenuItem DataContext="{Binding TextBreakDatumMenuButton}" ItemsSource="{x:Null}" Style="{StaticResource RibbonMenuItemDefaultStyle}">
                                 <RibbonGallery  SelectedItem="{Binding SelectedItem}" GalleryItemStyle="{DynamicResource MenuItemsDataWithCheckmark}" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                     <RibbonGalleryCategory ItemsSource="{Binding ItemsSource}"  />
                                 </RibbonGallery>
@@ -219,10 +220,10 @@
             </RibbonTab>
 
             <!-- RibbonTab Beobachtungen-Ansicht -->
-            <RibbonTab DataContext="{Binding TabBeobachtungenAnsicht}"  Style="{StaticResource RibbonTabDefaultStyle }">
+            <RibbonTab DataContext="{Binding TabBeobachtungenAnsicht}"  Style="{StaticResource RibbonTabDefaultStyle}">
                 <RibbonGroup Header="Ansicht">
-                    <RibbonToggleButton DataContext="{Binding NewPageOnSchülerButton}" Command="{Binding UpdateBeobachtungenView, Source={x:Static comm:SchuleCommands.Beobachtungen}}"  Style="{StaticResource RibbonToggleButtonDefaultStyle }" />
-                    <RibbonToggleButton DataContext="{Binding EditModeButton}" Command="{Binding EditModeChanged, Source={x:Static comm:SchuleCommands.Beobachtungen}}" CommandParameter="{Binding IsChecked}"  Style="{StaticResource RibbonToggleButtonDefaultStyle }" />
+                    <RibbonToggleButton DataContext="{Binding NewPageOnSchülerButton}" Command="{Binding UpdateBeobachtungenView, Source={x:Static comm:SchuleCommands.Beobachtungen}}"  Style="{StaticResource RibbonToggleButtonDefaultStyle}" />
+                    <RibbonToggleButton DataContext="{Binding EditModeButton}" Command="{Binding EditModeChanged, Source={x:Static comm:SchuleCommands.Beobachtungen}}" CommandParameter="{Binding IsChecked}"  Style="{StaticResource RibbonToggleButtonDefaultStyle}" />
                 </RibbonGroup>
             </RibbonTab>
 

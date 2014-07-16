@@ -83,10 +83,17 @@
     <Compile Include="Helper\Converters.cs" />
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Import\Import.cs" />
+    <Compile Include="InputBox.xaml.cs">
+      <DependentUpon>InputBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\BeobachtungenAnsichtPage.xaml.cs">
       <DependentUpon>BeobachtungenAnsichtPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\KlassenEditPage.xaml.cs">
+      <DependentUpon>KlassenEditPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Reports\BeobachtungenExport.cs" />
+    <Compile Include="ViewModels\Pages\KlassenEditVM.cs" />
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabViewModel.cs" />
     <Compile Include="ViewModels\Base\SchuleViewModelBase.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
@@ -101,6 +108,10 @@
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabBeobachtungenVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonViewModel.cs" />
     <Compile Include="Properties\Settings.cs" />
+    <Page Include="InputBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -117,6 +128,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Pages\FaecherDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\KlassenEditPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

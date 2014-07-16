@@ -16,26 +16,28 @@ using System.Windows.Shapes;
 namespace Groll.Schule.SchulDB.Pages
 {
     /// <summary>
-    /// Interaktionslogik für Welcome.xaml
+    /// Interaktionslogik für UserDetailsPage.xaml
     /// </summary>
-    public partial class WelcomePage : Page, ISchulDBPage
+    public partial class KlassenEditPage : Page, ISchulDBPage
     {
-        public WelcomePage()
+        public KlassenEditPage()
         {
             InitializeComponent();
-            txtVersion.Text = "Version " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            
         }
 
-       
-        
         public void SetMainWindow(MainWindow x)
         {
-            // MainWindow not used on Welcome Page            
+            // Save MainWindow handle
+            this.Tag = x;            
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {            
         }
 
         public void OnDatabaseChanged()
-        {            
+        {
+            throw new NotImplementedException();
         }
     }
 }
