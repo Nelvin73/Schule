@@ -18,22 +18,15 @@ namespace Groll.Schule.SchulDB.ViewModels
     {
         // internal Member
 
-        private ObservableCollection<Klasse> klassenListe;
-        private ObservableCollection<Schueler> schülerListe;
+        private List<Klasse> klassenListe;
+        private List<Schueler> schülerListe;
+        private List<Schueler> freieSchülerListe;
         private Klasse selectedKlasse;
-
-        /*private DateTime? beoDatum;
-        private string beoText;
-        private Schuljahr selectedSchuljahr;
-        
-        private Schueler selectedSchüler;
-        private Fach selectedFach;
-        
-        */      
+     
         #region Properties
 
         // Liste der Klassen / z.B. für Dropdown oder Liste        
-        public ObservableCollection<Klasse> KlassenListe
+        public List<Klasse> KlassenListe
         {
             get { return klassenListe; }
             set
@@ -61,25 +54,27 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-        
-      
-       
-
         // Liste der Schüler / z.B. für Dropdown oder Liste                       
-        public ObservableCollection<Schueler> SchülerListe
+        public List<Schueler> SchülerListe
         {
             get { return schülerListe; }
             set
             {
                 if (schülerListe == value)
                     return;
-                schülerListe = value; OnPropertyChanged();
-               /*
-                if (schülerListe.Count > 0)
-                    SelectedSchüler = schülerListe[0];
-                else
-                    SelectedSchüler = null;
-                * */
+                schülerListe = value; OnPropertyChanged();              
+            }
+        }              
+    
+        // Liste der Schüler ohne Klasse                       
+        public List<Schueler> FreieSchülerListe
+        {
+            get { return freieSchülerListe; }
+            set
+            {
+                if (freieSchülerListe == value)
+                    return;
+                freieSchülerListe = value; OnPropertyChanged();              
             }
         }              
 
@@ -108,18 +103,14 @@ namespace Groll.Schule.SchulDB.ViewModels
          protected virtual void OnSelectedKlasseChanged()
         {
             // Eine Klasse wurde ausgewählt => Schülerliste aktualisieren
-           /*
-             if (selectedKlasse == null)
-                SchülerListe = new ObservableCollection<Schueler>();
+            if (selectedKlasse == null)
+                SchülerListe = new List<Schueler>();
             else
-                SchülerListe = new ObservableCollection<Schueler>(SelectedKlasse.Schueler);
-
-             */
+                SchülerListe = SelectedKlasse.Schueler;            
         }
 
         #endregion
-        /*
- * 
+       
         public override void RefreshData()
         {
             base.RefreshData();
@@ -127,16 +118,42 @@ namespace Groll.Schule.SchulDB.ViewModels
             // Initialisierung
             if (UnitOfWork != null)
             {
-                // Aktuelle Fächer holen
-                var fl = new ObservableCollection<Fach>(UnitOfWork.Fächer.GetActiveFächer());
-                fl.Insert(0, new Fach("<kein Fach>") { FachId = -1000 });
-                Fächerliste = fl;
-
-                // SCHULJAHRE LISTE LADEN
-                SchuljahrListe = UnitOfWork.Schuljahre.GetObservableCollection();                                               
+                // Aktuelle Klassen holen
+                KlassenListe = UnitOfWork.Klassen.GetList();
+                
+                // Freie Schüler holen
+             //   var sj = UnitOfWork.Settings["Global.AktuellesSchuljahr"].GetInt(Schuljahr.GetCurrent().Startjahr);
+            //    FreieSchülerListe = UnitOfWork.Schueler.GetList().Where(x => x.GetKlasse(sj) == null).ToList();
+            
             }
         } 
-       
+
+
+        // Public methods
+
+
+        public bool AddToCurrentClass(Schueler s)
+        {
+            if (!SelectedKlasse.Schueler.Contains(s))
+            {
+                SelectedKlasse.Schueler.Add(s);
+            }
+            return false;
+
+        }
+
+        public bool RemoveFromCurrentClass(Schueler s)
+        {
+            // In DB löschen
+            UnitOfWork.Klassen.GetById(SelectedKlasse.KlasseId).Schueler.Remove(s);
+            UnitOfWork.Save();
+
+            var sj = UnitOfWork.Settings["Global.AktuellesSchuljahr"].GetInt(Schuljahr.GetCurrent().Startjahr);
+            FreieSchülerListe = UnitOfWork.Schueler.GetList().Where(x => x.GetKlasse(sj) == null).ToList();
+            return false;
+        }
+
+         /*
         protected virtual void OnSelectedSchuljahrChanged()
         {
             // Ein anderes Schuljahr wurde ausgewählt => Klassenliste aktualisieren
@@ -163,7 +180,7 @@ namespace Groll.Schule.SchulDB.ViewModels
 
 
         // Commands
-
+         
         #region Public Interface für Commands
         public virtual bool ValidateCurrent()
         {

@@ -14,9 +14,14 @@
     </Page.Resources>
 
     <Grid DataContext="{StaticResource ViewModel}">
-        <ComboBox HorizontalAlignment="Left" Margin="56,52,0,0" VerticalAlignment="Top" Width="321"/>
-        <ListBox HorizontalAlignment="Left" Height="251" Margin="56,79,0,0" VerticalAlignment="Top" Width="321"/>
-        <ListBox HorizontalAlignment="Left" Height="251" Margin="461,79,0,0" VerticalAlignment="Top" Width="289"/>
+        <ComboBox HorizontalAlignment="Left" Margin="56,52,0,0" VerticalAlignment="Top" Width="321" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" />
+        
+        <ListBox HorizontalAlignment="Left" Height="251" Margin="56,79,0,0" VerticalAlignment="Top" Width="321" ItemsSource="{Binding SchülerListe}"
+                 Tag = "K" MouseMove="ListBox_MouseMove" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop" AllowDrop="True" DragEnter="ListBox_DragEnter" DragLeave="ListBox_DragLeave" DragOver="ListBox_DragOver" GiveFeedback="ListBox_GiveFeedback"         />
+
+        <ListBox HorizontalAlignment="Left" Height="251" Margin="461,79,0,0" VerticalAlignment="Top" Width="289" ItemsSource="{Binding FreieSchülerListe}" 
+                 Tag = "F" MouseMove="ListBox_MouseMove" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop" AllowDrop="True" DragEnter="ListBox_DragEnter" DragLeave="ListBox_DragLeave" DragOver="ListBox_DragOver" GiveFeedback="ListBox_GiveFeedback"         />
+
         <TextBlock HorizontalAlignment="Left" Margin="461,52,0,0" TextWrapping="Wrap" Text="Noch nicht zugeordnete Schüler" VerticalAlignment="Top" Width="289"/>
 
     </Grid>
