@@ -20,30 +20,34 @@ namespace Groll.Schule.SchulDB
     public partial class InputBox : Window
     {
         public string Header { get; private set; }
-        public string Info { get; private set; }
-        public string DefaultValue { get; private set; }
+        public string Info { get; private set; }        
         public string ReturnValue { get; private set; }        
 
         public InputBox()
         {
             InitializeComponent();
-            ReturnValue = "";
+            
         }
 
 
-        public static  bool Show(string Header, string Info, string Title = "Bitte eingeben", string DefaultValue = "")
+        public static  string Show(string Header, string Info, string Title = "Bitte eingeben", string DefaultValue = "")
         {
             InputBox b = new InputBox();
             b.Title = Title;
             b.Header = Header;
             b.Info = Info;
-            b.DefaultValue = DefaultValue;
+            b.ReturnValue = DefaultValue;
 
             bool? res = b.ShowDialog();
 
-            return res ?? false;
-        
-        
+            return res != true ? "" : b.ReturnValue;        
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            // OK Pressed
+            DialogResult = true;
+            this.Close();
         }
     }
 }

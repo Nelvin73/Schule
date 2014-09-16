@@ -27,7 +27,16 @@ namespace Groll.Schule.DataManager.Repositories
             return Get(Name, Schuljahr.Startjahr);
         }
 
-      
+        public Klasse Add(string Name, Schuljahr Schuljahr)
+        {
+            return Add(new Klasse() {Name = Name, Schuljahr = Schuljahr, Schueler = new ObservableCollection<Schueler>()});
+        }
+
+        public Klasse Add(string Name, int Schuljahr)
+        {
+            return Add(new Klasse() { Name = Name, SchuljahrId = Schuljahr, Schueler = new ObservableCollection<Schueler>() });
+        }
+
       
         
     }

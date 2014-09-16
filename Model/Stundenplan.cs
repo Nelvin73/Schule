@@ -15,6 +15,12 @@ namespace Groll.Schule.Model
         public virtual Klasse Klasse { get; set; }
         public virtual List<Unterrichtsstunde> Stunden { get; set; }
 
+        public List<Fach> Montag { get { return Fächer(Wochentag.Montag); } }
+        public List<Fach> Dienstag { get { return Fächer(Wochentag.Dienstag); } }
+        public List<Fach> Mittwoch { get { return Fächer(Wochentag.Mittwoch); } }
+        public List<Fach> Donnerstag { get { return Fächer(Wochentag.Donnerstag); } }
+        public List<Fach> Freitag { get { return Fächer(Wochentag.Freitag); } }
+        public List<Fach> Samstag { get { return Fächer(Wochentag.Samstag); } }
 
         public List<Fach> Fächer(Wochentag Tag)
         {

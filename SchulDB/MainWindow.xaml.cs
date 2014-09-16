@@ -42,8 +42,17 @@ namespace Groll.Schule.SchulDB
         #endregion
 
         public MainWindow()
-        {           
-            InitializeComponent();                     
+        {
+            try
+            {
+                InitializeComponent();         
+            }
+            catch (Exception e)
+            {
+                
+                throw;
+            }
+                        
         }
 
        

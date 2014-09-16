@@ -19,7 +19,7 @@ namespace Groll.Schule.SchulDB.Pages
     /// <summary>
     /// Interaktionslogik für UserDetailsPage.xaml
     /// </summary>
-    public partial class KlassenEditPage : Page, ISchulDBPage
+    public partial class StundenplanEditPage : Page, ISchulDBPage
     {
         private ListBox dragSource = null;
         private Point dragStartPoint = new Point();
@@ -45,7 +45,7 @@ namespace Groll.Schule.SchulDB.Pages
         }
         #endregion
 
-        public KlassenEditPage()
+        public StundenplanEditPage()
         {
             InitializeComponent();
         }
@@ -95,32 +95,7 @@ namespace Groll.Schule.SchulDB.Pages
 
         }
 
-        private void Schülerliste_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            // Wenn auf selektiertes Item geklickt, aber kein Drag & Drop gestartet wurde, Standardverhalten nachbilden
-            if (DragMoveStarted)
-            {
-                if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-                {
-                    // Item deselektieren
-                    Schülerliste.SelectedItems.Remove(currentClickedSchüler);
-                }
-                else if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
-                {
-                    // ignore
-
-                }
-                else
-                {
-                    // nur dieses Selektieren                    
-                    Schülerliste.SelectedItem = currentClickedSchüler;
-                }
-                dragSource.Focus();
-                DragMoveStarted = false;
-            }
-
-        }
-
+       
 
         private void ListBox_MouseMove(object sender, MouseEventArgs e)
         {

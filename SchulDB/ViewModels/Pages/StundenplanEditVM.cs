@@ -14,14 +14,25 @@ namespace Groll.Schule.SchulDB.ViewModels
     /// <summary>
     /// ViewModel für die Klassenbearbeitungs-Seite
     /// </summary>
-    public class KlassenEditVM : SchuleViewModelBase
+    public class StundenplanEditVM : SchuleViewModelBase
     {
         // internal Member
+        private Stundenplan stundenplan;
         private List<Klasse> klassenListe;        
         private ObservableCollection<Schueler> freieSchülerListe;
         private Klasse selectedKlasse;
      
         #region Properties
+
+        public Stundenplan Stundenplan
+        {
+            get
+            {                                    
+
+                return stundenplan;
+
+            }
+        }
 
         // Liste der Klassen / z.B. für Dropdown oder Liste        
         public List<Klasse> KlassenListe
@@ -67,7 +78,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         #endregion
 
         //  Konstructor
-        public KlassenEditVM()
+        public StundenplanEditVM()
         {
             AddClassCommand = new DelegateCommand((object x) => AddKlasse(x));
             DeleteClassCommand = new DelegateCommand((object x) => DeleteKlasse());
@@ -90,14 +101,15 @@ namespace Groll.Schule.SchulDB.ViewModels
             
             // Initialisierung
             if (UnitOfWork != null)
-            {                
-                int sj = Settings.ActiveSchuljahr.Startjahr;
+            {
+                stundenplan = UnitOfWork.Stundenpläne.Get(x => x.Klasse == selectedKlasse);
+                //    int sj = Settings.ActiveSchuljahr.Startjahr;
                         
                 // Aktuelle Klassen holen
-                KlassenListe = UnitOfWork.Klassen.GetList().Where(x => x.SchuljahrId == sj).ToList();   
+              //  KlassenListe = UnitOfWork.Klassen.GetList().Where(x => x.SchuljahrId == sj).ToList();   
                 
                 // Freie Schüler holen
-                FreieSchülerListe = new ObservableCollection<Schueler>(UnitOfWork.Schueler.GetList().Where(x => !x.Inaktiv && x.GetKlasse(sj) == null));                
+              //  FreieSchülerListe = new ObservableCollection<Schueler>(UnitOfWork.Schueler.GetList().Where(x => !x.Inaktiv && x.GetKlasse(sj) == null));                
             }
         }
 

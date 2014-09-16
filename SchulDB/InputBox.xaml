@@ -12,10 +12,10 @@
         </Grid.RowDefinitions>
         <TextBlock Text="{Binding Header, FallbackValue=Header, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:InputBox}}}" Grid.Row="0" Margin="6" HorizontalAlignment="Center"/>
         <TextBlock Text="{Binding Info, FallbackValue=Info, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:InputBox}}}" Grid.Row="1" Margin="6"/>
-        <TextBox TextWrapping="Wrap" Text="{Binding Value, FallbackValue=DefaultValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:InputBox}}}"  Grid.Row="2" Margin="6"/>
+        <TextBox TextWrapping="Wrap" Text="{Binding ReturnValue, FallbackValue=DefaultValue, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:InputBox}}}"  Grid.Row="2" Margin="6"/>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="3" >
             <Button Content="Cancel" Width="75" IsCancel="True" Margin="3" />
-            <Button Content="OK" Width="75" IsDefault="True" Margin="3" />
+            <Button Content="OK" Width="75" IsDefault="True" Margin="3" Click="Button_Click" />
         </StackPanel>
 
     </Grid>

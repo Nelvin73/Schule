@@ -3,26 +3,75 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:Model="clr-namespace:Groll.Schule.Model;assembly=Model" x:Class="Groll.Schule.SchulDB.Pages.KlassenEditPage" 
+      xmlns:Model="clr-namespace:Groll.Schule.Model;assembly=Model" 
     xmlns:VM="clr-namespace:Groll.Schule.SchulDB.ViewModels"  
+    xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase" x:Class="Groll.Schule.SchulDB.Pages.KlassenEditPage"  
     mc:Ignorable="d" 
       d:DesignHeight="460" d:DesignWidth="800"
 	Title="" Loaded="Page_Loaded">
 
     <Page.Resources>
-        <VM:KlassenEditVM x:Key="ViewModel" />
+        <VM:StundenplanEditVM x:Key="ViewModel" />
     </Page.Resources>
 
     <Grid DataContext="{StaticResource ViewModel}">
-        <ComboBox HorizontalAlignment="Left" Margin="56,52,0,0" VerticalAlignment="Top" Width="321" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" />
-        
-        <ListBox HorizontalAlignment="Left" Height="251" Margin="56,79,0,0" VerticalAlignment="Top" Width="321" ItemsSource="{Binding SchülerListe}"
-                 Tag = "K" MouseMove="ListBox_MouseMove" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop" AllowDrop="True" DragEnter="ListBox_DragEnter" DragLeave="ListBox_DragLeave" DragOver="ListBox_DragOver" GiveFeedback="ListBox_GiveFeedback"         />
+        <Grid.Resources>
+            <CollectionViewSource x:Key="cvsKlassenliste" Source="{Binding SelectedKlasse.Schueler}"  >
+                <CollectionViewSource.SortDescriptions>
+                    <ComponentModel:SortDescription Direction="Ascending" PropertyName="Nachname"/>
+                    <ComponentModel:SortDescription Direction="Ascending" PropertyName="Vorname"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+            <CollectionViewSource x:Key="cvsFreieliste" Source="{Binding FreieSchülerListe}" >
+                <CollectionViewSource.SortDescriptions>
+                    <ComponentModel:SortDescription Direction="Ascending" PropertyName="Nachname"/>
+                    <ComponentModel:SortDescription Direction="Ascending" PropertyName="Vorname"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+        </Grid.Resources>
 
-        <ListBox HorizontalAlignment="Left" Height="251" Margin="461,79,0,0" VerticalAlignment="Top" Width="289" ItemsSource="{Binding FreieSchülerListe}" 
-                 Tag = "F" MouseMove="ListBox_MouseMove" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop" AllowDrop="True" DragEnter="ListBox_DragEnter" DragLeave="ListBox_DragLeave" DragOver="ListBox_DragOver" GiveFeedback="ListBox_GiveFeedback"         />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Left" Margin="461,52,0,0" TextWrapping="Wrap" Text="Noch nicht zugeordnete Schüler" VerticalAlignment="Top" Width="289"/>
+        <!-- Überschrift -->
+        <TextBlock Grid.ColumnSpan="2" Margin="6" Text="Klasseneinteilung" HorizontalAlignment="Center" FontSize="32" />
+
+        <!-- Klassen-Ansicht -->
+        <DockPanel Grid.Column="0" Grid.Row="1" Margin="50,10,25,20" >
+            <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+                <Button Margin="3" DockPanel.Dock="Right" Width="20" Height="20" Content="{StaticResource PlusSymbolPath}"
+                        Command="{Binding AddClassCommand}" CommandParameter="{Binding Text, ElementName=tbNameNeueKlasse}" />
+                <TextBox x:Name="tbNameNeueKlasse" Margin="3"  />
+            </DockPanel>
+            <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+                <Button Margin="3" DockPanel.Dock="Right" Width="20" Height="20" Content="{StaticResource MinusSymbolPath}" VerticalContentAlignment="Stretch"
+                        Command="{Binding DeleteClassCommand}" />
+                <ComboBox Margin="3" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" />
+            </DockPanel>
+
+            <ListBox Margin="3" x:Name="Schülerliste" ItemsSource="{Binding Mode=OneWay, Source={StaticResource cvsKlassenliste}}" 
+				Tag = "K" MouseMove="ListBox_MouseMove" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop" AllowDrop="True" DragEnter="ListBox_DragEnter" DragLeave="ListBox_DragLeave" DragOver="ListBox_DragOver" GiveFeedback="ListBox_GiveFeedback" SelectionMode="Extended" PreviewMouseLeftButtonUp="Schülerliste_PreviewMouseLeftButtonUp" MouseDoubleClick="Schülerliste_MouseDoubleClick"   />
+
+        </DockPanel>
+
+        <!-- Freie Schüler -->
+        <DockPanel Grid.Column="1" Grid.Row="1" Margin="25,40,50,20">
+            <TextBlock Margin="3" DockPanel.Dock="Top" Text="Noch nicht zugeordnete Schüler" HorizontalAlignment="Center" FontSize="14" />
+
+            <ListBox Margin="3,4,3,3" ItemsSource="{Binding Mode=OneWay, Source={StaticResource cvsFreieliste}}" 
+				Tag = "F" MouseMove="ListBox_MouseMove" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop" AllowDrop="True" DragEnter="ListBox_DragEnter" DragLeave="ListBox_DragLeave" DragOver="ListBox_DragOver" GiveFeedback="ListBox_GiveFeedback"   SelectionMode="Extended"   PreviewMouseLeftButtonUp="Schülerliste_PreviewMouseLeftButtonUp"  MouseDoubleClick="Schülerliste_MouseDoubleClick"       />
+
+        </DockPanel>
+
+        <!-- Erklärung -->
+        <TextBlock Grid.ColumnSpan="2" Grid.Row="2" Margin="6,10" Text="Mit '+' und '-' Klassen erstellen und löschen. &#xA;Mit Drag &amp; Drop oder Doppel-Klick die Schüler den Klassen zuordnen." TextAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" />
 
     </Grid>
 </Page>

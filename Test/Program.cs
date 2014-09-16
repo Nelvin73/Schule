@@ -179,7 +179,7 @@ namespace Test
                 Console.WriteLine("Klasse " + j.Name + " (" + j.Schuljahr.ToString() + ")");
                 Console.WriteLine(new string('=',20));
                 Console.WriteLine("Schüler: ");
-                j.Schueler.ForEach( x=> Console.WriteLine(" - " + x.DisplayName ));                
+                j.Schueler.ToList().ForEach( x=> Console.WriteLine(" - " + x.DisplayName ));                
             }
 
             Console.WriteLine("\nBeobachtungen: " + i.Beobachtungen.Count());

@@ -5,14 +5,22 @@
         xmlns:ViewModels="clr-namespace:Groll.Schule.SchulDB.ViewModels"
         xmlns:local="clr-namespace:Groll.Schule.SchulDB"
         xmlns:Model="clr-namespace:Groll.Schule.Model;assembly=Model"    
-    xmlns:Primitives="clr-namespace:System.Windows.Controls.Ribbon.Primitives;assembly=System.Windows.Controls.Ribbon" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Groll.Schule.SchulDB.MainWindow"
-        Title="SchulDB"
+        xmlns:Primitives="clr-namespace:System.Windows.Controls.Ribbon.Primitives;assembly=System.Windows.Controls.Ribbon" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        mc:Ignorable="d" x:Class="Groll.Schule.SchulDB.MainWindow"
+        Title="{Binding MainWindowTitle}"
         x:Name="RibbonWindow"
         Width="1024" Height="800">
 
     <RibbonWindow.Resources>
         <ViewModels:MainWindowVM x:Key="MainViewModel" />
     </RibbonWindow.Resources>
+    
+    <Window.DataContext >
+        <StaticResourceExtension ResourceKey="MainViewModel" />
+    </Window.DataContext>
+    
 
     <Grid x:Name="LayoutRoot" DataContext="{StaticResource MainViewModel}">
         <Grid.RowDefinitions>
@@ -71,10 +79,10 @@
             <RibbonTab DataContext="{Binding TabStandard}" Style="{StaticResource RibbonTabDefaultStyle}"  >
                 <RibbonGroup Header="Stammdaten" DataContext="{StaticResource MainViewModel}">
                     <RibbonButton Label="Schüler" SmallImageSource="/Images/Schüler.ico" Command="{Binding Command_Navigate}" CommandParameter="schuelerdetails" LargeImageSource="/Images/Schüler.ico"  />
-                    <RibbonButton Label="Klassen_old" SmallImageSource="/Images/Klasse.ico" Command="{Binding Command_Navigate}" CommandParameter="klassendetails" LargeImageSource="/Images/Klasse.ico" />
                     <RibbonButton Label="Klassen" SmallImageSource="/Images/Klasse.ico" Command="{Binding Command_Navigate}" CommandParameter="klassenedit" LargeImageSource="/Images/Klasse.ico" />
                     <RibbonButton Label="Fächer" SmallImageSource="/Images/Schultafel_Schulfaecher_320986.jpg" Command="{Binding Command_Navigate}" CommandParameter="faecherdetails" LargeImageSource="/Images/Mappe.ico" />
-                    <RibbonButton Label="Schuljahre" SmallImageSource="/Images/neues-jahr-2012.jpg" Command="{Binding Command_Navigate}" CommandParameter="schuljahredetails" LargeImageSource="/Images/neues-jahr-2012.jpg" />
+                    <RibbonButton Label="Schuljahr" SmallImageSource="/Images/neues-jahr-2012.jpg" Command="{Binding Command_Navigate}" CommandParameter="schuljahredetails" LargeImageSource="/Images/neues-jahr-2012.jpg" />
+                    <RibbonButton Label="Stundenplan" SmallImageSource="/Images/neues-jahr-2012.jpg" Command="{Binding Command_Navigate}" CommandParameter="stundenplanedit" LargeImageSource="/Images/neues-jahr-2012.jpg" />
                 </RibbonGroup>
                 <RibbonGroup Header="Beobachtungen" DataContext="{StaticResource MainViewModel}">
                     <RibbonButton Label="Eingeben" SmallImageSource="/Images/Schüler.ico" Command="{Binding Command_Navigate}" CommandParameter="beobachtungeneingabe" LargeImageSource="/Images/Schultafel_Schulfaecher_320986.jpg"  />

@@ -77,6 +77,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ChangeSchuljahr.xaml.cs">
+      <DependentUpon>ChangeSchuljahr.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Commands\SchuleCommands.cs" />
     <Compile Include="Commands\BeobachtungenCommands_old.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
@@ -89,10 +92,18 @@
     <Compile Include="Pages\BeobachtungenAnsichtPage.xaml.cs">
       <DependentUpon>BeobachtungenAnsichtPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\StundenplanEditPage.xaml.cs">
+      <DependentUpon>StundenplanEditPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\KlassenEditPage.xaml.cs">
       <DependentUpon>KlassenEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reports\BeobachtungenExport.cs" />
+    <Compile Include="Settings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModels\Pages\ChangeSchuljahrVM.cs" />
+    <Compile Include="ViewModels\Pages\StundenplanEditVM.cs" />
     <Compile Include="ViewModels\Pages\KlassenEditVM.cs" />
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabViewModel.cs" />
     <Compile Include="ViewModels\Base\SchuleViewModelBase.cs" />
@@ -108,6 +119,10 @@
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabBeobachtungenVM.cs" />
     <Compile Include="ViewModels\Ribbon\RibbonViewModel.cs" />
     <Compile Include="Properties\Settings.cs" />
+    <Page Include="ChangeSchuljahr.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="InputBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -131,11 +146,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\KlassenEditPage.xaml">
+    <Page Include="Pages\StundenplanEditPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\KlassenDetailsPage.xaml">
+    <Page Include="Pages\KlassenEditPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -144,10 +159,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\BeobachtungenAnsichtPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\SchuljahreDetailsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -173,14 +184,8 @@
     <Compile Include="Pages\FaecherDetailsPage.xaml.cs">
       <DependentUpon>FaecherDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\KlassenDetailsPage.xaml.cs">
-      <DependentUpon>KlassenDetailsPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\BeobachtungenEingabePage.xaml.cs">
       <DependentUpon>BeobachtungenEingabePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\SchuljahreDetailsPage.xaml.cs">
-      <DependentUpon>SchuljahreDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SchuelerDetailsPage.xaml.cs">
       <DependentUpon>SchuelerDetailsPage.xaml</DependentUpon>

@@ -24,7 +24,13 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         #endregion
 
-        #region Properties        
+        #region Properties   
+        public string MainWindowTitle
+        {
+            get { return "Schule DB - Aktuelles Schuljahr: " + Settings.ActiveSchuljahr; }
+           
+        }       
+
         public Page CurrentPage
         {
             get { return currentPage; }
@@ -39,9 +45,17 @@ namespace Groll.Schule.SchulDB.ViewModels
         public MainWindowVM() : base()
         {               
             // Connect to database (if not in Designer mode)
-            if (Application.Current.MainWindow != null)
-            ConnectDatabase();
+            try
+            {
+                if (Application.Current.MainWindow != null)
+                ConnectDatabase();
 
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Database error: " + e.Message);
+                throw;
+            } 
             // Define Commands
             Command_Navigate = new DelegateCommand((object p) => ShowPage(p.ToString()), (object p) => CanNavigateTo((p ?? "").ToString()));
 
@@ -53,7 +67,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         public override void RefreshData()
         {
             // Datenbank wurde geändert
-          
+            OnPropertyChanged("MainWindowTitle");
         }
 
         #endregion
@@ -108,17 +122,19 @@ namespace Groll.Schule.SchulDB.ViewModels
                         page = new FaecherDetailsPage();
                         break;
 
-                    case "klassendetails":
-                        page = new KlassenDetailsPage();
-                        break;
-
                     case "klassenedit":
                         page = new KlassenEditPage();
                         break;
 
-                    case "schuljahredetails":
-                        page = new SchuljahreDetailsPage();
+                    case "stundenplanedit":
+                        page = new StundenplanEditPage();
                         break;
+
+                    case "schuljahredetails":
+                        var dlg = new ChangeSchuljahr();
+                        dlg.Owner = Application.Current.MainWindow;
+                        dlg.ShowDialog();
+                        return;                      
 
                     case "beobachtungeneingabe":
                         page = new BeobachtungenEingabePage();

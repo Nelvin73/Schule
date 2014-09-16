@@ -57,6 +57,7 @@ namespace Groll.Schule.DataManager
         private FaecherRepository repFächer;
         private RepositoryBase<Beobachtung> repBeobachtungen;
         private RepositoryBase<Schuljahr> repSchuljahre;
+        private RepositoryBase<Stundenplan> repStundenplan;
         private SettingsRepository repSettings;
         #endregion
 
@@ -137,6 +138,18 @@ namespace Groll.Schule.DataManager
                 return repKlassen;
             }
         }
+
+        public RepositoryBase<Stundenplan> Stundenpläne
+        {
+            get
+            {
+                if (repStundenplan == null && context != null)
+                    repStundenplan = new RepositoryBase<Stundenplan>(context);
+
+                return repStundenplan;
+            }
+        }
+
 
         #endregion
 
@@ -239,7 +252,9 @@ namespace Groll.Schule.DataManager
             // Fire event
             OnDatabaseChanged();
             
-        }       
+        }
+
+        public void TriggerDatabaseChangedEvent() { OnDatabaseChanged(); }
 
         #endregion
 
@@ -251,7 +266,7 @@ namespace Groll.Schule.DataManager
 
             context.Schueler.Load();
             context.Fächer.Load();
-            context.Klassen.Load();
+            context.Klassen.Include("Schueler").Load();
             context.Schuljahre.Load();
             context.Beobachtungen.Load();
             context.Textbausteine.Load();

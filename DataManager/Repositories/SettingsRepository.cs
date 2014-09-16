@@ -23,7 +23,9 @@ namespace Groll.Schule.DataManager.Repositories
             {
                 var i = context.Settings.Find(Key);
                 if (i != null)
-                    i.SetValue(value);
+                    i.SetValue(value.GetValue());
+                else                
+                    context.Settings.Add(value);
             }
         }
     }

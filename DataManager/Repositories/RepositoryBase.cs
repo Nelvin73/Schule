@@ -33,6 +33,19 @@ namespace Groll.Schule.DataManager.Repositories
                 return context.Set<T>().Add(new T());
             }
 
+        public void Delete(T t)
+            {
+                try
+                {
+                    context.Set<T>().Remove(t);
+                }
+            catch (Exception e)
+                {
+                    throw;
+                }
+
+            }
+
             public T Add(T t)
             {
                 try
