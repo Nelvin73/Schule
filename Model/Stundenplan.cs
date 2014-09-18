@@ -39,7 +39,7 @@ namespace Groll.Schule.Model
         public int Stunde { get; set; }
         public virtual Fach Fach { get; set; }
         public virtual Stundenplan Stundenplan { get; set; }
-       
+        public virtual Klasse Klasse { get; set; }  // um einen Klassenübergreifenden Stundenplan für Lehrer zu erlauben
         public override string ToString()
         {
             return Tag.ToString() + ": (" + Stunde + ") " + Fach.Name;

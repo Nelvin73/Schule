@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Groll.Schule.Model;
+using System.Collections.ObjectModel;
 
 namespace Groll.Schule.DataAccess
 {
@@ -33,9 +34,9 @@ namespace Groll.Schule.DataAccess
                 var oldSJ = new Schuljahr(SJ.Startjahr - 1);
 
                 new List<Klasse> {
-                new Klasse { Schuljahr = SJ, Name = "1a", Schueler = new List<Schueler> { Tamara, Fenja, Cedric }},
-                new Klasse { Schuljahr = SJ, Name = "2a", Schueler = new List<Schueler> { Felian, Christian, Moni }},
-                new Klasse { Schuljahr = oldSJ, Name = "2b", Schueler = new List<Schueler> { Moni, Tamara }}
+                new Klasse { Schuljahr = SJ, Name = "1a", Schueler = new ObservableCollection<Schueler> { Tamara, Fenja, Cedric }},
+                new Klasse { Schuljahr = SJ, Name = "2a", Schueler = new ObservableCollection<Schueler> { Felian, Christian, Moni }},
+                new Klasse { Schuljahr = oldSJ, Name = "2b", Schueler = new ObservableCollection<Schueler> { Moni, Tamara }}
                 }.ForEach(x => context.Klassen.Add(x));
 
                 var Mathe = new Fach("Mathe");

@@ -37,12 +37,12 @@ namespace Groll.Schule.SchulDB
 
                     Schuljahr sj = DB.Schuljahre.GetById(sjID) ?? Schuljahr.GetCurrent();                   
                     
+                    settingsCache["ActiveSchuljahr"] = sj;
                     if (sjID == 0)
-                        // if not in DB, save it
-                        ActiveSchuljahr = sj;
-                    else
-                        // otherwise just cache it
-                        settingsCache["ActiveSchuljahr"] = sj;
+                    {    // if not in DB, save it
+                        DB.Settings["Global.AktivesSchuljahr"] = new Setting("Global.AktivesSchuljahr", sjID);
+                        DB.Save();
+                    }
 
                 }
 

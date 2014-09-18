@@ -1,41 +1,86 @@
-﻿param($installPath, $toolsPath, $package, $project)
+@{
 
-$importedModule = Get-Module | ?{ $_.Name -eq 'EntityFramework' }
+# Script module or binary module file associated with this manifest
+ModuleToProcess = 'VS.psm1'
 
-if ($PSVersionTable.PSVersion -ge (New-Object Version @( 3, 0 )))
-{
-	$thisModuleManifest = 'EntityFramework.PS3.psd1'
+# Version number of this module.
+ModuleVersion = '0.1'
+
+# ID used to uniquely identify this module
+GUID = 'b1ab5d7d-d317-4c6d-97b8-4620f93082d3'
+
+# Author of this module
+Author = 'Microsoft Corporation'
+
+# Company or vendor of this module
+CompanyName = 'Microsoft Corporation'
+
+# Copyright statement for this module
+Copyright = '(c) 2011 Microsoft Corporation. All rights reserved.'
+
+# Description of the functionality provided by this module
+Description = 'Powershell wrapper for NuGet.VisualStudio'
+
+# Minimum version of the Windows PowerShell engine required by this module
+PowerShellVersion = '2.0'
+
+# Name of the Windows PowerShell host required by this module
+PowerShellHostName = 'Package Manager Host'
+
+# Minimum version of the Windows PowerShell host required by this module
+PowerShellHostVersion = '1.2'
+
+# Minimum version of the .NET Framework required by this module
+DotNetFrameworkVersion = '4.0'
+
+# Minimum version of the common language runtime (CLR) required by this module
+CLRVersion = ''
+
+# Processor architecture (None, X86, Amd64, IA64) required by this module
+ProcessorArchitecture = ''
+
+# Modules that must be imported into the global environment prior to importing this module
+RequiredModules = @()
+
+# Assemblies that must be loaded prior to importing this module
+RequiredAssemblies = @()
+
+# Script files (.ps1) that are run in the caller's environment prior to importing this module
+ScriptsToProcess = @()
+
+# Type files (.ps1xml) to be loaded when importing this module
+TypesToProcess = @()
+
+# Format files (.ps1xml) to be loaded when importing this module
+FormatsToProcess = @()
+
+# Modules to import as nested modules of the module specified in ModuleToProcess
+NestedModules = @('VS.psm1')
+
+# Functions to export from this module
+FunctionsToExport = '*'
+
+# Cmdlets to export from this module
+CmdletsToExport = ''
+
+# Variables to export from this module
+VariablesToExport = ''
+
+# Aliases to export from this module
+AliasesToExport = ''
+
+# List of all files packaged with this module
+FileList = @()
+
+# Private data to pass to the module specified in ModuleToProcess
+PrivateData = ''
+
 }
-else
-{
-	$thisModuleManifest = 'EntityFramework.psd1'
-}
-
-$thisModule = Test-ModuleManifest (Join-Path $toolsPath $thisModuleManifest)
-$shouldImport = $true
-
-if ($importedModule)
-{
-    if ($importedModule.Version -le $thisModule.Version)
-    {
-        Remove-Module EntityFramework
-    }
-    else
-    {
-        $shouldImport = $false
-    }    
-}
-
-if ($shouldImport)
-{
-    Import-Module $thisModule
-}
-
 # SIG # Begin signature block
-# MIIaSAYJKoZIhvcNAQcCoIIaOTCCGjUCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
+# MIIaYAYJKoZIhvcNAQcCoIIaUTCCGk0CAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU4JbMotbKQrAO4s/cceCMbJQG
-# 482gghUtMIIEoDCCA4igAwIBAgIKYRnMkwABAAAAZjANBgkqhkiG9w0BAQUFADB5
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUOXoWcS17lm8Ab8sGlFmVs528
+# M5ygghUtMIIEoDCCA4igAwIBAgIKYRnMkwABAAAAZjANBgkqhkiG9w0BAQUFADB5
 # MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVk
 # bW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSMwIQYDVQQDExpN
 # aWNyb3NvZnQgQ29kZSBTaWduaW5nIFBDQTAeFw0xMTEwMTAyMDMyMjVaFw0xMzAx
@@ -60,32 +105,32 @@ if ($shouldImport)
 # m7iPXIgONpRsMwe4qa1RoNDC3I4iEr3D34LXVqH33fClIFcQEJ3urIZ0bHGbwfDy
 # wnBep9ttTTdYmU15QNA0XVolrmfrG05GBrCMKR+jEI+lM58j1fi1Rn3g7mOYkEs+
 # BagvsBizWaSvQVOOCAUQLSrJOgZMHC6pMVFWZKyazKyXmCmKl5CH6p22MIIEujCC
-# A6KgAwIBAgIKYQKSSgAAAAAAIDANBgkqhkiG9w0BAQUFADB3MQswCQYDVQQGEwJV
+# A6KgAwIBAgIKYQUZlgAAAAAAGzANBgkqhkiG9w0BAQUFADB3MQswCQYDVQQGEwJV
 # UzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UEBxMHUmVkbW9uZDEeMBwGA1UE
 # ChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSEwHwYDVQQDExhNaWNyb3NvZnQgVGlt
-# ZS1TdGFtcCBQQ0EwHhcNMTIwMTA5MjIyNTU5WhcNMTMwNDA5MjIyNTU5WjCBszEL
+# ZS1TdGFtcCBQQ0EwHhcNMTEwNzI1MjA0MjE5WhcNMTIxMDI1MjA0MjE5WjCBszEL
 # MAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1v
 # bmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jwb3JhdGlvbjENMAsGA1UECxMETU9Q
-# UjEnMCUGA1UECxMebkNpcGhlciBEU0UgRVNOOkI4RUMtMzBBNC03MTQ0MSUwIwYD
+# UjEnMCUGA1UECxMebkNpcGhlciBEU0UgRVNOOjlFNzgtODY0Qi0wMzlEMSUwIwYD
 # VQQDExxNaWNyb3NvZnQgVGltZS1TdGFtcCBTZXJ2aWNlMIIBIjANBgkqhkiG9w0B
-# AQEFAAOCAQ8AMIIBCgKCAQEAzWPD96K1R9n5OZRTrGuPpnk4IfTRbj0VOBbBcyyZ
-# j/vgPFvhokyLsquLtPJKx7mTUNEm9YdTsHp180cPFytnLGTrYOdKjOCLXsRWaTc6
-# KgRdFwHIv6m308mro5GogeM/LbfY5MR4AHk5z/3HZOIjEnieDHYnSY+arA504wZV
-# VUnI7aF8cEVhfrJxFh7hwUG50tIy6VIk8zZQBNfdbzxJ1QvUdkD8ZWUTfpVROtX/
-# uJqnV2tLFeU3WB/cAA3FrurfgUf58FKu5s9arOAUSqZxlID6/bAjMGDpg2CsDiQe
-# /xHy56VVYpXun3+eKdbNSwp2g/BDBN8GSSDyU1pEsFF6OQIDAQABo4IBCTCCAQUw
-# HQYDVR0OBBYEFM0ZrGFNlGcr9q+UdVnb8FgAg6E6MB8GA1UdIwQYMBaAFCM0+NlS
+# AQEFAAOCAQ8AMIIBCgKCAQEA08s7U6KfRKN6q01WcVOKd6o3k34BPv2rAqNTqf/R
+# sSLFAJDndW7uGOiBDhPF2GEAvh+gdjsEDQTFBKCo/ENTBqEEBLkLkpgCYjjv1DMS
+# 9ys9e++tRVeFlSCf12M0nGJGjr6u4NmeOfapVf3P53fmNRPvXOi/SJNPGkMHWDiK
+# f4UUbOrJ0Et6gm7L0xVgCBSJlKhbPzrJPyB9bS9YGn3Kiji8w8I5aNgtWBoj7SoQ
+# CFogjIKl7dGXRZKFzMM3g98NmHzF07bgmVPYeAj15SMhB2KGWmppGf1w+VM0gfcl
+# MRmGh4vAVZr9qkw1Ff1b6ZXJq1OYKV8speElD2TF8rAndQIDAQABo4IBCTCCAQUw
+# HQYDVR0OBBYEFHkj56ENvlUsaBgpYoJn1vPhNjhaMB8GA1UdIwQYMBaAFCM0+NlS
 # RnAK7UD7dvuzK7DDNbMPMFQGA1UdHwRNMEswSaBHoEWGQ2h0dHA6Ly9jcmwubWlj
 # cm9zb2Z0LmNvbS9wa2kvY3JsL3Byb2R1Y3RzL01pY3Jvc29mdFRpbWVTdGFtcFBD
 # QS5jcmwwWAYIKwYBBQUHAQEETDBKMEgGCCsGAQUFBzAChjxodHRwOi8vd3d3Lm1p
 # Y3Jvc29mdC5jb20vcGtpL2NlcnRzL01pY3Jvc29mdFRpbWVTdGFtcFBDQS5jcnQw
-# EwYDVR0lBAwwCgYIKwYBBQUHAwgwDQYJKoZIhvcNAQEFBQADggEBAFEc1t82HdyA
-# vAKnxpnfFsiQBmkVmjK582QQ0orzYikbeY/KYKmzXcTkFi01jESb8fRcYaRBrpqL
-# ulDRanlqs2KMnU1RUAupjtS/ohDAR9VOdVKJHj+Wao8uQBQGcu4/cFmSXYXtg5n6
-# goSe5AMBIROrJ9bMcUnl2h3/bzwJTtWNZugMyX/uMRQCN197aeyJPkV/JUTnHxrW
-# xRrDSuTh8YSY50/5qZinGEbshGzsqQMK/Xx6Uh2ca6SoD5iSpJJ4XCt4432yx9m2
-# cH3fW3NTv6rUZlBL8Mk7lYXlwUplnSVYULsgVJF5OhsHXGpXKK8xx5/nwx3uR/0n
-# 13/PdNxlxT8wggW8MIIDpKADAgECAgphMyYaAAAAAAAxMA0GCSqGSIb3DQEBBQUA
+# EwYDVR0lBAwwCgYIKwYBBQUHAwgwDQYJKoZIhvcNAQEFBQADggEBAEfCdoFbMd1v
+# 0zyZ8npsfpcTUCwFFxsQuEShtYz0Vs+9sCG0ZG1hHNju6Ov1ku5DohhEw/r67622
+# XH+XbUu1Q/snYXgIVHyx+a+YCrR0xKroLVDEff59TqGZ1icot67Y37GPgyKOzvN5
+# /GEUbb/rzISw36O7WwW36lT1Yh1sJ6ZjS/rjofq734WWZWlTsLZxmGQmZr3F8Vxi
+# vJH0PZxLQgANzzgFFCZa3CoFS39qmTjY3XOZos6MUCSepOv1P4p4zFSZXSVmpEEG
+# KK9JxLRSlOzeAoNk/k3U/0ui/CmA2+4/qzztM4jKvyJg0Fw7BLAKtJhtPKc6T5rR
+# ARYRYopBdqAwggW8MIIDpKADAgECAgphMyYaAAAAAAAxMA0GCSqGSIb3DQEBBQUA
 # MF8xEzARBgoJkiaJk/IsZAEZFgNjb20xGTAXBgoJkiaJk/IsZAEZFgltaWNyb3Nv
 # ZnQxLTArBgNVBAMTJE1pY3Jvc29mdCBSb290IENlcnRpZmljYXRlIEF1dGhvcml0
 # eTAeFw0xMDA4MzEyMjE5MzJaFw0yMDA4MzEyMjI5MzJaMHkxCzAJBgNVBAYTAlVT
@@ -148,29 +193,29 @@ if ($shouldImport)
 # v5uCwSdUtrFqPYmhdmG0bqETpr+qR/ASb/2KMmyy/t9RyIwjyWa9nR2HEmQCPS2v
 # WY+45CHltbDKY7R4VAXUQS5QrJSwpXirs6CWdRrZkocTdSIvMqgIbqBbjCW/oO+E
 # yiHW6x5PyZruSeD3AWVviQt9yGnI5m7qp5fOMSn/DsVbXNhNG6HY+i+ePy5VFmvJ
-# E6P9MYIEhTCCBIECAQEwgYcweTELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hp
+# E6P9MYIEnTCCBJkCAQEwgYcweTELMAkGA1UEBhMCVVMxEzARBgNVBAgTCldhc2hp
 # bmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jvc29mdCBDb3Jw
 # b3JhdGlvbjEjMCEGA1UEAxMaTWljcm9zb2Z0IENvZGUgU2lnbmluZyBQQ0ECCmEZ
-# zJMAAQAAAGYwCQYFKw4DAhoFAKCBsDAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIB
+# zJMAAQAAAGYwCQYFKw4DAhoFAKCByjAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIB
 # BDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQU
-# WQ2AdtM5zwQcEcFbsSevYrmN6UQwUAYKKwYBBAGCNwIBDDFCMECgIoAgAEUAbgB0
-# AGkAdAB5ACAARgByAGEAbQBlAHcAbwByAGuhGoAYaHR0cDovL21zZG4uY29tL2Rh
-# dGEvZWYgMA0GCSqGSIb3DQEBAQUABIIBAAp6IKF/Uj/9lpK3SAcA7JJxjVoqi+yI
-# n0i9qNP5b4+zTSrtpnPDibOaQvhdUlEsAlEjnJTRCwYR9zobPyxJfGoh9j/qkgcU
-# wWBIdmNhzMEzVDJwlE9puRipHQNP6ftcbaz9SOD40aOQ8skR9ecYuHW9SGG0levm
-# m2Q/UWxmxVvtv6HnYzWUn6vHrJmiRk+t1ckG9Dxq2GPnBA+hGrRdYaijPBSwSWcg
-# FnBsl4s88UVL7N8hpKYOQGnqGda6V1LJIgNPKoGNoPllFeJWXKgClvJ6majpd6dz
-# o8S6A9a19D2Dh1l0cbwpI2ZFZjfY9UOVSH33i6fk7CM0aCVe9z3dcB+hggIfMIIC
-# GwYJKoZIhvcNAQkGMYICDDCCAggCAQEwgYUwdzELMAkGA1UEBhMCVVMxEzARBgNV
-# BAgTCldhc2hpbmd0b24xEDAOBgNVBAcTB1JlZG1vbmQxHjAcBgNVBAoTFU1pY3Jv
-# c29mdCBDb3Jwb3JhdGlvbjEhMB8GA1UEAxMYTWljcm9zb2Z0IFRpbWUtU3RhbXAg
-# UENBAgphApJKAAAAAAAgMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJKoZI
-# hvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xMjA2MjgyMDQzMzlaMCMGCSqGSIb3DQEJ
-# BDEWBBTcH0Qic4YQ6MzFbjR1RWKCxjK8pzANBgkqhkiG9w0BAQUFAASCAQAdMhoS
-# z2zXLJyB1RIjdnGlDxLKzXF+rxImjMI7VfId2vIg4FaGIPqnN0BBTp8o+HZCv3cM
-# ZV/okS8w9k/82jWjJ183l9fn3moQe4qbVlV6yUJvPFpW47LFrEAXgdmL8bgA/VOW
-# HtJRP52lPDsb7J1WjqNOh7KkyD5x0Y8Pwrb+Xc63ibtTjOeAttPxKk+1gZh95wUA
-# ykjw7RKZLHfyJ9Ph5lCkzDQrXXwGGPuzaZVO+pkowgy2yCPRecShGBCKbCyOZlhT
-# BS1WVJDHS95N732o0lPzWE5rTQe/awv8xkgCe9e8ci4S7/lSnj3aVOLbM3S8jG4x
-# Oi4rxrjYTjts1n2P
+# /7FoUja90/kLXKiZGhy99cCrjSYwagYKKwYBBAGCNwIBDDFcMFqgOIA2AE0AaQBj
+# AHIAbwBzAG8AZgB0ACAAQQBTAFAALgBOAEUAVAAgAFcAZQBiACAAUABhAGcAZQBz
+# oR6AHGh0dHA6Ly93d3cuYXNwLm5ldC93ZWJtYXRyaXgwDQYJKoZIhvcNAQEBBQAE
+# ggEATa60pB7MDesagfdU6YnHh8b8FPhF8hxZaLgyvzgBwF2P30+61wtpAnT3Xpef
+# BmEZl0QjOVUeVHggv6sKP4oVpSkejPO8fpreKDCdzEAIQH+ur9eGzD9MDuecrCZH
+# Z304Kp3paR1tBc1sgjHOf9NnmAxqJtA4AUBdg+d2tArgKU7yQ57Sl1D32IrG45nq
+# oOcOEHqA42SfbGo+2W9YO+/Tkx8sCd6KbIvPI4rvUWEpvcd+JwOduVFki7VIHZ3N
+# FF4HBez8XqUDO/h/gzEZChIcdl7mEsDwOIviMK9KgDA51dWlysYotgaUB516kj9j
+# 6LgusKEsDThqj4UJOUHlUnuMm6GCAh0wggIZBgkqhkiG9w0BCQYxggIKMIICBgIB
+# ATCBhTB3MQswCQYDVQQGEwJVUzETMBEGA1UECBMKV2FzaGluZ3RvbjEQMA4GA1UE
+# BxMHUmVkbW9uZDEeMBwGA1UEChMVTWljcm9zb2Z0IENvcnBvcmF0aW9uMSEwHwYD
+# VQQDExhNaWNyb3NvZnQgVGltZS1TdGFtcCBQQ0ECCmEFGZYAAAAAABswBwYFKw4D
+# AhqgXTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0x
+# MjA1MDIyMzMzMjFaMCMGCSqGSIb3DQEJBDEWBBQjUNgsmRtonZ33wAxooKgbhaTZ
+# 9DANBgkqhkiG9w0BAQUFAASCAQCDYtEawketme7+m6aEpN7Zg5WaJkN/ms0RijUD
+# YzXTc5gIUDtxzi4tLZMoX5koEMJmV9CO5mvh8ugF08ZgPNTgjw4VLe5vt5bteZ7L
+# lnxMJLmSntvMadmdllsDeHXS+zWeG1mqL5YoUb70JcKPlCzFXJ80HtddYXw0+IXU
+# I5mQqatFvrNR24dLMifN51+2geihs990DYjv1t5JrrfJf2vbT8RPwP2QAhGVYQ/r
+# z9d+k5PoidNCuWwa8Gy38SsIhBoQlSr7B/812I7VkJ1LxgDVW5YwdmaCZulhNOIv
+# XgrQSPBouSZsY62Ru9SbrWmOuh5XzXJUAB1mMf7PTQNXmhcu
 # SIG # End signature block

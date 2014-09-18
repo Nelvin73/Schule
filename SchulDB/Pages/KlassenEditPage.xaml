@@ -11,7 +11,7 @@
 	Title="" Loaded="Page_Loaded">
 
     <Page.Resources>
-        <VM:StundenplanEditVM x:Key="ViewModel" />
+        <VM:KlassenEditVM x:Key="ViewModel" />
     </Page.Resources>
 
     <Grid DataContext="{StaticResource ViewModel}">

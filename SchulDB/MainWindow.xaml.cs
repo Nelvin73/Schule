@@ -49,7 +49,7 @@ namespace Groll.Schule.SchulDB
             }
             catch (Exception e)
             {
-                
+                System.Diagnostics.Debug.WriteLine(e.Message);
                 throw;
             }
                         
