@@ -54,6 +54,9 @@
     <Compile Include="SpellCheckTextBox.xaml.cs">
       <DependentUpon>SpellCheckTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StundenplanGrid.xaml.cs">
+      <DependentUpon>StundenplanGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ThreeDigitDoubleConverter.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -65,7 +68,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Resources\StundenplanResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SpellCheckTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StundenplanGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -79,6 +90,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{435f8ab6-4e8f-4611-989e-379a32a4c27f}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

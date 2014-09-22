@@ -18,11 +18,27 @@ namespace Groll.Schule.SchulDB.ViewModels
     {
         // internal Member
         private Stundenplan stundenplan;
-        private List<Klasse> klassenListe;        
-        private ObservableCollection<Schueler> freieSchülerListe;
+        private List<Klasse> klassenListe;
+        private ObservableCollection<Fach> fächerListe;
         private Klasse selectedKlasse;
      
         #region Properties
+
+
+        public ObservableCollection<Fach> Fächerliste
+        {
+            get
+            {
+                return fächerListe;
+            }
+
+            set
+            {
+                if (fächerListe == value)
+                    return;
+                fächerListe = value; OnPropertyChanged();
+            }
+        }
 
         public Stundenplan Stundenplan
         {
@@ -31,6 +47,13 @@ namespace Groll.Schule.SchulDB.ViewModels
 
                 return stundenplan;
 
+            }
+
+            set
+            {
+                if (stundenplan == value)
+                    return;
+                stundenplan = value; OnPropertyChanged();                
             }
         }
 
@@ -63,32 +86,27 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-       // Liste der Schüler ohne Klasse                       
-        public ObservableCollection<Schueler> FreieSchülerListe
-        {
-            get { return freieSchülerListe; }
-            set
-            {
-                if (freieSchülerListe == value)
-                    return;
-                freieSchülerListe = value; OnPropertyChanged();              
-            }
-        }              
-
+     
         #endregion
 
         //  Konstructor
         public StundenplanEditVM()
         {
-            AddClassCommand = new DelegateCommand((object x) => AddKlasse(x));
-            DeleteClassCommand = new DelegateCommand((object x) => DeleteKlasse());
-            
+        
+            stundenplan.Stunden.CollectionChanged += Stunden_CollectionChanged;
+        }
+
+        void Stunden_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #region Verhalten bei Änderungen der Auswahl       
 
          protected virtual void OnSelectedKlasseChanged()
         {
+            LoadStundenplan();
+               
             // nichts nötig, da mit ObservableCollection auf SelectedKlasse.Schüler gebunden wird
         }
 
@@ -102,87 +120,50 @@ namespace Groll.Schule.SchulDB.ViewModels
             // Initialisierung
             if (UnitOfWork != null)
             {
-                stundenplan = UnitOfWork.Stundenpläne.Get(x => x.Klasse == selectedKlasse);
-                //    int sj = Settings.ActiveSchuljahr.Startjahr;
+                int sj = Settings.ActiveSchuljahr.Startjahr;
                         
                 // Aktuelle Klassen holen
-              //  KlassenListe = UnitOfWork.Klassen.GetList().Where(x => x.SchuljahrId == sj).ToList();   
+                KlassenListe = UnitOfWork.Klassen.GetList().Where(x => x.SchuljahrId == sj).ToList();   
                 
+                LoadStundenplan();
+                
+                // Fächer laden
+                Fächerliste = UnitOfWork.Fächer.GetObservableCollection();
+
                 // Freie Schüler holen
               //  FreieSchülerListe = new ObservableCollection<Schueler>(UnitOfWork.Schueler.GetList().Where(x => !x.Inaktiv && x.GetKlasse(sj) == null));                
             }
         }
 
+        private void LoadStundenplan()
+        {
+            if (selectedKlasse != null)
+            {
+                Stundenplan s = UnitOfWork.Stundenpläne.GetList().Where(x => x.Klasse == selectedKlasse).FirstOrDefault();
+                if (s == null)
+                {
+                    // leeren default Stundenplan für diese Klasse erzeugen
+                    s = UnitOfWork.Stundenpläne.Create();
+                    s.Klasse = selectedKlasse;
+                    UnitOfWork.Stundenpläne.Add(s);
+                    UnitOfWork.Save();
+                }
+
+                Stundenplan = s;
+            }
+
+        }
 
         #region Commands
         public DelegateCommand AddClassCommand { get; private set; }
         public DelegateCommand DeleteClassCommand { get; private set; }
 
-        public void AddKlasse(object Name)
-        {
-            string n = Name as string;
-            if (!string.IsNullOrWhiteSpace(n))
-            {
-                CreateKlasse(n);
-            }
-        }
-
-        public void DeleteKlasse()
-        {
-            if (System.Windows.MessageBox.Show("Soll diese Klasse wirklich gelöscht werden ?\n\nDie Klassenzugehörigkeiten der Schüler geht damit verloren !", "Klasse löschen", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning) == System.Windows.MessageBoxResult.OK)
-            {
-                // Verbundene Schüler löschen
-                SelectedKlasse.Schueler.Clear();
-                UnitOfWork.Klassen.Delete(SelectedKlasse);
-                UnitOfWork.Save();
-                RefreshData();
-            }
-        }
-
+       
         #endregion
 
 
         // Public methods
 
-        public bool AddToCurrentClass(Schueler s)
-        {
-            if (selectedKlasse == null || s == null)
-            {
-                // Keine Klasse ausgewählt oder invalider Schüler
-                return false;
-            }
-
-            if (!SelectedKlasse.Schueler.Contains(s))
-            {
-                // Schüler hinzufügen und speichern
-                SelectedKlasse.Schueler.Add(s);
-                FreieSchülerListe.Remove(s);                
-                UnitOfWork.Save();                                
-            }
-            return true;
-
-        }
-
-        public bool RemoveFromCurrentClass(Schueler s)
-        {
-            // In DB löschen
-            SelectedKlasse.Schueler.Remove(s);
-            UnitOfWork.Save();
-            FreieSchülerListe.Add(s);
-            return true;
-        }
-
-        public void CreateKlasse(string Name)
-        {
-            // Check if exist
-            Klasse x = UnitOfWork.Klassen.Get(Name, Settings.ActiveSchuljahr);
-            if (x == null)
-            {
-                x = UnitOfWork.Klassen.Add(Name, Settings.ActiveSchuljahr);
-                UnitOfWork.Save();
-                RefreshData();                
-            }
-            SelectedKlasse = x;
-        }                     
+         
     }
 }

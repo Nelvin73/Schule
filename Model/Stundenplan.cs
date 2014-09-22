@@ -1,19 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Groll.Schule.Model
 {
-    public enum Wochentag { Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag, Sonntag }
+    public enum Wochentag { Montag = 1, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag, Sonntag }
+    
+    public struct Stundenbezeichnung
+    {
+        public Wochentag Tag;
+        public int Stunde;
+    }
+
     public class Stundenplan
     {
         private const int StundenProTag = 10;
 
         public int StundenplanId { get; set; }
         public virtual Klasse Klasse { get; set; }
-        public virtual List<Unterrichtsstunde> Stunden { get; set; }
+        public virtual ObservableCollection<Unterrichtsstunde> Stunden { get; set; }
 
         public List<Fach> Montag { get { return Fächer(Wochentag.Montag); } }
         public List<Fach> Dienstag { get { return Fächer(Wochentag.Dienstag); } }
@@ -30,6 +38,23 @@ namespace Groll.Schule.Model
                 orderby s.Stunde
                 select s.Fach).ToList();                
         }
+
+        public Unterrichtsstunde GetStunde(int w, int Stunde)
+        {
+            return GetStunde((Wochentag)w, Stunde);
+
+        }
+        
+        public Unterrichtsstunde GetStunde(Stundenbezeichnung s)
+        {
+            return GetStunde(s.Tag, s.Stunde);
+
+        }
+        
+        public Unterrichtsstunde GetStunde(Wochentag w, int Stunde)
+        {
+            return Stunden.Where(x => x.Stunde == Stunde && x.Tag == w).FirstOrDefault();
+        }
     }
 
     public class Unterrichtsstunde
@@ -42,7 +67,7 @@ namespace Groll.Schule.Model
         public virtual Klasse Klasse { get; set; }  // um einen Klassenübergreifenden Stundenplan für Lehrer zu erlauben
         public override string ToString()
         {
-            return Tag.ToString() + ": (" + Stunde + ") " + Fach.Name;
+            return Tag.ToString() + ": (" + Stunde + ") " + (Fach == null? "" : Fach.Name);
         }
     }
 }

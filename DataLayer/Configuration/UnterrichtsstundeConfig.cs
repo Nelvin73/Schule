@@ -16,6 +16,7 @@ namespace Groll.Schule.DataAccess.Configuration
         {
             // Set table name 
             this.ToTable("Unterrichtsstunden");
+            this.HasOptional(x => x.Fach);
             this.HasKey(x => new { x.StundenplanId, x.Tag, x.Stunde });
         }
     }

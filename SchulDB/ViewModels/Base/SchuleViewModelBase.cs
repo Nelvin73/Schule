@@ -43,7 +43,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                     // Try to get UnitOfWork Global Ressource; if not successful, it stays <null>
                     unitOfWork = System.Windows.Application.Current.TryFindResource("UnitOfWork") as UowSchuleDB;
                     unitOfWork.DatabaseChanged += unitOfWork_DatabaseChanged;
-                    OnDatabaseChanged();
+                    // OnDatabaseChanged();
                 }
                 return unitOfWork;
             }          

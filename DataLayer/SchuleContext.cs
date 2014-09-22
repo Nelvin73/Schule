@@ -28,7 +28,7 @@ namespace Groll.Schule.DataAccess
         public DbSet<Klasse> Klassen { get; set; }
         public DbSet<Schuljahr> Schuljahre { get; set; }
         public DbSet<Fach> Fächer { get; set; }
-      //  public DbSet<Stundenplan> Stundenpläne { get; set; }
+        public DbSet<Stundenplan> Stundenpläne { get; set; }
         public DbSet<Textbaustein> Textbausteine { get; set; }
         public DbSet<Beobachtung> Beobachtungen { get; set; }
 
@@ -41,9 +41,9 @@ namespace Groll.Schule.DataAccess
             modelBuilder.Configurations.Add(new FachConfiguration());
             modelBuilder.Configurations.Add(new TextbausteineConfig());
             
-        //    modelBuilder.Configurations.Add(new UnterrichtsstundeConfiguration());
+            modelBuilder.Configurations.Add(new UnterrichtsstundeConfiguration());
             modelBuilder.Configurations.Add(new BeobachtungConfiguration());
-        //    modelBuilder.Configurations.Add(new StundenplanConfiguration());
+            modelBuilder.Configurations.Add(new StundenplanConfiguration());
             //modelBuilder.ComplexType<Adresse>();
 
             base.OnModelCreating(modelBuilder);

@@ -104,6 +104,7 @@
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Helper\Converters.cs" />
     <Compile Include="Helper\Extensions.cs" />
+    <Compile Include="Helper\StundenplanToSchulstundeConverter.cs" />
     <Compile Include="Import\Import.cs" />
     <Compile Include="InputBox.xaml.cs">
       <DependentUpon>InputBox.xaml</DependentUpon>

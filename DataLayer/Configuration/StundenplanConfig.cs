@@ -16,6 +16,7 @@ namespace Groll.Schule.DataAccess.Configuration
         {
             // set table name
             this.ToTable("Stundenpläne");
+            this.Ignore(x => x.Montag).Ignore(x => x.Dienstag).Ignore(x => x.Mittwoch).Ignore(x => x.Donnerstag).Ignore(x => x.Freitag).Ignore(x => x.Samstag);
         }
     }
    

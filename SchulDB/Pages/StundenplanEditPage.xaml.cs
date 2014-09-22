@@ -1,4 +1,5 @@
 ﻿using Groll.Schule.Model;
+using Groll.Schule.SchulDB.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace Groll.Schule.SchulDB.Pages
     /// </summary>
     public partial class StundenplanEditPage : Page, ISchulDBPage
     {
+        private StundenplanToSchulstundeConverter s2sConv = new StundenplanToSchulstundeConverter();
         private ListBox dragSource = null;
         private Point dragStartPoint = new Point();
         private Schueler currentClickedSchüler = null;
@@ -57,7 +59,53 @@ namespace Groll.Schule.SchulDB.Pages
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
-        {            
+        {
+            // Initialize Stundenplan
+            CreateStundenplan();
+
+        }
+
+        // Erstellt / Aktualisiert Stundenplan-Grid
+        private void CreateStundenplan()
+        {
+            /*
+            var grid = gridStundenplan;
+            grid.Children.Clear();
+            grid.ShowGridLines = true;
+
+            // Wochentage
+            for (int col = 1; col < 7; col++)
+            {
+                var e = new TextBlock(new Run(Enum.GetName(typeof(Wochentag), col )));
+                grid.Children.Add(e);
+                Grid.SetColumn(e, col);
+                Grid.SetRow(e, 0);
+            }            
+            
+            for (int row = 1; row < 10; row++)
+			{
+                // Stunden
+                var e = new TextBlock(new Run(row.ToString()));
+                grid.Children.Add(e);
+                Grid.SetColumn(e, 0);
+                Grid.SetRow(e, row);
+
+                // Fächer
+                for (int col = 1; col < 7; col++ )
+                {
+                  
+                    e = new TextBlock(); //new Run(Enum.GetName(typeof(Wochentag), col) + " " + row.ToString()));
+                    Binding b = new Binding("Stundenplan");
+                    b.Converter = s2sConv;
+                    b.ConverterParameter = new Stundenbezeichnung { Tag = (Wochentag) col, Stunde = row};
+                    
+                    e.SetBinding(TextBlock.TextProperty, b);
+                    
+                    grid.Children.Add(e);
+                    Grid.SetColumn(e, col);
+                    Grid.SetRow(e, row);
+                }
+            }*/
         }
 
         public void OnDatabaseChanged()

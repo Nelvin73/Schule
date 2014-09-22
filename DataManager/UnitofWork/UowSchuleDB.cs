@@ -270,6 +270,7 @@ namespace Groll.Schule.DataManager
             context.Schuljahre.Load();
             context.Beobachtungen.Load();
             context.Textbausteine.Load();
+            context.Stundenpläne.Include("Stunden").Load();
         }
 
         private void ResetRepositories()

@@ -72,6 +72,10 @@
     <Compile Include="Migrations\201409180945313_BaseOhneStundenplan.Designer.cs">
       <DependentUpon>201409180945313_BaseOhneStundenplan.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409181222273_Including Stundenplan.cs" />
+    <Compile Include="Migrations\201409181222273_Including Stundenplan.Designer.cs">
+      <DependentUpon>201409181222273_Including Stundenplan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SchuleContextInitializer.cs" />
     <Compile Include="SchuleContext.cs" />
@@ -90,6 +94,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201409180945313_BaseOhneStundenplan.resx">
       <DependentUpon>201409180945313_BaseOhneStundenplan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409181222273_Including Stundenplan.resx">
+      <DependentUpon>201409181222273_Including Stundenplan.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
