@@ -125,6 +125,7 @@
     <Compile Include="ViewModels\Pages\ChangeSchuljahrVM.cs" />
     <Compile Include="ViewModels\Pages\StundenplanEditVM.cs" />
     <Compile Include="ViewModels\Pages\KlassenEditVM.cs" />
+    <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabStundenplanVM.cs" />
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabViewModel.cs" />
     <Compile Include="ViewModels\Base\SchuleViewModelBase.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
@@ -365,7 +366,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\Groll.SchulDB_dev.sdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Release\Groll.SchulDB.sdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Pages\Info.txt" />
   </ItemGroup>

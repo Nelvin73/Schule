@@ -193,7 +193,8 @@ namespace Groll.UserControls
                         c = new ContentControl()
                         {
                             Style = stundenInfoStyle,
-                            Content = Stundenplan.GetStunde(i, row),                            
+                            Content = Stundenplan.GetStunde(i, row),
+                            Tag = new Stundenbezeichnung() {  Stunde = hour, Tag = (Wochentag) i}
                         };                        
                         c.MouseLeftButtonDown += Stunde_MouseLeftButtonDown;
                         gridStundenplan.Children.Add(c);   
@@ -234,8 +235,18 @@ namespace Groll.UserControls
 
             SelectedStunde = c.Content as Unterrichtsstunde;
             if (SelectedStunde == null)
-                throw new NotImplementedException();
-
+            {
+                var b =  (Stundenbezeichnung) c.Tag ;
+                SelectedStunde = new Unterrichtsstunde()
+                    {
+                        Stundenplan = Stundenplan,
+                        Tag = b.Tag,
+                     Stunde = b.Stunde,
+                        Fach = null
+                    };
+                Stundenplan.Stunden.Add(SelectedStunde);
+            }
+            
             if (auswahlBox == null)
             {
                 // Auswahlbox erstellen

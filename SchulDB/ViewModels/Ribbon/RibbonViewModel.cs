@@ -62,6 +62,17 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
+        public RibbonTabStundenplanVM TabStundenplan
+        {
+            get
+            {
+                string Key = "TabStundenplan";
+                RibbonTabStundenplanVM t = GetElement(Key) as RibbonTabStundenplanVM;
+                return t ?? SetElement(Key, new RibbonTabStundenplanVM()) as RibbonTabStundenplanVM;
+            }
+        }
+
+
         public RibbonTabBeobachtungenViewVM TabBeobachtungenAnsicht
         {
             get
@@ -105,8 +116,16 @@ namespace Groll.Schule.SchulDB.ViewModels
                 { isContextTabBeobachtungenVisible = value; OnPropertyChanged(); }
             }
         }
-        
 
+
+        private bool isContextTabStundenplanVisible = false;
+
+        public bool IsContextTabStundenplanVisible
+        {
+            get { return isContextTabStundenplanVisible; }
+            set { isContextTabStundenplanVisible = value; OnPropertyChanged(); }
+        }
+        
 
         #endregion
 

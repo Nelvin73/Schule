@@ -53,7 +53,9 @@ namespace Groll.Schule.SchulDB.ViewModels
             {
                 if (stundenplan == value)
                     return;
-                stundenplan = value; OnPropertyChanged();                
+                stundenplan = value;
+                stundenplan.Stunden.CollectionChanged += Stunden_CollectionChanged;
+                OnPropertyChanged();                
             }
         }
 
@@ -93,12 +95,11 @@ namespace Groll.Schule.SchulDB.ViewModels
         public StundenplanEditVM()
         {
         
-            stundenplan.Stunden.CollectionChanged += Stunden_CollectionChanged;
-        }
+           }
 
         void Stunden_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            
         }
 
         #region Verhalten bei Änderungen der Auswahl       

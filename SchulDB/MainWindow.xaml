@@ -73,6 +73,7 @@
 
             <Ribbon.ContextualTabGroups>
                 <RibbonContextualTabGroup Header="Beobachtungen" Visibility="{Binding IsContextTabBeobachtungenVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#FFFFE800" />
+                <RibbonContextualTabGroup Header="Stundenplan" Visibility="{Binding IsContextTabStundenplanVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#FFbbE800" />
             </Ribbon.ContextualTabGroups>
 
 
@@ -234,6 +235,16 @@
                     <RibbonToggleButton DataContext="{Binding EditModeButton}" Command="{Binding EditModeChanged, Source={x:Static comm:SchuleCommands.Beobachtungen}}" CommandParameter="{Binding IsChecked}"  Style="{StaticResource RibbonToggleButtonDefaultStyle}" />
                 </RibbonGroup>
             </RibbonTab>
+
+            <!-- RibbonTab Beobachtungen-Ansicht -->
+            <RibbonTab DataContext="{Binding TabStundenplan, Mode=OneWay}"  Style="{StaticResource RibbonTabDefaultStyle}">
+                <RibbonGroup Header="Einstellungen">
+                
+                    <!--    <RibbonToggleButton DataContext="{Binding NewPageOnSchülerButton}" Command="{Binding UpdateBeobachtungenView, Source={x:Static comm:SchuleCommands.Beobachtungen}}"  Style="{StaticResource RibbonToggleButtonDefaultStyle}" />
+                    <RibbonToggleButton DataContext="{Binding EditModeButton}" Command="{Binding EditModeChanged, Source={x:Static comm:SchuleCommands.Beobachtungen}}" CommandParameter="{Binding IsChecked}"  Style="{StaticResource RibbonToggleButtonDefaultStyle}" />  -->
+                </RibbonGroup>
+            </RibbonTab>
+
 
 
         </Ribbon>
