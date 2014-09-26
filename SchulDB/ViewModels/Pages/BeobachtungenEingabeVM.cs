@@ -139,7 +139,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                     Datum = BeoDatum,
                     Fach = (SelectedFach == null || SelectedFach.FachId == -1000) ? null : SelectedFach,
                     Text = BeoText,
-                    SchuljahrId = SelectedSchuljahr.Startjahr,
+                    SchuljahrId =  Settings.ActiveSchuljahr.Startjahr,
                     Schueler = s
                 };
                 UnitOfWork.Beobachtungen.Add(b);
@@ -170,13 +170,13 @@ namespace Groll.Schule.SchulDB.ViewModels
                     exp.ExportToWord();
                     break;
                 case "SJ": // Aktuelles Schuljahr
-                    exp.ExportToWord(SelectedSchuljahr);
+                    exp.ExportToWord(Settings.ActiveSchuljahr);
                     break;
                 case "KL": // Aktuelle Klasse
                     exp.ExportToWord(SelectedKlasse);
                     break;
                 case "SSJ":  // Aktueller Schüler (nur dieses Schuljahr)
-                    exp.ExportToWord(SelectedSchüler, SelectedSchuljahr);
+                    exp.ExportToWord(SelectedSchüler, Settings.ActiveSchuljahr);
                     break;
                 case "SCH":  // Aktueller Schüler (Komplett)                
                     exp.ExportToWord(SelectedSchüler);

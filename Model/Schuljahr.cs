@@ -21,8 +21,15 @@ namespace Groll.Schule.Model
         
         public static Schuljahr GetCurrent()
         {
-            return new Schuljahr( DateTime.Now.Year - (DateTime.Now.Month >= StartMonat ? 0 : 1));
+            return GetFromDate(DateTime.Now);
         }
+
+        public static Schuljahr GetFromDate(DateTime date)
+        {
+            return new Schuljahr(date.Year - (date.Month >= StartMonat ? 0 : 1));
+        }
+
+
 
         public override string ToString()
         {

@@ -203,7 +203,7 @@ namespace Groll.UserControls
                     } 
 
                 // nach der Stunde eine Pause ?
-                if (PausenStunden.Contains(hour))
+                if (PausenStunden != null && PausenStunden.Contains(hour))
                 {
                     gridStundenplan.RowDefinitions.Add( new RowDefinition() { Height = GridLength.Auto });
                     c = new ContentControl()
@@ -245,6 +245,7 @@ namespace Groll.UserControls
                         Fach = null
                     };
                 Stundenplan.Stunden.Add(SelectedStunde);
+                c.Content = SelectedStunde;
             }
             
             if (auswahlBox == null)

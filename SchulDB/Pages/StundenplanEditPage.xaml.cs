@@ -22,12 +22,7 @@ namespace Groll.Schule.SchulDB.Pages
     /// </summary>
     public partial class StundenplanEditPage : Page, ISchulDBPage
     {
-        private StundenplanToSchulstundeConverter s2sConv = new StundenplanToSchulstundeConverter();
-        private ListBox dragSource = null;
-        private Point dragStartPoint = new Point();
-        private Schueler currentClickedSchüler = null;
-        private bool DragMoveStarted = false;
-       
+        private StundenplanToSchulstundeConverter s2sConv = new StundenplanToSchulstundeConverter();        
 
         #region ViewModel
         private Groll.Schule.SchulDB.ViewModels.StundenplanEditVM viewModel;

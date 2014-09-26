@@ -34,16 +34,8 @@
         <ComboBox Grid.Column="0" Grid.Row="1" Margin="50,10,25,20" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" />
 
         <!-- Stundenplan -->
-        <UC:StundenplanGrid Grid.Row="2" Grid.ColumnSpan="2" x:Name="gridStundenplan" Margin="50,20"  Stundenplan="{Binding Stundenplan}" DisplayedStunden="6" ShowSaturday="False" Fächerliste="{Binding Fächerliste}" >
-            <UC:StundenplanGrid.PausenStunden>               
-                <System:Int32>2</System:Int32>                
-                <System:Int32>5</System:Int32>
-                <System:Int32>4</System:Int32>
-                
+        <UC:StundenplanGrid Grid.Row="2" Grid.ColumnSpan="2" x:Name="gridStundenplan" Margin="50,20"  Stundenplan="{Binding Stundenplan}" DisplayedStunden="{Binding AnzeigeAnzahlStunden}" ShowSaturday="{Binding ShowSamstag}" Fächerliste="{Binding Fächerliste}" PausenStunden="{Binding Pausenstunden}" />
 
-            </UC:StundenplanGrid.PausenStunden>
-        </UC:StundenplanGrid>
-      
         <!-- Erklärung -->
         <TextBlock Grid.ColumnSpan="2" Grid.Row="3" Margin="6,10" Text="Unterrichts-Stunde anklicken, um das Fach zu ändern." TextAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" />
 

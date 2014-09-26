@@ -17,56 +17,12 @@ namespace Groll.Schule.SchulDB.ViewModels
     public class BeobachtungenBaseVM : SchuleViewModelBase
     {
         // internal Member
-        private DateTime? beoDatum;
-        private string beoText;
-        private Schuljahr selectedSchuljahr;
-        private Klasse selectedKlasse;
-        private Schueler selectedSchüler;
-        private Fach selectedFach;
-        private ObservableCollection<Fach> fächerListe;        
-        private ObservableCollection<Klasse> klassenListe;
-        private ObservableCollection<Schueler> schülerListe;
         private ObservableCollection<Schuljahr> schuljahrListe;
               
         #region Properties
-       
-        public Schuljahr SelectedSchuljahr
-        {
-            get { return selectedSchuljahr; }
-            set
-            {
-                if (selectedSchuljahr == value)
-                    return;
-                selectedSchuljahr = value; OnPropertyChanged(); OnSelectedSchuljahrChanged();
-            }
-        }
-
-        public ObservableCollection<Schuljahr> SchuljahrListe
-        {
-            get { return schuljahrListe; }
-            set
-            {
-                if (schuljahrListe == value)
-                    return;
-                schuljahrListe = value; OnPropertyChanged();
-                if (schuljahrListe.Count > 0)
-                {
-                    // Default = Aktuelles Schuljahr
-                    var sj = UnitOfWork.Settings["Global.AktuellesSchuljahr"];
-                    if (sj != null)
-                    {
-                        SelectedSchuljahr = UnitOfWork.Schuljahre.GetById(sj.GetInt(Schuljahr.GetCurrent().Startjahr));
-                    }
-                    if (selectedSchuljahr == null)
-                        SelectedSchuljahr = schuljahrListe[0];
-                }
-                else
-                    SelectedSchuljahr = null;
-            }
-        }
-           
         
         // Datum der Beobachtungen (NULL = Allgemein)        
+        private DateTime? beoDatum;
         public DateTime? BeoDatum
         {
             get { return beoDatum; }
@@ -79,6 +35,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         }
 
         // Beobachtungstext        
+        private string beoText;
         public string BeoText
         {
             get { return beoText; }
@@ -94,6 +51,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         }
 
         // Liste der Fächer / z.B. für Dropdown oder Liste        
+        private ObservableCollection<Fach> fächerListe;        
         public ObservableCollection<Fach> Fächerliste
         {
             get { return fächerListe; }
@@ -110,6 +68,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         }
 
         // Liste der Klassen / z.B. für Dropdown oder Liste        
+        private ObservableCollection<Klasse> klassenListe;
         public ObservableCollection<Klasse> KlassenListe
         {
             get { return klassenListe; }
@@ -126,6 +85,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         }
 
         // Liste der Schüler / z.B. für Dropdown oder Liste                       
+        private ObservableCollection<Schueler> schülerListe;
         public ObservableCollection<Schueler> SchülerListe
         {
             get { return schülerListe; }
@@ -141,6 +101,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }              
 
+        private Klasse selectedKlasse;
         public Klasse SelectedKlasse
         {
             get { return selectedKlasse; }
@@ -152,6 +113,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
+        private Schueler selectedSchüler;
         public Schueler SelectedSchüler
         {
             get { return selectedSchüler; }
@@ -163,6 +125,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
+        private Fach selectedFach;
         public Fach SelectedFach
         {
             get { return selectedFach; }
@@ -197,19 +160,20 @@ namespace Groll.Schule.SchulDB.ViewModels
                 fl.Insert(0, new Fach("<kein Fach>") { FachId = -1000 });
                 Fächerliste = fl;
 
-                // SCHULJAHRE LISTE LADEN
-                SchuljahrListe = UnitOfWork.Schuljahre.GetObservableCollection();                                               
+                // Klassen holen                
+                Schuljahr activeSJ = Settings.ActiveSchuljahr;
+                if (activeSJ == null)
+                    KlassenListe = new ObservableCollection<Klasse>();
+                else
+                    // Klassen des Schuljahres holen
+                    KlassenListe = new ObservableCollection<Klasse>(UnitOfWork.Klassen.GetList(k => k.Schuljahr.Startjahr == activeSJ.Startjahr));
+                
             }
         } 
        
         protected virtual void OnSelectedSchuljahrChanged()
         {
-            // Ein anderes Schuljahr wurde ausgewählt => Klassenliste aktualisieren
-            if (selectedSchuljahr == null)
-                KlassenListe = new ObservableCollection<Klasse>();
-            else
-                // Klassen des Schuljahres holen
-                KlassenListe = new ObservableCollection<Klasse>(UnitOfWork.Klassen.GetList(k => k.Schuljahr.Startjahr == selectedSchuljahr.Startjahr));
+           
 
         }
 
@@ -241,7 +205,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         #region Public Interface für Commands
         public virtual bool ValidateCurrent()
         {
-            return selectedSchüler != null && beoText.Length > 0 && selectedSchuljahr != null;
+            return selectedSchüler != null && beoText.Length > 0;
         }     
       
         public void Refresh()

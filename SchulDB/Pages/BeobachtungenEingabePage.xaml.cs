@@ -113,7 +113,6 @@ namespace Groll.Schule.SchulDB.Pages
 
         public void OnDatabaseChanged()
         {
-            viewModel.Refresh();
         }
         #endregion
 

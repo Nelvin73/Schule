@@ -31,6 +31,31 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         #region Properties
 
+        private Schuljahr selectedSchuljahr;
+        public Schuljahr SelectedSchuljahr
+        {
+            get { return selectedSchuljahr; }
+            set
+            {
+                if (selectedSchuljahr != value)
+                { selectedSchuljahr = value; OnPropertyChanged(); }
+            }
+        }
+
+        private List<Schuljahr> schuljahreListe;
+        public List<Schuljahr> SchuljahreListe
+        {
+            get { return schuljahreListe; }
+            set
+            {
+                if (schuljahreListe != value)
+                {
+                    schuljahreListe = value; OnPropertyChanged();                    
+                }
+            }
+        }       
+
+
         public FlowDocument Document
         {
             get
@@ -308,15 +333,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
             return null;
         }
-
-        private void JumpToEditedBeobachtung(Beobachtung b = null)
-        {
-            // Springt bei Neuorganisation zum editierten Paragraph
-            if (b == null)
-                return;
-
-
-        }
+      
 
         public void RefreshDocument()
         {

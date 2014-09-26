@@ -17,14 +17,14 @@ namespace Groll.Schule.SchulDB.ViewModels
     public class StundenplanEditVM : SchuleViewModelBase
     {
         // internal Member
-        private Stundenplan stundenplan;
-        private List<Klasse> klassenListe;
-        private ObservableCollection<Fach> fächerListe;
         private Klasse selectedKlasse;
+        private int anzeigeAnzahlStunden;
+        private bool showSamstag;
+        private ObservableCollection<int> pausenstunden;
      
         #region Properties
 
-
+        private ObservableCollection<Fach> fächerListe;
         public ObservableCollection<Fach> Fächerliste
         {
             get
@@ -40,6 +40,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
+        private Stundenplan stundenplan;
         public Stundenplan Stundenplan
         {
             get
@@ -53,13 +54,14 @@ namespace Groll.Schule.SchulDB.ViewModels
             {
                 if (stundenplan == value)
                     return;
-                stundenplan = value;
+                stundenplan = value;                
                 stundenplan.Stunden.CollectionChanged += Stunden_CollectionChanged;
                 OnPropertyChanged();                
             }
         }
 
         // Liste der Klassen / z.B. für Dropdown oder Liste        
+        private List<Klasse> klassenListe;
         public List<Klasse> KlassenListe
         {
             get { return klassenListe; }
@@ -88,27 +90,104 @@ namespace Groll.Schule.SchulDB.ViewModels
             }
         }
 
-     
+        public int AnzeigeAnzahlStunden
+        {
+            get
+            {
+                return anzeigeAnzahlStunden;
+            }
+
+            set
+            {
+                if (anzeigeAnzahlStunden == value)
+                    return;
+
+                anzeigeAnzahlStunden = value;
+                Settings.Set("Stundenplan.Anzeige.AnzahlStunden", typeof(int), anzeigeAnzahlStunden);
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<int> Pausenstunden
+        {
+            get
+            {
+                return pausenstunden;
+            }
+
+            set
+            {
+                if (pausenstunden == value)
+                    return;
+
+                pausenstunden = value;
+                Settings.Set("Stundenplan.Anzeige.Pausenstunden", typeof(int), PausenstundenListToString(value));
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ShowSamstag
+        {
+            get
+            {
+                return showSamstag;
+            }
+
+            set
+            {
+                if (showSamstag == value)
+                    return;
+
+                showSamstag = value;
+                Settings.Set("Stundenplan.Anzeige.ShowSamstag", typeof(bool), value);
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         //  Konstructor
         public StundenplanEditVM()
         {
+            // Commands des Ribbons verbinden
+            Ribbon.TabStundenplan.SetStundenanzahl = new DelegateCommand((c) => SetStundenAnzahl(c)) ;
+            Ribbon.TabStundenplan.SetShowSamstag = new DelegateCommand((c) => SetShowSamstag(c));
+            Ribbon.TabStundenplan.SetPausenstunden = new DelegateCommand((c) => SetPausenstunden(c));
+        }      
+
         
-           }
+
+        #region Hilfsfunktionen
+        private ObservableCollection<int> PausenstundenStringToList(string s)
+        {
+            ObservableCollection<int> p = new ObservableCollection<int>();
+            int i = 0;
+            foreach (string n in s.Split(','))
+            {
+                if (int.TryParse(n, out i))
+                    p.Add(i);
+            }
+
+            return p;
+        }
+
+        private string PausenstundenListToString(ObservableCollection<int> l)
+        {
+            return string.Join(",", l);
+        }
+
+        #endregion
+
+        #region Verhalten bei Änderungen der Auswahl
+
+        protected virtual void OnSelectedKlasseChanged()
+        {
+            LoadStundenplan();              
+        }
 
         void Stunden_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            
-        }
-
-        #region Verhalten bei Änderungen der Auswahl       
-
-         protected virtual void OnSelectedKlasseChanged()
-        {
-            LoadStundenplan();
-               
-            // nichts nötig, da mit ObservableCollection auf SelectedKlasse.Schüler gebunden wird
+            int i = 1;
         }
 
         #endregion
@@ -131,8 +210,10 @@ namespace Groll.Schule.SchulDB.ViewModels
                 // Fächer laden
                 Fächerliste = UnitOfWork.Fächer.GetObservableCollection();
 
-                // Freie Schüler holen
-              //  FreieSchülerListe = new ObservableCollection<Schueler>(UnitOfWork.Schueler.GetList().Where(x => !x.Inaktiv && x.GetKlasse(sj) == null));                
+                // Stundenplan-Konfig
+                AnzeigeAnzahlStunden = (int)Settings.Get("Stundenplan.Anzeige.AnzahlStunden", typeof(int), 6, true);
+                ShowSamstag = (bool) Settings.Get("Stundenplan.Anzeige.ShowSamstag", typeof(bool), false, true);
+                Pausenstunden = PausenstundenStringToList(Settings.Get("Stundenplan.Anzeige.Pausenstunden", typeof(string)).ToString());                               
             }
         }
 
@@ -159,6 +240,31 @@ namespace Groll.Schule.SchulDB.ViewModels
         public DelegateCommand AddClassCommand { get; private set; }
         public DelegateCommand DeleteClassCommand { get; private set; }
 
+        private void SetShowSamstag(object c)
+        {
+            ShowSamstag = (bool)c;
+        }
+
+        private void SetStundenAnzahl(object c)
+        {
+            int i = 0;
+
+            if (c is Int16)
+                i = (Int16)c;
+            else
+
+                if (!int.TryParse((string)c.ToString(), out i))
+                    return;
+
+            // Save new value
+            AnzeigeAnzahlStunden = i;
+        }
+
+        private void SetPausenstunden(object c)
+        {
+            // Save new value
+            Pausenstunden = PausenstundenStringToList(c.ToString()); ;
+        }
        
         #endregion
 

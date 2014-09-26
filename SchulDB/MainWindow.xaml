@@ -1,5 +1,6 @@
 ﻿<RibbonWindow
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
         xmlns:comm="clr-namespace:Groll.Schule.SchulDB.Commands"
         xmlns:ViewModels="clr-namespace:Groll.Schule.SchulDB.ViewModels"
@@ -236,10 +237,17 @@
                 </RibbonGroup>
             </RibbonTab>
 
-            <!-- RibbonTab Beobachtungen-Ansicht -->
+            <!-- RibbonTab Stundenplan-Ansicht -->
             <RibbonTab DataContext="{Binding TabStundenplan, Mode=OneWay}"  Style="{StaticResource RibbonTabDefaultStyle}">
                 <RibbonGroup Header="Einstellungen">
-                
+                    <RibbonToggleButton Label="Samstag anzeigen" IsChecked="{Binding ShowSamstag}"   />                    
+                    <RibbonComboBox Label="Stunden pro Tag" >
+                        <RibbonGallery SelectedItem="{Binding Stundenanzahl}"  MaxColumnCount="1">
+                            <RibbonGalleryCategory ItemsSource="{Binding  StundenzahlenListe}" />                               
+                        </RibbonGallery>                        
+                    </RibbonComboBox>
+                    <RibbonTextBox Label="Pausen" Text="{Binding PausenStunden, UpdateSourceTrigger=PropertyChanged, Delay=300}" />
+                  
                     <!--    <RibbonToggleButton DataContext="{Binding NewPageOnSchülerButton}" Command="{Binding UpdateBeobachtungenView, Source={x:Static comm:SchuleCommands.Beobachtungen}}"  Style="{StaticResource RibbonToggleButtonDefaultStyle}" />
                     <RibbonToggleButton DataContext="{Binding EditModeButton}" Command="{Binding EditModeChanged, Source={x:Static comm:SchuleCommands.Beobachtungen}}" CommandParameter="{Binding IsChecked}"  Style="{StaticResource RibbonToggleButtonDefaultStyle}" />  -->
                 </RibbonGroup>
