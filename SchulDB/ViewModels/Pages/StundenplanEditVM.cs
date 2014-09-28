@@ -213,7 +213,7 @@ namespace Groll.Schule.SchulDB.ViewModels
                 // Stundenplan-Konfig
                 AnzeigeAnzahlStunden = (int)Settings.Get("Stundenplan.Anzeige.AnzahlStunden", typeof(int), 6, true);
                 ShowSamstag = (bool) Settings.Get("Stundenplan.Anzeige.ShowSamstag", typeof(bool), false, true);
-                Pausenstunden = PausenstundenStringToList(Settings.Get("Stundenplan.Anzeige.Pausenstunden", typeof(string)).ToString());                               
+                Pausenstunden = PausenstundenStringToList(Settings.Get("Stundenplan.Anzeige.Pausenstunden", typeof(string), "").ToString());                               
             }
         }
 
