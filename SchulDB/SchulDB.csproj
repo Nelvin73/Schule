@@ -112,6 +112,9 @@
     <Compile Include="Pages\BeobachtungenAnsichtPage.xaml.cs">
       <DependentUpon>BeobachtungenAnsichtPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\KlassenarbeitEditPage.xaml.cs">
+      <DependentUpon>KlassenarbeitEditPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\StundenplanEditPage.xaml.cs">
       <DependentUpon>StundenplanEditPage.xaml</DependentUpon>
     </Compile>
@@ -123,6 +126,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\Pages\ChangeSchuljahrVM.cs" />
+    <Compile Include="ViewModels\Pages\KlassenarbeitEditVM.cs" />
     <Compile Include="ViewModels\Pages\StundenplanEditVM.cs" />
     <Compile Include="ViewModels\Pages\KlassenEditVM.cs" />
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabStundenplanVM.cs" />
@@ -164,6 +168,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Pages\FaecherDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\KlassenarbeitEditPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

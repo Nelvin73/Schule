@@ -154,3 +154,8 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+/DBTest/App.config
+/packages/EntityFramework.6.1.1
+/packages/EntityFramework.SqlServerCompact.6.1.1
+/packages/Microsoft.SqlServer.Compact.4.0.8854.1
+/Packages.dgml

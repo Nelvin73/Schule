@@ -126,6 +126,10 @@ namespace Groll.Schule.SchulDB.ViewModels
                         page = new KlassenEditPage();
                         break;
 
+                    case "klassenarbeitedit":
+                        page = new KlassenarbeitEditPage();
+                        break;
+                    
                     case "stundenplanedit":
                         page = new StundenplanEditPage();
                         break;

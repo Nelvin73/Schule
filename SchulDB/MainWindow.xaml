@@ -91,6 +91,9 @@
                     <RibbonButton Label="Exportieren" SmallImageSource="/Images/Klasse.ico" Command="{Binding Command_Navigate}" CommandParameter="beobachtungeneingabe"  />
                     <RibbonButton Label="Korrigieren" SmallImageSource="/Images/Mappe.ico" Command="{Binding Command_Navigate}" CommandParameter="beobachtungeneingabe"  />
                 </RibbonGroup>
+                <RibbonGroup Header="Schularbeiten" DataContext="{StaticResource MainViewModel}">
+                    <RibbonButton Label="Eingeben" SmallImageSource="/Images/Schüler.ico" Command="{Binding Command_Navigate}" CommandParameter="klassenarbeitedit" LargeImageSource="/Images/Schultafel_Schulfaecher_320986.jpg"  />                    
+                </RibbonGroup>
             </RibbonTab>
 
             <RibbonTab Header="Listen" >

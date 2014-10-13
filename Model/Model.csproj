@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Beobachtung.cs" />
+    <Compile Include="Klassenarbeit.cs" />
     <Compile Include="Fach.cs" />
     <Compile Include="Textbausteine.cs" />
     <Compile Include="Schueler.cs" />

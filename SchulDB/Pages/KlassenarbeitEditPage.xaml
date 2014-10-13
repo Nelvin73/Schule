@@ -1,0 +1,57 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:Model="clr-namespace:Groll.Schule.Model;assembly=Model" 
+    xmlns:VM="clr-namespace:Groll.Schule.SchulDB.ViewModels"  
+    xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase" x:Class="Groll.Schule.SchulDB.Pages.KlassenarbeitEditPage"  
+    mc:Ignorable="d" 
+      d:DesignHeight="460" d:DesignWidth="800"
+	Title="" Loaded="Page_Loaded">
+
+    <Page.Resources>
+        <VM:KlassenEditVM x:Key="ViewModel" />
+    </Page.Resources>
+
+    <Grid DataContext="{StaticResource ViewModel}">
+        <Grid.Resources>
+            <CollectionViewSource x:Key="cvsKlassenliste" Source="{Binding SelectedKlasse.Schueler}"  >
+                <CollectionViewSource.SortDescriptions>
+                    <ComponentModel:SortDescription Direction="Ascending" PropertyName="Nachname"/>
+                    <ComponentModel:SortDescription Direction="Ascending" PropertyName="Vorname"/>
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+           
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Überschrift -->
+        <TextBlock Grid.ColumnSpan="2" Margin="6" Text="Klassenarbeit" HorizontalAlignment="Center" FontSize="32" />
+
+        <!-- Klassen-Ansicht -->
+        <DockPanel Grid.Column="0" Grid.Row="1" Margin="50,10,25,20" >
+            <ComboBox Margin="3" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" DockPanel.Dock="Top" />
+       
+
+            <DataGrid Margin="3" x:Name="Schülerliste" ItemsSource="{Binding Mode=OneWay, Source={StaticResource cvsKlassenliste}}" 
+				Tag = "K" MouseMove="ListBox_MouseMove" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop" AllowDrop="True" DragEnter="ListBox_DragEnter" DragLeave="ListBox_DragLeave" DragOver="ListBox_DragOver" GiveFeedback="ListBox_GiveFeedback" SelectionMode="Extended" PreviewMouseLeftButtonUp="Schülerliste_PreviewMouseLeftButtonUp" MouseDoubleClick="Schülerliste_MouseDoubleClick"   />
+
+     </DockPanel>
+
+      
+
+        <!-- Erklärung -->
+        <TextBlock Grid.ColumnSpan="2" Grid.Row="2" Margin="6,10" Text="Mit '+' und '-' Klassen erstellen und löschen. &#xA;Mit Drag &amp; Drop oder Doppel-Klick die Schüler den Klassen zuordnen." TextAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" />
+
+    </Grid>
+</Page>
