@@ -105,7 +105,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             StundenzahlenListe = new List<int>(){ 6, 8, 10, 12};
             Stundenanzahl = (int) Settings.Get("Stundenplan.Anzeige.AnzahlStunden", typeof(int), 6, true);
-            PausenStunden = Settings.Get("Stundenplan.Anzeige.Pausenstunden", typeof(string)).ToString();
+            PausenStunden = Settings.Get("Stundenplan.Anzeige.Pausenstunden", typeof(string), "").ToString();
             ShowSamstag = (bool) Settings.Get("Stundenplan.Anzeige.ShowSamstag", typeof(bool), false, true);
             base.RefreshData();
         }
