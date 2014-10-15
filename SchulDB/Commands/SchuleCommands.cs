@@ -1,5 +1,4 @@
-﻿using Groll.Schule.SchulDB.Helper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Groll.Schule.Model;
 
 namespace Groll.Schule.SchulDB.Commands
 {

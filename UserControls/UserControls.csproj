@@ -35,6 +35,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -58,6 +59,9 @@
       <DependentUpon>StundenplanGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="ThreeDigitDoubleConverter.cs" />
+    <Compile Include="WerteVerteilungControl.xaml.cs">
+      <DependentUpon>WerteVerteilungControl.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="DatePickerX.xaml">
@@ -77,6 +81,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StundenplanGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WerteVerteilungControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

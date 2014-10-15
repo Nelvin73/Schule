@@ -22,6 +22,8 @@ namespace Groll.UserControls
     /// </summary>
     public partial class MultiThumbSlider : UserControl
     {
+        private static bool ReInitializing = false;
+
         public MultiThumbSlider()
         {
             InitializeComponent();
@@ -30,9 +32,52 @@ namespace Groll.UserControls
         }
 
 
-        #region Values        
-        public ObservableCollection<double> Values { get; private set; }
+        #region Values             
+        public ObservableCollection<double> Values
+        {
+            get { return (ObservableCollection<double>)GetValue(ValuesProperty); }
+            set { SetValue(ValuesProperty, value); }
+        }
 
+        // Using a DependencyProperty as the backing store for Values.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ValuesProperty =
+            DependencyProperty.Register("Values", typeof(ObservableCollection<double>), typeof(MultiThumbSlider), new PropertyMetadata(new ObservableCollection<double>(), new PropertyChangedCallback(ValuesChanged), new CoerceValueCallback(ValidateValues)));
+
+        private static object ValidateValues(DependencyObject d, object baseValue)
+        {
+ 	        var j = d as MultiThumbSlider;
+            var l = baseValue as ObservableCollection<double>;
+
+            if (j == null || l == null)
+                return baseValue;
+
+            // Add values until count of thumbs
+            for (int i = l.Count; i < j.ThumbCount; i++)
+                l.Add(0);
+
+            // return sorted list 
+            return new ObservableCollection<double>(l.OrderBy( x => x).Take(j.ThumbCount));
+
+        }
+
+        private static void ValuesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var j = d as MultiThumbSlider;
+            if (j == null || ReInitializing)
+                return;
+
+            ReInitializing = true;
+            var sliders = j.SliderContainer.Children.OfType<Slider>().ToList();
+
+            for (int i = 0; i < sliders.Count && i <j.Values.Count; i++ )                
+            {
+                sliders[i].Value = j.Values[i];                
+            }
+
+            ReInitializing = false;
+        }
+
+        
 
 
         public bool ShowValue
@@ -174,16 +219,19 @@ namespace Groll.UserControls
 
         void RecreateSliders()
         {
+            ReInitializing = true;
+
             SliderContainer.Children.Clear();
-            Values = new ObservableCollection<double>();
+            if (Values == null)
+                Values = new ObservableCollection<double>();
 
             for (int i = 0; i < ThumbCount; i++)
             {
                 var s = new Slider()
                 {
-                    HorizontalAlignment = HorizontalAlignment.Left,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Center,
-                    Value = MinValue + ((double) MaxValue - MinValue) / (ThumbCount + 1D) * (i + 1D),
+                    Value = MinValue + ((double) MaxValue - MinValue) / (ThumbCount + 1D) * (i + 1D),                    
                     Template = (ControlTemplate) FindResource("SingleSlider"),
                     Minimum = MinValue,
                     Maximum = MaxValue,
@@ -194,21 +242,30 @@ namespace Groll.UserControls
                 };
 
                 s.ValueChanged += s_ValueChanged;
-
                 s.Tag = SliderContainer.Children.Add(s);
-                Values.Add(s.Value);
+
+                if (i >= Values.Count)
+                    Values.Add(s.Value);
+                else
+                    s.Value = Values[i];
             }
+
+            ReInitializing = false;
         }
 
         void s_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             // Der Wert eines Sliders wurde geändert
             var s = e.Source as Slider;
-            if (s == null)
+            if (s == null || ReInitializing)
                 return;
-
+            
             int index = (int)s.Tag;
+            // Umweg nötig, damit CollectionChanged ausgelöst wird
+            ReInitializing = true;
             Values[index] = (double) e.NewValue;
+            Values = new ObservableCollection<double>(Values);
+            ReInitializing = false;
 
             if (e.NewValue > e.OldValue)
             {
@@ -234,6 +291,8 @@ namespace Groll.UserControls
 
                 }
             }         
+
+            
         }
        
 

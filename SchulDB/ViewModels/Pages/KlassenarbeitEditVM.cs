@@ -17,10 +17,13 @@ namespace Groll.Schule.SchulDB.ViewModels
     public class KlassenarbeitEditVM : SchuleViewModelBase
     {
         // internal Member
-        private List<Klasse> klassenListe;        
-        private ObservableCollection<Schueler> freieSchülerListe;
+        private List<Klasse> klassenListe;
+        private Klassenarbeit selectedKlassenarbeit;
+        private ObservableCollection<Klassenarbeit> klassenArbeiten;
         private Klasse selectedKlasse;
-     
+        private List<Fach> fächerListe;
+      
+
         #region Properties
 
         // Liste der Klassen / z.B. für Dropdown oder Liste        
@@ -46,41 +49,105 @@ namespace Groll.Schule.SchulDB.ViewModels
             {
                 if (selectedKlasse == value)
                     return;
-                selectedKlasse = value; 
-                OnPropertyChanged(); 
+                selectedKlasse = value;
+                OnPropertyChanged();
                 OnSelectedKlasseChanged();
             }
         }
-
-       // Liste der Schüler ohne Klasse                       
-        public ObservableCollection<Schueler> FreieSchülerListe
+        
+        public Klassenarbeit SelectedKlassenarbeit
         {
-            get { return freieSchülerListe; }
+            get { return selectedKlassenarbeit; }
             set
             {
-                if (freieSchülerListe == value)
+                if (selectedKlassenarbeit == value)
                     return;
-                freieSchülerListe = value; OnPropertyChanged();              
+                selectedKlassenarbeit = value;
+                OnPropertyChanged();
+                OnSelectedKlassenarbeitChanged();
             }
-        }              
+        }
 
+
+        // Liste der Schüler ohne Klasse                       
+        public ObservableCollection<Klassenarbeit> Klassenarbeiten
+        {
+            get { return klassenArbeiten; }
+            set
+            {
+                if (klassenArbeiten == value)
+                    return;
+                klassenArbeiten = value; OnPropertyChanged();
+                if (klassenArbeiten.Count > 0)
+                    SelectedKlassenarbeit = klassenArbeiten[0];
+                else
+                    SelectedKlassenarbeit = null;
+            }
+        }
+
+        public List<Fach> Fächerliste
+        {
+            get { return fächerListe; }
+            set
+            {
+                if (fächerListe == value)
+                    return;
+                fächerListe = value; OnPropertyChanged();
+/*                if (fächerListe.Count > 0)
+                    SelectedFach = fächerListe[0];
+                else
+                    SelectedFach = null;  */
+            }
+        }
+
+        
+        
         #endregion
 
         //  Konstructor
         public KlassenarbeitEditVM()
         {
-             
+            AddArbeitCommand = new DelegateCommand((object x) => AddArbeit(x));            
         }
 
-        #region Verhalten bei Änderungen der Auswahl       
 
-         protected virtual void OnSelectedKlasseChanged()
+        #region Verhalten bei Änderungen der Auswahl
+
+        protected virtual void OnSelectedKlasseChanged()
         {
+            Klassenarbeiten = new ObservableCollection<Klassenarbeit>(UnitOfWork.Klassenarbeiten.GetList().Where(x => x.Klasse == SelectedKlasse));
             // nichts nötig, da mit ObservableCollection auf SelectedKlasse.Schüler gebunden wird
         }
 
+        protected void OnSelectedKlassenarbeitChanged()
+        {
+            // Für alle Schüler Informationen einpflegen, falls noch nicht vorhanden
+            if (selectedKlassenarbeit == null)
+                return;
+
+            var missing = selectedKlasse.Schueler.Except
+                (from n in SelectedKlassenarbeit.Noten
+                select n.Schüler);
+
+            if (missing.Count() > 0)
+            {
+                foreach (var s in missing)
+                {
+                    SelectedKlassenarbeit.Noten.Add(new KlassenarbeitsNote()
+                    {
+                        Schüler = s,
+                        HatMitgeschrieben = false,
+                        Note = null,
+                        Punkte = null
+                    });
+                }
+
+                UnitOfWork.Save();
+            }
+        }
+
         #endregion
-       
+                                      
         public override void RefreshData()
         {
             // Lädt sämtliche Daten neu, z.B. wenn DB oder aktuelles Schuljahr geändert wurde
@@ -92,12 +159,35 @@ namespace Groll.Schule.SchulDB.ViewModels
                 int sj = Settings.ActiveSchuljahr.Startjahr;
                         
                 // Aktuelle Klassen holen
-                KlassenListe = UnitOfWork.Klassen.GetList().Where(x => x.SchuljahrId == sj).ToList();   
-                
-                   }
+                KlassenListe = UnitOfWork.Klassen.GetList().Where(x => x.SchuljahrId == sj).ToList();                   
+
+                // Fächer holen
+                Fächerliste = UnitOfWork.Fächer.GetActiveFächer();
+            }
         }
 
 
-    
+        #region Commands
+        public DelegateCommand AddArbeitCommand { get; private set; }
+
+        private object AddArbeit(object x)
+        {
+            // var k = UnitOfWork.Klassenarbeiten.Add(new Klassenarbeit());            
+            var k = UnitOfWork.Klassenarbeiten.Add(new Klassenarbeit());
+            Klassenarbeiten.Add(k);
+            k.Name = "Neue Klassenarbeit";
+            k.Klasse = SelectedKlasse;
+            UnitOfWork.Save();
+            
+            SelectedKlassenarbeit = k;
+            return k;
         }
+
+
+        #endregion
+   
+
+
+
+    }
 }

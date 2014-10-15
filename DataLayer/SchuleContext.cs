@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure;
 using Groll.Schule.DataAccess.Configuration;
 
+// Update-Database -connectionstring "Data Source=|DataDirectory|..\..\..\SchulDB\bin\debug\Groll.Schuldb.sdf" -connectionprovidername "System.Data.SqlServerCe.4.0" -verbose
 
 namespace Groll.Schule.DataAccess
 {
@@ -31,12 +32,16 @@ namespace Groll.Schule.DataAccess
         public DbSet<Stundenplan> Stundenpläne { get; set; }
         public DbSet<Textbaustein> Textbausteine { get; set; }
         public DbSet<Beobachtung> Beobachtungen { get; set; }
+        public DbSet<Klassenarbeit> Klassenarbeiten { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Setting>().HasKey(x=> x.Key);
             modelBuilder.Configurations.Add(new SchuelerConfiguration());
             modelBuilder.Configurations.Add(new KlasseConfiguration());
+            modelBuilder.Configurations.Add(new KlassenarbeitenConfiguration());
+            modelBuilder.Configurations.Add(new KlassenarbeitenNotenConfig());
+            
             modelBuilder.Configurations.Add(new SchuljahrConfiguration());
             modelBuilder.Configurations.Add(new FachConfiguration());
             modelBuilder.Configurations.Add(new TextbausteineConfig());

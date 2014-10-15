@@ -58,10 +58,22 @@ namespace Groll.Schule.DataManager
         private RepositoryBase<Beobachtung> repBeobachtungen;
         private RepositoryBase<Schuljahr> repSchuljahre;
         private RepositoryBase<Stundenplan> repStundenplan;
+        private RepositoryBase<Klassenarbeit> repKlassenarbeiten;
         private SettingsRepository repSettings;
         #endregion
 
         #region Repositories
+        
+
+        public RepositoryBase<Klassenarbeit> Klassenarbeiten
+        {
+            get {
+                if (repKlassenarbeiten == null && context != null)
+                    repKlassenarbeiten = new RepositoryBase<Klassenarbeit>(context); 
+                return repKlassenarbeiten;
+            }            
+        }
+        
         public SettingsRepository Settings
         {
             get
@@ -271,6 +283,7 @@ namespace Groll.Schule.DataManager
             context.Beobachtungen.Load();
             context.Textbausteine.Load();
             context.Stundenpläne.Include("Stunden").Load();
+            context.Klassenarbeiten.Include("Noten").Load();
         }
 
         private void ResetRepositories()

@@ -59,6 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\FachConfig.cs" />
+    <Compile Include="Configuration\KlassenarbeitenNotenConfig.cs" />
+    <Compile Include="Configuration\KlassenarbeitenConfig.cs" />
     <Compile Include="Configuration\KlasseConfig.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -75,6 +77,14 @@
     <Compile Include="Migrations\201409181222273_Including Stundenplan.cs" />
     <Compile Include="Migrations\201409181222273_Including Stundenplan.Designer.cs">
       <DependentUpon>201409181222273_Including Stundenplan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410131449209_AddKlassenarbeiten.cs" />
+    <Compile Include="Migrations\201410131449209_AddKlassenarbeiten.Designer.cs">
+      <DependentUpon>201410131449209_AddKlassenarbeiten.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410141025032_AddKlassenarbeiten2.cs" />
+    <Compile Include="Migrations\201410141025032_AddKlassenarbeiten2.Designer.cs">
+      <DependentUpon>201410141025032_AddKlassenarbeiten2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="SchuleContextInitializer.cs" />
@@ -97,6 +107,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409181222273_Including Stundenplan.resx">
       <DependentUpon>201409181222273_Including Stundenplan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410131449209_AddKlassenarbeiten.resx">
+      <DependentUpon>201410131449209_AddKlassenarbeiten.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410141025032_AddKlassenarbeiten2.resx">
+      <DependentUpon>201410141025032_AddKlassenarbeiten2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

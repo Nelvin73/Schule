@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" SizeChanged="UserControl_SizeChanged"      
+             d:DesignHeight="150" d:DesignWidth="300" SizeChanged="UserControl_SizeChanged"      
             
              >
     <UserControl.Resources>
@@ -13,7 +13,7 @@
     <Grid Margin="3">       
         <Border x:Name="TrackBackground" Style="{StaticResource TrackBackgroundStyle}" />
 
-        <Grid x:Name="SliderContainer" HorizontalAlignment="Center" >
+        <Grid x:Name="SliderContainer" HorizontalAlignment="Stretch" >
             <Slider HorizontalAlignment="Stretch"  VerticalAlignment="Center"  Value="50" Template="{StaticResource SingleSlider}" Minimum="0" Maximum="100" SmallChange="1"  TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True"/>            
         </Grid>
         

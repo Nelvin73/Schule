@@ -23,6 +23,25 @@ namespace Groll.Schule.SchulDB.Helper
         }
 
     }
+
+    public class ObjectDictConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var i = value as Dictionary<int, int>;
+            if (i == null)
+                return null;
+
+            return  i.ToList().ToDictionary( x => x.Key.ToString(), y => (string)  y.Value.ToString() );            
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     [ValueConversion(typeof(int), typeof(Schuljahr))]
     public class IntToSchuljahrConverter : IValueConverter
     {

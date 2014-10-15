@@ -162,7 +162,7 @@
     </Compile>
     <Compile Include="Commands\BasicCommands.cs" />
     <Compile Include="Commands\BeobachtungenCommands.cs" />
-    <Compile Include="Helper\ObservableObject.cs" />
+    <None Include="Helper\ObservableObject.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

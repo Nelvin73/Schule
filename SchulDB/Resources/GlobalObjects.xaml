@@ -11,6 +11,7 @@
 
     <Path x:Key="PlusSymbolPath" Stroke="Blue" StrokeThickness="3" Fill="Blue" Data="M 7 0 L 7 14 Z M 0 7 L 14 7 Z "/>
     <Path x:Key="MinusSymbolPath" Stroke="Red" StrokeThickness="3" Fill="Blue" Data="M 2 8 L 14 8 "/>
+    <Path x:Key="XSymbolPath" Stroke="Red" StrokeThickness="2" Fill="Blue" Data="M 1 1 L 9 9 M 1 9 L 9 1"/>
 
 
 </ResourceDictionary>

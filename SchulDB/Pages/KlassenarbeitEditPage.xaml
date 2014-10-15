@@ -5,25 +5,67 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:Model="clr-namespace:Groll.Schule.Model;assembly=Model" 
     xmlns:VM="clr-namespace:Groll.Schule.SchulDB.ViewModels"  
-    xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase" x:Class="Groll.Schule.SchulDB.Pages.KlassenarbeitEditPage"  
+    xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"  
+    xmlns:uc="clr-namespace:Groll.UserControls;assembly=UserControls"
+    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:Helper="clr-namespace:Groll.Schule.SchulDB.Helper" x:Class="Groll.Schule.SchulDB.Pages.KlassenarbeitEditPage"
     mc:Ignorable="d" 
       d:DesignHeight="460" d:DesignWidth="800"
 	Title="" Loaded="Page_Loaded">
 
     <Page.Resources>
-        <VM:KlassenEditVM x:Key="ViewModel" />
+        <Helper:ObjectDictConverter x:Key="ObjectDictConverter"/>
+        <VM:KlassenarbeitEditVM x:Key="ViewModel" />
+
+        <DataTemplate x:Key="xButton">
+            <Button Width="20" Height="20" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Click="RemoveNote" >
+                <Button.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HatMitgeschrieben}"  Value="False">
+                                <Setter Property="UIElement.Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Path Data="M 1 1 L 9 9 M 1 9 L 9 1" Stroke="Red" StrokeThickness="2" />
+            </Button>
+        </DataTemplate>
+
+        <DataTemplate x:Key="xButton2">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Löschen" />
+                <Button Width="20" Height="20" HorizontalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" Click="RemoveNote" >
+                    <Button.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HatMitgeschrieben}"  Value="True">
+                                    <Setter Property="UIElement.Visibility" Value="Hidden" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Path Data="M 1 1 L 9 9 M 1 9 L 9 1" Stroke="Red" />
+                </Button>
+
+            </StackPanel>
+        </DataTemplate>
+
     </Page.Resources>
 
-    <Grid DataContext="{StaticResource ViewModel}">
+    <Grid>
         <Grid.Resources>
-            <CollectionViewSource x:Key="cvsKlassenliste" Source="{Binding SelectedKlasse.Schueler}"  >
+            <CollectionViewSource x:Key="Notenliste" Source="{Binding SelectedKlassenarbeit.Noten}"  >
                 <CollectionViewSource.SortDescriptions>
-                    <ComponentModel:SortDescription Direction="Ascending" PropertyName="Nachname"/>
-                    <ComponentModel:SortDescription Direction="Ascending" PropertyName="Vorname"/>
+                    <ComponentModel:SortDescription Direction="Ascending" PropertyName="Schüler.Nachname"/>
+                    <ComponentModel:SortDescription Direction="Ascending" PropertyName="Schüler.Vorname"/>
                 </CollectionViewSource.SortDescriptions>
             </CollectionViewSource>
-           
+
         </Grid.Resources>
+
+        <Grid.DataContext>
+            <StaticResource ResourceKey="ViewModel"/>
+        </Grid.DataContext>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -36,22 +78,77 @@
         </Grid.RowDefinitions>
 
         <!-- Überschrift -->
-        <TextBlock Grid.ColumnSpan="2" Margin="6" Text="Klassenarbeit" HorizontalAlignment="Center" FontSize="32" />
+        <TextBlock Grid.ColumnSpan="2" Margin="6" Text="Klassenarbeiten" HorizontalAlignment="Center" FontSize="32" />
 
         <!-- Klassen-Ansicht -->
-        <DockPanel Grid.Column="0" Grid.Row="1" Margin="50,10,25,20" >
+        <DockPanel Grid.Column="0" Grid.Row="1" Margin="10,10,15,10" >
             <ComboBox Margin="3" ItemsSource="{Binding KlassenListe}" SelectedItem="{Binding SelectedKlasse}" DockPanel.Dock="Top" />
-       
 
-            <DataGrid Margin="3" x:Name="Schülerliste" ItemsSource="{Binding Mode=OneWay, Source={StaticResource cvsKlassenliste}}" 
-				Tag = "K" MouseMove="ListBox_MouseMove" PreviewMouseLeftButtonDown="ListBox_PreviewMouseLeftButtonDown" Drop="ListBox_Drop" AllowDrop="True" DragEnter="ListBox_DragEnter" DragLeave="ListBox_DragLeave" DragOver="ListBox_DragOver" GiveFeedback="ListBox_GiveFeedback" SelectionMode="Extended" PreviewMouseLeftButtonUp="Schülerliste_PreviewMouseLeftButtonUp" MouseDoubleClick="Schülerliste_MouseDoubleClick"   />
+            <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+                <Button Margin="3" DockPanel.Dock="Right" Width="20" Height="20" Content="{StaticResource PlusSymbolPath}" 
+					Command="{Binding AddArbeitCommand}" />
+                <ComboBox Margin="3" ItemsSource="{Binding Klassenarbeiten}" SelectedItem="{Binding SelectedKlassenarbeit}" />
+            </DockPanel>
 
-     </DockPanel>
+            <DataGrid Margin="3" x:Name="Notenliste" ItemsSource="{Binding Source={StaticResource Notenliste}}" AutoGenerateColumns="False" 
+				CanUserReorderColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Schüler}" Header="Schüler" IsReadOnly="True" Width="*" />
+                    <DataGridTextColumn Binding="{Binding Punkte, UpdateSourceTrigger=PropertyChanged}" Header="Punkte" Width="50"  />
+                    <DataGridTextColumn Binding="{Binding Note}" Header="Note" IsReadOnly="True" Width="40" />
+                    <DataGridCheckBoxColumn Binding="{Binding OhneWertung, UpdateSourceTrigger=PropertyChanged}" Header="nicht werten" Width="Auto" />
+                    <DataGridTemplateColumn  Header="Löschen" CellTemplate="{StaticResource xButton}"  />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
 
-      
+        <Grid  Grid.Column="1" Grid.Row="1" Margin="15,10,10,10"  DataContext="{Binding SelectedKlassenarbeit}" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+
+                <DockPanel Margin="3" >
+                    <TextBlock Text="Name:" VerticalAlignment="Center" />
+                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"  Margin="10,3,3,3" />
+                </DockPanel>
+                <DatePicker Margin="3,10" SelectedDate="{Binding Datum}" DockPanel.Dock="Top" />
+
+                <DockPanel Margin="3" >
+                    <TextBox Margin="3" Height="75" Text="{Binding Kommentar}" />
+                </DockPanel>
+                <Line Stroke="Black" StrokeThickness="2" />
+
+                <DockPanel Margin="0,20,0,0">
+                    <TextBlock DockPanel.Dock="Left" Text="Gesamt-Punkte:" Margin="3" VerticalAlignment="Center" />
+                    <TextBox Text="{Binding GesamtPunkte}"  Margin="10,3,3,3" />
+                </DockPanel>
+                <DockPanel HorizontalAlignment="Stretch" >
+                    <TextBlock Text="Punkteschlüssel" VerticalAlignment="Center" />
+                    <uc:MultiThumbSlider Margin="3"  ThumbCount="5" MaxValue="{Binding GesamtPunkte}" Values="{Binding PunkteschlüsselListe, Mode=TwoWay}"  IsSnapToTickEnabled="True" TickFrequency="0.5" />
+                </DockPanel>
+                <StackPanel Orientation="Horizontal" TextBlock.FontSize="22">
+                    <TextBlock Text="Ø " />
+                    <TextBlock Text="{Binding Notenschnitt, FallbackValue=---, TargetNullValue=''}" />
+                </StackPanel>
+                <uc:WerteVerteilungControl Data="{Binding Notenverteilung, Converter={StaticResource ObjectDictConverter}}" />
+
+            </StackPanel>
+
+        </Grid>
+
+
+
+
 
         <!-- Erklärung -->
         <TextBlock Grid.ColumnSpan="2" Grid.Row="2" Margin="6,10" Text="Mit '+' und '-' Klassen erstellen und löschen. &#xA;Mit Drag &amp; Drop oder Doppel-Klick die Schüler den Klassen zuordnen." TextAlignment="Center" FontStyle="Italic" TextWrapping="Wrap" />
+        <StackPanel Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="445,171,-145,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>
 
     </Grid>
 </Page>
