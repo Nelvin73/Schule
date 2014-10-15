@@ -217,18 +217,19 @@ namespace Groll.Schule.Model
             {
                 if (_Notenverteilung == null)
                 {
-                    
-                    var dict = new Dictionary<int,int>();
+
+                    _Notenverteilung = new Dictionary<int, int>() { { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 } };
 
                     var res =
                         (from a in Noten
                          group a by a.Note into g
                          where g.Key != null
-                         select new { Key = g.Key, Count = g.Count() }
-                        ).ToDictionary(k => k.Key.Value, v => v.Count);
+                         select new {K = g.Key, V = g.Count()});
 
-                    _Notenverteilung = res;                    
+                    foreach( var r in res)                    
+                        _Notenverteilung[r.K.Value] = r.V;
                     
+                                        
                 }
                 return _Notenverteilung;
 

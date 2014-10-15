@@ -78,81 +78,74 @@ namespace Groll.UserControls
             Data2 = new Dictionary<string, string>();
             CreateGrid();
         }
-
-        private void CreateGrid()
+        private Border GetBorder(string border)
         {
-            UniformGrid grid = myGRID;
-            grid.Children.Clear();
-            grid.Columns = Data.Count + 2;
-            grid.Rows = 2;
+            border += "0000";
+            Thickness t = new Thickness();
+            t.Left = border[0] - '0';
+            t.Top = border[1] - '0';
+            t.Right = border[2] - '0';
+            t.Bottom = border[3] - '0';
 
-
-            Border b = new Border()
+            return new Border()
             {
                 Padding = new Thickness(10),
                 BorderBrush = this.Foreground,
-                BorderThickness = new Thickness(2, 0, 2, 2)
+                BorderThickness = t,                
             };
+        }
 
+        private void CreateGrid()
+        {
+            Grid grid = myGRID;
+            grid.Children.Clear();
+
+            grid.RowDefinitions.Clear();
+            grid.ColumnDefinitions.Clear();
+            grid.RowDefinitions.Add(new RowDefinition() { });
+            grid.RowDefinitions.Add(new RowDefinition() { });
+
+            for (int i = 0; i < Data.Count + 2; i++)            
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star)});            
+
+            // Linker und rechter Überstand
+            Border b = GetBorder("0022");            
             Grid.SetColumn(b, 0);
             Grid.SetRow(b, 0);
             grid.Children.Add(b);
 
-            b = new Border()
-            {
-                Padding = new Thickness(10),
-                BorderBrush = this.Foreground,
-                BorderThickness = new Thickness(2, 0, 2, 2)
-            };
-
-            Grid.SetColumn(b, grid.Columns - 1);
+            b = GetBorder("2002");                        
+            Grid.SetColumn(b, Data.Count + 1);
             Grid.SetRow(b, 0);
             grid.Children.Add(b);
 
-          
+            b = GetBorder("0220");
+            Grid.SetColumn(b, 0);
+            Grid.SetRow(b, 1);
+            grid.Children.Add(b);
 
-
+            b = GetBorder("2200");
+            Grid.SetColumn(b, Data.Count + 1);
+            Grid.SetRow(b, 1);
+            grid.Children.Add(b);
             
-            int i = 1;
+            int j = 1;
             foreach (var d in Data)
             {
                 // Header
-                b = new Border()
-                {
-                    Padding = new Thickness(10),
-                    BorderBrush = this.Foreground,
-                    BorderThickness = new Thickness(2,0, (i > 0 && i < Data.Count -1 ? 2 : 0), 2)
-                };
-                
-
-                TextBlock t = new TextBlock()
-                {
-                    Text = d.Key
-                };
-                
-                Grid.SetColumn(b, i);
+                b = GetBorder("2022");                
+                b.Child = new TextBlock() { Text = d.Key, HorizontalAlignment = System.Windows.HorizontalAlignment.Center, VerticalAlignment = System.Windows.VerticalAlignment.Center };                
+                Grid.SetColumn(b, j);
                 Grid.SetRow(b, 0);
-                b.Child = t;
                 grid.Children.Add(b);
 
                 // Data
-                b = new Border()
-                {
-                    Padding = new Thickness(10),
-                    BorderBrush = this.Foreground,
-                    BorderThickness = new Thickness(2, 0, (i > 0 && i < Data.Count - 1 ? 2 : 0), 0)
-                };
-
-                t = new TextBlock()
-                {
-                    Text = d.Value
-                };
-
-                Grid.SetColumn(b, i);
-                Grid.SetRow(b, 1);
-                b.Child = t;
+                b = GetBorder("2020");
+                b.Child = new TextBlock() { Text = d.Value, HorizontalAlignment = System.Windows.HorizontalAlignment.Center, VerticalAlignment = System.Windows.VerticalAlignment.Center };                                             
+                Grid.SetColumn(b, j);
+                Grid.SetRow(b, j);
                 grid.Children.Add(b);
-
+                j++;
 
             }
             

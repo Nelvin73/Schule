@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" Width="500">
     
-    <UniformGrid x:Name="myGRID" Columns="6" Rows="2">
-            
-    </UniformGrid>
+    <Grid x:Name="myGRID">
+       
+    </Grid>
 </UserControl>

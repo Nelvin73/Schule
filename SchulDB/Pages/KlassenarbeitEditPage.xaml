@@ -132,10 +132,12 @@
                     <TextBlock Text="Punkteschlüssel" VerticalAlignment="Center" />
                     <uc:MultiThumbSlider Margin="3"  ThumbCount="5" MaxValue="{Binding GesamtPunkte}" Values="{Binding PunkteschlüsselListe, Mode=TwoWay}"  IsSnapToTickEnabled="True" TickFrequency="0.5" />
                 </DockPanel>
-                <StackPanel Orientation="Horizontal" TextBlock.FontSize="22">
+                
+                <StackPanel  Margin="3,20" Orientation="Horizontal" TextBlock.FontSize="22" HorizontalAlignment="Center">
                     <TextBlock Text="Ø " />
-                    <TextBlock Text="{Binding Notenschnitt, FallbackValue=---, TargetNullValue=''}" />
+                    <TextBlock Text="{Binding Notenschnitt, FallbackValue=---, TargetNullValue='', StringFormat=##.00}" />
                 </StackPanel>
+                
                 <uc:WerteVerteilungControl Data="{Binding Notenverteilung, Converter={StaticResource ObjectDictConverter}}" />
 
             </StackPanel>
