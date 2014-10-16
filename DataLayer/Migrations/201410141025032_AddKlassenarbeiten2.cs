@@ -11,10 +11,12 @@ namespace DataLayer.Migrations
             AddColumn("dbo.Klassenarbeiten", "Datum", c => c.DateTime(nullable: false));
             AddColumn("dbo.KlassenarbeitsNoten", "OhneWertung", c => c.Boolean(nullable: false));
             AlterColumn("dbo.KlassenarbeitsNoten", "Punkte", c => c.Double());
+            DropColumn("dbo.KlassenarbeitsNoten", "HatMitgeschrieben");
         }
         
         public override void Down()
         {
+            AddColumn("dbo.KlassenarbeitsNoten", "HatMitgeschrieben", c => c.Boolean(nullable: false));
             AlterColumn("dbo.KlassenarbeitsNoten", "Punkte", c => c.Int());
             DropColumn("dbo.KlassenarbeitsNoten", "OhneWertung");
             DropColumn("dbo.Klassenarbeiten", "Datum");

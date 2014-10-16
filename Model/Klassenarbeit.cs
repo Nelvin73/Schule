@@ -7,34 +7,27 @@ using System.Threading.Tasks;
 
 namespace Groll.Schule.Model
 {
+    /// <summary>
+    /// Einzelne Note in einer Klassenarbeit
+    /// als ObservableObject, damit direkt als View gebunden werden kann
+    /// </summary>
+    
     public class KlassenarbeitsNote : ObservableObject
     {
 
+        #region private Eigenschaften
         private double? _Punkte = null;
         private int? _Note = null ;
         private bool _OhneWertung = false;
-        
-        public int KlassenarbeitId { get; set; }
-        public int SchülerId { get; set; }
-        public virtual Klassenarbeit Klassenarbeit { get; set; }
-        public virtual Schueler Schüler { get; set; }
-        
-        public bool HatMitgeschrieben {
-            get
-            {
-                return Punkte.HasValue || Note.HasValue;
-            }
-            set
-            {
-                if (Note == null && Punkte == null)
-                    return;
+        #endregion
 
-                Note = null;
-                Punkte = null;
-                OnPropertyChanged();                
-            }
-        }
+        #region Datenfelder
+        public int KlassenarbeitId { get; set; }
+        public virtual Klassenarbeit Klassenarbeit { get; set; }        
         
+        public int SchülerId { get; set; }
+        public virtual Schueler Schüler { get; set; }
+
         public bool OhneWertung
         {
             get
@@ -53,7 +46,7 @@ namespace Groll.Schule.Model
                     Klassenarbeit.RecalcStatistik();
             }
         }             
-       
+        
         public double? Punkte
         {
             get { return _Punkte; }
@@ -67,7 +60,7 @@ namespace Groll.Schule.Model
                         Note = Klassenarbeit.BerechneNote(_Punkte);
                 }
             }
-        }        
+        }
 
         public int? Note
         {
@@ -78,14 +71,34 @@ namespace Groll.Schule.Model
                 {
                     _Note = value;
                     OnPropertyChanged();
+                    OnPropertyChanged("HatMitgeschrieben");
                     if (Klassenarbeit != null)
                         Klassenarbeit.RecalcStatistik();
+
                 }
             }
         }
-        
+
         public string Kommentar {get; set;}
 
+        #endregion
+
+        public bool HatMitgeschrieben {
+            get
+            {
+                return Punkte.HasValue || Note.HasValue;
+            }
+            set
+            {
+                if (Note == null && Punkte == null)
+                    return;
+
+                Note = null;
+                Punkte = null;
+                OnPropertyChanged();                
+            }
+        }               
+                
         public KlassenarbeitsNote() {  }
         
         public override string ToString()
@@ -237,6 +250,10 @@ namespace Groll.Schule.Model
         }
 
         #endregion
+
+        
+        #region Hilfsfunktionen
+        
         public int? BerechneNote(double? Punkte)
         {
             if (Punkte == null)
@@ -253,18 +270,27 @@ namespace Groll.Schule.Model
             return note;
 
         }
-      
 
         private void SetDefaultPunkteschlüssel()
         {
             ObservableCollection<double> l = new  ObservableCollection<double>();
-            l.Add(Math.Round(_GesamtPunkte * 0.4, 0));
-            l.Add(Math.Round(_GesamtPunkte * 0.5, 0));            
-            l.Add(Math.Round(_GesamtPunkte * 0.7, 0));
-            l.Add(Math.Round(_GesamtPunkte * 0.8, 0));
-            l.Add(Math.Round(_GesamtPunkte * 0.95, 0));
+            
+            // Default Punkteschlüssel Dasing auf halbe Punkte gerundet
+            l.Add(GetPunkte(25));   // 5 ab 25%
+            l.Add(GetPunkte(45));   // 4 ab 45%
+            l.Add(GetPunkte(65));   // 3 ab 65%
+            l.Add(GetPunkte(83));   // 2 ab 83%
+            l.Add(GetPunkte(93));   // 1 ab 93%
             PunkteschlüsselListe = l;
         }
+
+        private double GetPunkte(int Prozent)
+        {
+            // auf halbe Punkte gerundet
+            return Math.Round((double) _GesamtPunkte * Prozent / 50, 0) / 2;
+        }
+
+        #endregion
 
         #region Aktualisierungs-Routinen
         /// <summary>
@@ -293,6 +319,10 @@ namespace Groll.Schule.Model
             OnPropertyChanged("Notenverteilung");
         }
 
+        public void ResetNotenSchlüssel()
+        {
+            SetDefaultPunkteschlüssel();            
+        }
 
         #endregion
 

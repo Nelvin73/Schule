@@ -78,25 +78,27 @@ namespace Groll.UserControls
             Data2 = new Dictionary<string, string>();
             CreateGrid();
         }
-        private Border GetBorder(string border)
-        {
-            border += "0000";
-            Thickness t = new Thickness();
-            t.Left = border[0] - '0';
-            t.Top = border[1] - '0';
-            t.Right = border[2] - '0';
-            t.Bottom = border[3] - '0';
+       
 
-            return new Border()
+        private Border AddBorder(int Left, int Top, int Right, int Bottom, int row, int column)
+        {
+            Thickness t = new Thickness(Left, Top, Right, Bottom);
+            Border b = new Border()
             {
                 Padding = new Thickness(10),
                 BorderBrush = this.Foreground,
-                BorderThickness = t,                
+                BorderThickness = t                
             };
+             
+            Grid.SetColumn(b, column);
+            Grid.SetRow(b, row);
+            myGRID.Children.Add(b);
+            return b;            
         }
 
         private void CreateGrid()
         {
+            Border b;
             Grid grid = myGRID;
             grid.Children.Clear();
 
@@ -104,55 +106,26 @@ namespace Groll.UserControls
             grid.ColumnDefinitions.Clear();
             grid.RowDefinitions.Add(new RowDefinition() { });
             grid.RowDefinitions.Add(new RowDefinition() { });
-
-            for (int i = 0; i < Data.Count + 2; i++)            
-                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star)});            
-
-            // Linker und rechter Überstand
-            Border b = GetBorder("0022");            
-            Grid.SetColumn(b, 0);
-            Grid.SetRow(b, 0);
-            grid.Children.Add(b);
-
-            b = GetBorder("2002");                        
-            Grid.SetColumn(b, Data.Count + 1);
-            Grid.SetRow(b, 0);
-            grid.Children.Add(b);
-
-            b = GetBorder("0220");
-            Grid.SetColumn(b, 0);
-            Grid.SetRow(b, 1);
-            grid.Children.Add(b);
-
-            b = GetBorder("2200");
-            Grid.SetColumn(b, Data.Count + 1);
-            Grid.SetRow(b, 1);
-            grid.Children.Add(b);
-            
-            int j = 1;
+             
+            int j = 0;
             foreach (var d in Data)
             {
+                grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star)});            
+            
                 // Header
-                b = GetBorder("2022");                
-                b.Child = new TextBlock() { Text = d.Key, HorizontalAlignment = System.Windows.HorizontalAlignment.Center, VerticalAlignment = System.Windows.VerticalAlignment.Center };                
-                Grid.SetColumn(b, j);
-                Grid.SetRow(b, 0);
-                grid.Children.Add(b);
-
+                AddBorder(j == 0 ? 2 : 0, 0, 2, 2, 0, j).Child = new TextBlock() 
+                    { Text = d.Key, HorizontalAlignment = System.Windows.HorizontalAlignment.Center, VerticalAlignment = System.Windows.VerticalAlignment.Center };                                
+                
                 // Data
-                b = GetBorder("2020");
-                b.Child = new TextBlock() { Text = d.Value, HorizontalAlignment = System.Windows.HorizontalAlignment.Center, VerticalAlignment = System.Windows.VerticalAlignment.Center };                                             
-                Grid.SetColumn(b, j);
-                Grid.SetRow(b, j);
-                grid.Children.Add(b);
+                AddBorder(j == 0 ? 2 : 0, 0, 2, 0, 1, j).Child = new TextBlock() 
+                    { Text = d.Value, HorizontalAlignment = System.Windows.HorizontalAlignment.Center, VerticalAlignment = System.Windows.VerticalAlignment.Center };                                             
                 j++;
 
             }
             
 
         }
-
-
+      
 
     }
 }

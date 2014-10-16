@@ -107,8 +107,11 @@ namespace Groll.Schule.SchulDB.ViewModels
         //  Konstructor
         public KlassenarbeitEditVM()
         {
-            AddArbeitCommand = new DelegateCommand((object x) => AddArbeit(x));            
-        }
+            AddArbeitCommand = new DelegateCommand((object x) => AddArbeit(x));
+            ResetSchlüsselCommand = new DelegateCommand((object x) => ResetSchlüssel(x));            
+    }
+
+        
 
 
         #region Verhalten bei Änderungen der Auswahl
@@ -169,6 +172,7 @@ namespace Groll.Schule.SchulDB.ViewModels
 
         #region Commands
         public DelegateCommand AddArbeitCommand { get; private set; }
+        public DelegateCommand ResetSchlüsselCommand { get; private set; }
 
         private object AddArbeit(object x)
         {
@@ -183,6 +187,11 @@ namespace Groll.Schule.SchulDB.ViewModels
             return k;
         }
 
+        private void ResetSchlüssel(object x)
+        {
+            SelectedKlassenarbeit.ResetNotenSchlüssel();
+            UnitOfWork.Save();
+        }
 
         #endregion
    

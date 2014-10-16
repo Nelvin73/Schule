@@ -16,6 +16,7 @@ namespace Groll.Schule.DataAccess.Configuration
             // Set table name 
             this.HasKey(x => new { x.KlassenarbeitId, x.SchülerId} );            
             this.ToTable("KlassenarbeitsNoten");
+            this.Ignore(x => x.HatMitgeschrieben);            
        //     this.HasMany( x=>x.Schueler).WithMany( y => y.Klassen).Map(v => v.ToTable("Klassen_Schüler"));
         //    this.HasRequired(x => x.Schuljahr).WithMany().HasForeignKey(c => c.SchuljahrId);
         }
