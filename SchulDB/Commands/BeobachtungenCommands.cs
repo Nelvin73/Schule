@@ -24,7 +24,7 @@ namespace Groll.Schule.SchulDB.Commands
 
         public BeobachtungenCommands()
         {
-            ChangeHistoryView = ClearInput = AddComment = InsertText = InsertTextbaustein = ExportToWord = UpdateBeobachtungenView = EditModeChanged = 
+            ChangeHistoryView = ClearInput = AddComment = InsertText = InsertTextbaustein = ChangeFontSize = ExportToWord = UpdateBeobachtungenView = EditModeChanged = 
                 new DelegateCommand((o) => ExecuteCommand(o), (o) => CanExecute(o));
         }
 
@@ -75,5 +75,12 @@ namespace Groll.Schule.SchulDB.Commands
             set { editModeChanged = value; OnPropertyChanged(); }
         }
 
+        public DelegateCommand ChangeFontSize
+        {
+            get { return insertTextbaustein; }
+            set { insertTextbaustein = value; OnPropertyChanged(); }
+        }
+
+     
     }
 }

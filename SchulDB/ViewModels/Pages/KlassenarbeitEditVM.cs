@@ -107,9 +107,14 @@ namespace Groll.Schule.SchulDB.ViewModels
         //  Konstructor
         public KlassenarbeitEditVM()
         {
-            AddArbeitCommand = new DelegateCommand((object x) => AddArbeit(x));
-            ResetSchlüsselCommand = new DelegateCommand((object x) => ResetSchlüssel(x));            
+         //   AddArbeitCommand = new DelegateCommand((object x) => AddArbeit(x), test);
+         //   ResetSchlüsselCommand = new DelegateCommand((object x) => ResetSchlüssel(x));            
     }
+
+        private bool test(object obj)
+        {
+            return selectedKlasse != null;
+        }
 
         
 
@@ -119,13 +124,13 @@ namespace Groll.Schule.SchulDB.ViewModels
         protected virtual void OnSelectedKlasseChanged()
         {
             Klassenarbeiten = new ObservableCollection<Klassenarbeit>(UnitOfWork.Klassenarbeiten.GetList().Where(x => x.Klasse == SelectedKlasse));
-            // nichts nötig, da mit ObservableCollection auf SelectedKlasse.Schüler gebunden wird
+            AddArbeitCommand.RaiseCanExecuteChanged();
         }
 
         protected void OnSelectedKlassenarbeitChanged()
         {
             // Für alle Schüler Informationen einpflegen, falls noch nicht vorhanden
-            if (selectedKlassenarbeit == null)
+            if (selectedKlassenarbeit == null || selectedKlasse == null)
                 return;
 
             var missing = selectedKlasse.Schueler.Except
@@ -154,6 +159,11 @@ namespace Groll.Schule.SchulDB.ViewModels
         public override void RefreshData()
         {
             // Lädt sämtliche Daten neu, z.B. wenn DB oder aktuelles Schuljahr geändert wurde
+            if (AddArbeitCommand == null)
+                AddArbeitCommand = new DelegateCommand((object x) => AddArbeit(x), (object x) => selectedKlasse != null);
+            if (ResetSchlüsselCommand == null)
+                ResetSchlüsselCommand = new DelegateCommand((object x) => ResetSchlüssel(x));  
+
             base.RefreshData();
             
             // Initialisierung

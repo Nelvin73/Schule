@@ -21,19 +21,6 @@ namespace Groll.UserControls
     /// </summary>
     public partial class WerteVerteilungControl : UserControl
     {
-        private Dictionary<string, string> _Data2;
-        public Dictionary<string, string> Data2
-        {
-            get
-            {
-                return _Data2;
-            }
-            set {
-
-                _Data2 = value;
-                UpdateGrid(this, new DependencyPropertyChangedEventArgs());
-            }
-        }
         public Dictionary<string, string> Data
         {
             get { return (Dictionary<string, string>)GetValue(DataProperty); }
@@ -43,39 +30,22 @@ namespace Groll.UserControls
         // Using a DependencyProperty as the backing store for Data.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DataProperty =
             DependencyProperty.Register("Data", typeof(Dictionary<string, string>), typeof(WerteVerteilungControl),
-            new PropertyMetadata(new Dictionary<string, string>(), UpdateGrid,  XXXXX));
+            new PropertyMetadata(new Dictionary<string, string>(), UpdateGrid));
 
-        private static object XXXXX(DependencyObject d, object baseValue)
-        {
-            int i = 1;
-            return baseValue;
-        }
-
+        
         private static void UpdateGrid(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
  	        // Werte wurden geändert .. neu aufbauen
             var c = d as WerteVerteilungControl;
             if (c == null)
                 return;
-
-            c.CreateGrid();
-            
-
-        
-
-
-        }
-
-       
-
-        
-
-        
+             
+            c.CreateGrid();            
+        }       
         
         public WerteVerteilungControl()
         {
             InitializeComponent();
-            Data2 = new Dictionary<string, string>();
             CreateGrid();
         }
        
@@ -106,9 +76,9 @@ namespace Groll.UserControls
             grid.ColumnDefinitions.Clear();
             grid.RowDefinitions.Add(new RowDefinition() { });
             grid.RowDefinitions.Add(new RowDefinition() { });
-             
+            
             int j = 0;
-            foreach (var d in Data)
+            foreach (var d in Data ?? new Dictionary<string, string>() { { "1", "" }, { "2", "" }, { "3", "" }, { "4", "" }, { "5", "" }, { "6", "" } })
             {
                 grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star)});            
             

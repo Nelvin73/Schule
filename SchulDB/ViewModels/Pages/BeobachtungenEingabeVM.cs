@@ -21,9 +21,22 @@ namespace Groll.Schule.SchulDB.ViewModels
         private BeoHistoryMode beobachtungenHistoryMode;
         private List<Schueler> selectedSchülerList;
         public enum BeoHistoryMode { LastEntered, SortDate, CurrentSchueler }
+        private int fontSize;
 
         #region Properties
-       
+
+        public int FontSize
+        {
+            get { return fontSize; }
+            set
+            {
+                if (fontSize == value)
+                    return;
+                fontSize = value; OnPropertyChanged();
+                Settings.Set("Beobachtungen.Anzeige.FontSize", typeof(int), fontSize);
+            }
+        }
+
         // Liste der Beobachtungen / z.B. für Dropdown oder Liste                       
         public List<Beobachtung> BeobachtungenHistoryListe
         {
@@ -67,13 +80,18 @@ namespace Groll.Schule.SchulDB.ViewModels
             SchuleCommands.Beobachtungen.AddComment = new DelegateCommand((a) => AddCurrentComment(a == null), b => ValidateCurrent());
             SchuleCommands.Beobachtungen.ChangeHistoryView = new DelegateCommand((a) => ChangeHistoryView(a));   
             SchuleCommands.Beobachtungen.ExportToWord = new DelegateCommand((o) => ExportToWord(o));
+            SchuleCommands.Beobachtungen.ChangeFontSize = new DelegateCommand((o) => ChangeFontSize(o));
         }
+
+       
 
         #region Verhalten bei Änderungen der Auswahl        
 
         public override void RefreshData()
         {            
             base.RefreshData();
+
+            FontSize = (int) Settings.Get("Beobachtungen.Anzeige.FontSize", typeof(int), 10, true);
             UpdateHistory();
         }
                 
@@ -111,6 +129,16 @@ namespace Groll.Schule.SchulDB.ViewModels
         // Commands
 
         #region Implementation of Commands
+
+        public void ChangeFontSize(object o)
+        {
+            if (o.ToString() == "+" && fontSize < 24)
+                FontSize++;
+            else if (o.ToString() == "-" && fontSize > 8)
+                FontSize--;
+                
+        }
+
         public void ChangeHistoryView(object f)
         {
             string type = (f ?? "").ToString();

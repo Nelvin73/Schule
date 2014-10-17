@@ -9,9 +9,8 @@
     xmlns:uc="clr-namespace:Groll.UserControls;assembly=UserControls"
     xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:Helper="clr-namespace:Groll.Schule.SchulDB.Helper" x:Class="Groll.Schule.SchulDB.Pages.KlassenarbeitEditPage"
     mc:Ignorable="d" 
-    xml:lang="DE"
-      d:DesignHeight="460" d:DesignWidth="800"
-	Title="" Loaded="Page_Loaded">
+    xml:lang="DE" d:DesignWidth="800"
+	Title="" Loaded="Page_Loaded" d:DesignHeight="497">
 
     <Page.Resources>
         <Helper:ObjectDictConverter x:Key="ObjectDictConverter"/>
@@ -88,7 +87,7 @@
             <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Top">
                 <Button Margin="3" DockPanel.Dock="Right" Width="20" Height="20" Content="{StaticResource PlusSymbolPath}" 
 					Command="{Binding AddArbeitCommand}" />
-                <ComboBox Margin="3" ItemsSource="{Binding Klassenarbeiten}" SelectedItem="{Binding SelectedKlassenarbeit}" />
+                <ComboBox Margin="3" ItemsSource="{Binding Klassenarbeiten}" SelectedItem="{Binding SelectedKlassenarbeit}" DisplayMemberPath="Name"  />
             </DockPanel>
 
             <DataGrid Margin="3" x:Name="Notenliste" ItemsSource="{Binding Source={StaticResource Notenliste}}" AutoGenerateColumns="False" 
@@ -103,10 +102,10 @@
             </DataGrid>
         </DockPanel>
 
-        <Grid  Grid.Column="1" Grid.Row="1" Margin="10,10,20,10"  DataContext="{Binding SelectedKlassenarbeit}" >           
+        <Grid  Grid.Column="1" Grid.Row="1" Margin="10,10,20,10"  DataContext="{Binding SelectedKlassenarbeit}" >
             <StackPanel>
                 <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"  Margin="0,3,0,3" FontSize="14" FontWeight="Bold" />
-                <DockPanel Margin="3,10">
+                <DockPanel Margin="0,10">
                     <TextBlock Text="Datum:" DockPanel.Dock="Left" VerticalAlignment="Center" />
                     <DatePicker Margin="6,0" SelectedDate="{Binding Datum}" DockPanel.Dock="Left" />
                     <TextBlock Margin="20,0,3,0" Text="Fach: " DockPanel.Dock="Left" VerticalAlignment="Center" />
@@ -116,31 +115,29 @@
 
                 <TextBlock Margin="0,10,0,0" Text="Kommentar" />
                 <TextBox Height="75" Text="{Binding Kommentar}"/>
-                
+
                 <Separator Height="40" />
 
                 <DockPanel >
-                    <TextBlock DockPanel.Dock="Left" Text="Gesamt-Punkte:" Margin="3" VerticalAlignment="Center" />
+                    <TextBlock DockPanel.Dock="Left" Text="Gesamt-Punkte:" VerticalAlignment="Center" />
                     <TextBox Text="{Binding GesamtPunkte}"  Margin="10,3,3,3" Width="30" DockPanel.Dock="Left" />
-                    <TextBlock Margin="0,0,30,0" Text="{Binding Notenschnitt, FallbackValue=---, TargetNullValue='', StringFormat=##.00}" TextBlock.FontSize="22" DockPanel.Dock="Right" />                    
+                    <TextBlock Margin="0,0,30,0" Text="{Binding Notenschnitt, FallbackValue=---, TargetNullValue='', StringFormat=##.00}" TextBlock.FontSize="22" DockPanel.Dock="Right" />
                     <TextBlock Margin="30,0,0,0" Text="Ø " TextBlock.FontSize="22" DockPanel.Dock="Right" HorizontalAlignment="Right" />
-                    
+
                 </DockPanel>
                 <DockPanel Margin="0,20" HorizontalAlignment="Stretch" >
                     <TextBlock Text="Punkteschlüssel" VerticalAlignment="Center" />
                     <Button Margin="3" DockPanel.Dock="Right" Width="20" Height="20" VerticalContentAlignment="Center" Command="{Binding ResetSchlüsselCommand, Mode=OneWay, Source={StaticResource ViewModel}}"  >
                         <Button.Content>
-                            <Path Stroke="Black" StrokeThickness="1" Data="M 2,10 A 6 6 0 1 0 4 2 M 4 2 L 6 3 M 4 2 L 5 0 " Stretch="Uniform" >                                
+                            <Path Stroke="Black" StrokeThickness="1" Data="M 2,10 A 6 6 0 1 0 4 2 M 4 2 L 6 3 M 4 2 L 5 0 " Stretch="Uniform" >
                             </Path>
                         </Button.Content>
                     </Button>
                     <uc:MultiThumbSlider Margin="3"  ThumbCount="5" MaxValue="{Binding GesamtPunkte}" Values="{Binding PunkteschlüsselListe, Mode=TwoWay}"  IsSnapToTickEnabled="True" TickFrequency="0.5" />
                 </DockPanel>
-                         
-                <uc:WerteVerteilungControl Margin="20,10" Data="{Binding Notenverteilung, Converter={StaticResource ObjectDictConverter}}" HorizontalAlignment="Stretch" Height="60" />
-               
-                <Line Margin="3,10,3,10" Stroke="Black" StrokeThickness="2" />
-           
+
+                <uc:WerteVerteilungControl Margin="20,10" Data="{Binding Notenverteilung, Converter={StaticResource ObjectDictConverter}, FallbackValue={x:Null}}" HorizontalAlignment="Stretch" Height="60" />                
+
             </StackPanel>
 
         </Grid>

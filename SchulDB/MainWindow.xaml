@@ -122,6 +122,8 @@
                     </RibbonMenuButton>
 
                     <RibbonButton DataContext="{Binding ViewBeobachtungenButton}" Style="{StaticResource RibbonButtonDefaultStyle}" />
+                    <RibbonButton Label="A+" Command="{Binding ChangeFontSize, Source={x:Static comm:SchuleCommands.Beobachtungen}}" CommandParameter="+" />
+                    <RibbonButton Label="A-" Command="{Binding ChangeFontSize, Source={x:Static comm:SchuleCommands.Beobachtungen}}" CommandParameter="-" />
 
                 </RibbonGroup>
 
@@ -261,6 +263,6 @@
         </Ribbon>
 
         <!-- Main content -->
-        <Frame x:Name="ContentFrame" Content="{Binding CurrentPage}"  Grid.Row="1" />
+        <Frame x:Name="ContentFrame" Content="{Binding CurrentPage}"  Grid.Row="1"  />
     </Grid>
 </RibbonWindow>
