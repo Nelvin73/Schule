@@ -27,6 +27,8 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
                 Column = c;
                 Row = r;
             }
+
+            public bool IsZero { get { return Column == 0 && Row == 0; } }
         }
 
         #endregion
@@ -119,7 +121,7 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
         }
         private void CreateExcel()
         {
-            // Get Config File
+            // Get Excel Config File
             XElement doc = null;
             string Filename = "";
             try
@@ -143,6 +145,58 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
                 return;
             }
 
+            // create Positions-Cache 
+            var positions = new List<ColumnRowTupel>();
+            var xml = doc.Element("Rechnungen");
+            if (xml != null)
+            {
+                // Auto-Einträge durchgehen
+                foreach (XElement auto in xml.Elements("Auto"))
+                {
+                    var t = auto.Element("Anfang");
+                    if (t == null)
+                        continue;
+
+                    var StartPos = new ColumnRowTupel(t.AttributeValue<int>("Spalte"), t.AttributeValue<int>("Zeile"));
+
+                    t = auto.Element("Abstand");
+                    if (t == null)
+                        continue;
+
+                    var Abstand = new ColumnRowTupel(t.AttributeValue<int>("Spalte"), t.AttributeValue<int>("Zeile"));
+
+                    t = auto.Element("Anzahl");
+                    if (t == null)
+                        continue;
+
+                    var Anzahl = new ColumnRowTupel(t.AttributeValue<int>("Spalten"), t.AttributeValue<int>("Zeilen"));
+
+                    if (StartPos.Column == 0 || StartPos.Row == 0 || Abstand.Column == 0 || Abstand.Row == 0 || Anzahl.Column == 0 || Anzahl.Row == 0)
+                        continue;
+
+                    for (int c = 0; c < Anzahl.Column; c++)
+                        for (int r = 0; r < Anzahl.Row; r++)
+                        {
+                            positions.Add(new ColumnRowTupel(StartPos.Column + Abstand.Column * c, StartPos.Row + Abstand.Row * r));                            
+                        }                                       
+                }
+
+                // Manuelle Einträge durchgehen
+                foreach (XElement man in xml.Elements("Manuell"))
+                {                   
+                    var m = new ColumnRowTupel(man.AttributeValue<int>("Spalte"), man.AttributeValue<int>("Zeile"));
+                    if (m.IsZero)
+                        continue;
+                    positions.Add(m);                       
+                }
+            }
+
+            if (positions.Count == 0)
+            {
+                System.Windows.MessageBox.Show("Keine gültigen Felder für Rechnungen im Template gefunden.");
+                return;
+            }
+
             
             // Open Excel file
             Excel.Application app = null;
@@ -150,84 +204,26 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
             Excel.Worksheet ws;
             Excel.Worksheet wsL;   // Lösungs-Sheet
             try
-            {
-               
+            {               
                 app = new Excel.Application();
                 wb = app.Workbooks.Add(Filename);
                 app.Visible = true;
                 app.ScreenUpdating = false;
 
-                // Get first sheet
+                // Get  sheets
                 ws = (Excel.Worksheet)wb.Worksheets[1];
                 wsL = (Excel.Worksheet)wb.Worksheets[2];
 
-                var xml = doc.Element("Rechnungen");
-                if (xml != null)
-                {
-                    // Auto-Einträge durchgehen
-                    foreach (XElement auto in xml.Elements("Auto"))
-                    {
+                
+                // Einträge durchgehen
+                foreach (var pos in positions)
+                {                                    
+                    var rech = GenerateRechnung();
 
-                        try
-                        {
-                            var t = auto.Element("Anfang");
-                            if (t == null)
-                                continue;
-
-                            var StartPos = new ColumnRowTupel(t.AttributeValue<int>("Spalte"), t.AttributeValue<int>("Zeile"));
-                          
-                            t = auto.Element("Abstand");
-                            if (t == null)
-                                continue;
-
-                            var Abstand = new ColumnRowTupel(t.AttributeValue<int>("Spalte"), t.AttributeValue<int>("Zeile"));
-                            
-                            t = auto.Element("Anzahl");
-                            if (t == null)
-                                continue;
-
-                            var Anzahl = new ColumnRowTupel(t.AttributeValue<int>("Spalten"), t.AttributeValue<int>("Zeilen"));
-
-                            if (StartPos.Column == 0 || StartPos.Row == 0 || Abstand.Column == 0 || Abstand.Row == 0 || Anzahl.Column == 0 || Anzahl.Row == 0)
-                                continue;
-
-                            for (int c = 0; c < Anzahl.Column; c++)
-                                for (int r = 0; r < Anzahl.Row; r++)
-                                {
-                                    var rech = GenerateRechnung();
-                                    WriteRechnung(ws, wsL, new ColumnRowTupel(StartPos.Row +Abstand.Row * r, StartPos.Column + Abstand.Column * c), rech, Config.MissingPart);                            
-                                    
-                                }
-                        }
-
-                        catch (Exception)
-                        {
-                            // Ignore error; continue                           
-                        }
-
-                    }
-
-                    foreach (XElement man in xml.Elements("Manuell"))
-                    {
-                        try
-                        {
-                            var m = new ColumnRowTupel (man.AttributeValue<int>("Spalte"), man.AttributeValue<int>("Zeile"));
-                            if (m.Column == 0 || m.Row == 0)
-                                continue;
-
-                            var rech = GenerateRechnung();
-                            WriteRechnung( ws, wsL, m, rech, Config.MissingPart);                            
-                        }
-
-                        catch (Exception)
-                        {
-                            // Ignore error; continue      
-                        }
-
-                    }
+                    var missingValue = Config.MissingPart == AufgabenStellung.Gemischt ? (AufgabenStellung) rnd.Next(0, 2) : Config.MissingPart;            
+                    WriteRechnung((Excel.Range) ws.Cells[pos.Row, pos.Column], rech, missingValue);
+                    WriteRechnung((Excel.Range) wsL.Cells[pos.Row, pos.Column], rech, missingValue, true);                                       
                 }
-
-
             }
             catch (Exception e)
             {
@@ -253,29 +249,21 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
         /// <param name="rechnung">Rechnung</param>
         /// <param name="missingValue">Welcher Wert soll leer bleiben</param>
         /// <param name="WithSolution">Lösung ausgeben ?</param>
-        private void WriteRechnung(Excel.Worksheet Aufgabe, Excel.Worksheet Lösung,  ColumnRowTupel position, Rechnung rechnung, AufgabenStellung missingValue = AufgabenStellung.ErgebnisFehlt)
+        private void WriteRechnung(Excel.Range range, Rechnung rechnung, AufgabenStellung missingValue = AufgabenStellung.ErgebnisFehlt, bool ShowSolution = false)
         {
-            // Wenn Aufgabenstellung gemischt, dann konkrete Aufgabenstellung herleiten
-            if (missingValue == AufgabenStellung.Gemischt)
+            try
             {
-                missingValue = (AufgabenStellung)rnd.Next(0, 2);
+                FormatNumber(range, rechnung.A, missingValue == AufgabenStellung.AFehlt, ShowSolution);
+                range.Offset[0, 1].Value = Config.Rechenzeichen[(int)rechnung.Operator];
+                FormatNumber(range.Offset[0, 2], rechnung.B, missingValue == AufgabenStellung.BFehlt, ShowSolution);
+                range.Offset[0, 3].Value = "=";
+                FormatNumber(range.Offset[0, 4], rechnung.R, missingValue == AufgabenStellung.ErgebnisFehlt, ShowSolution);              
             }
-
-            Excel.Range range = (Excel.Range) Aufgabe.Cells[position.Row, position.Column];
-
-            // Write A
-            FormatNumber(range, rechnung.A, missingValue == AufgabenStellung.AFehlt);
-            range.Offset[0, 1].Value = Config.Rechenzeichen[(int)rechnung.Operator];
-            FormatNumber(range.Offset[0, 2], rechnung.B, missingValue == AufgabenStellung.BFehlt);
-            range.Offset[0, 3].Value = "=";
-            FormatNumber(range.Offset[0, 4], rechnung.R, missingValue == AufgabenStellung.ErgebnisFehlt);            
-
-            range = (Excel.Range) Lösung.Cells[position.Row, position.Column];
-            FormatNumber(range, rechnung.A, missingValue == AufgabenStellung.AFehlt, true);
-            range.Offset[0, 1].Value = Config.Rechenzeichen[(int)rechnung.Operator];
-            FormatNumber(range.Offset[0, 2], rechnung.B, missingValue == AufgabenStellung.BFehlt, true);
-            range.Offset[0, 3].Value = "=";
-            FormatNumber(range.Offset[0, 4], rechnung.R, missingValue == AufgabenStellung.ErgebnisFehlt, true); 
+            catch 
+            {
+                
+                // Ignore
+            }
         }
 
         private void FormatNumber(Excel.Range cell, double Number, bool IsMissing = false, bool ShowSolution = false)
@@ -291,6 +279,7 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
 
                 if (ShowSolution)
                 {
+                    cell.Font.Bold = true;
                     cell.Interior.Color = 65535;
                 }
             }
