@@ -59,6 +59,7 @@ namespace Groll.Schule.SchulDB.ViewModels
             // Define Commands
             Command_Navigate = new DelegateCommand((object p) => ShowPage(p.ToString()), (object p) => CanNavigateTo((p ?? "").ToString()));
 
+            // ShowPage("welcome"); 
             ShowPage("welcome"); 
         }
 
@@ -128,6 +129,10 @@ namespace Groll.Schule.SchulDB.ViewModels
 
                     case "klassenarbeitedit":
                         page = new KlassenarbeitEditPage();
+                        break;
+
+                    case "vorlagen":
+                        page = new VorlagenPage();
                         break;
                     
                     case "stundenplanedit":

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<OutputTemplate Class="GrundrechnenÜbungOutput" File="Arbeitsblatt Mathe Probe.xls">
+  <Rechnungen>
+    <Auto>
+      <Anfang Spalte="4" Zeile="6" />
+      <Abstand Spalte="6" Zeile="2" />
+      <Anzahl Spalten="3" Zeilen="20" />
+    </Auto>        
+  <!--
+    <Auto ....  />    
+    <Manuell Spalte="2" Zeile="7" />
+    <Manuell Spalte="2" Zeile="7" />
+    <Manuell Spalte="2" Zeile="7" />          
+  -->
+  
+  </Rechnungen>
+
+
+
+</OutputTemplate>

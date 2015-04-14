@@ -115,6 +115,9 @@
     <Compile Include="Pages\KlassenarbeitEditPage.xaml.cs">
       <DependentUpon>KlassenarbeitEditPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\VorlagenPage.xaml.cs">
+      <DependentUpon>VorlagenPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\StundenplanEditPage.xaml.cs">
       <DependentUpon>StundenplanEditPage.xaml</DependentUpon>
     </Compile>
@@ -127,6 +130,7 @@
     </Compile>
     <Compile Include="ViewModels\Pages\ChangeSchuljahrVM.cs" />
     <Compile Include="ViewModels\Pages\KlassenarbeitEditVM.cs" />
+    <Compile Include="ViewModels\Pages\VorlagenVM.cs" />
     <Compile Include="ViewModels\Pages\StundenplanEditVM.cs" />
     <Compile Include="ViewModels\Pages\KlassenEditVM.cs" />
     <Compile Include="ViewModels\Ribbon\Tabs\RibbonTabStundenplanVM.cs" />
@@ -172,6 +176,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\KlassenarbeitEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\VorlagenPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -266,6 +274,10 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{435f8ab6-4e8f-4611-989e-379a32a4c27f}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OutputTools\OutputTools.csproj">
+      <Project>{523532d1-4bbe-4bb1-b52d-5c3366832c5f}</Project>
+      <Name>OutputTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\UserControls\UserControls.csproj">
       <Project>{26246406-b254-4bf1-a49c-a171dceada96}</Project>

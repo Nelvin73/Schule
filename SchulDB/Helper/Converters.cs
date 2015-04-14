@@ -10,11 +10,89 @@ using System.Windows.Data;
 
 namespace Groll.Schule.SchulDB.Helper
 {
+
+    public class RadioButtonToEnumConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            // value = Enum Wert; Rückgabe True/False
+            return value.Equals(parameter);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            // value = bool; Rückgabe enum (parameter)
+            return value.Equals(true) ? parameter : Binding.DoNothing;
+        }
+    }
+
+
     public class HiddenIfEmptyConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             return (value != null && !string.IsNullOrEmpty(value.ToString()) ? Visibility.Visible : Visibility.Collapsed);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
+    public class BooleanInverterConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (targetType != typeof(bool))
+            {
+                try
+                {
+                    return !System.Convert.ToBoolean(value);
+                }
+                catch (Exception e)
+                {
+                    throw new InvalidOperationException("The target must be a boolean");                    
+                }
+
+            }               
+
+            return !(bool)value;           
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+    
+    /// <summary>
+    /// Converter gibt zurück, ob Objekt, String, List oder IEnumerable NULL oder EMPTY ist.
+    /// Wenn parameter = TRUE, wird ERgebnis invertiert.
+    /// </summary>
+    public class IsNullOrEmptyConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            bool Invert = ((parameter ?? "").ToString().ToLower() == "true");
+
+            if (value == null)
+                return true ^ Invert;
+
+            if (value is string)
+                return String.IsNullOrEmpty((string)value) ^ Invert;
+
+            else if (value is IList<object>)
+                return (((IList<object>)value).Count == 0) ^ Invert;
+
+            else if (value is IEnumerable<object>)
+                return (((IEnumerable<object>)value).Count() == 0) ^ Invert;
+
+            else
+                return new ArgumentOutOfRangeException("value");
+            
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

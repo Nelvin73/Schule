@@ -1,0 +1,146 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Groll.Schule.OutputTools.Arbeitsblätter" x:Class="Groll.Schule.OutputTools.Arbeitsblätter.GrundrechnenÜbungConfigWindow"
+        xmlns:output="clr-namespace:Groll.Schule.OutputTools"    
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+
+        Title="Grundrechen-Übung: Einstellungen" Height="570" Width="529">
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/OutputTools;component/OutputToolsConfigWindowStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>            
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="182*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Style="{StaticResource OutputToolConfigHeaderBorder}" >        
+            <TextBlock Style="{StaticResource OutputToolConfigHeaderText}" />
+        </Border>
+
+        <ScrollViewer Grid.Row="1" Margin="6" >
+
+            <StackPanel  Margin="6"  
+                         DataContext="{Binding Config, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:GrundrechnenÜbungConfigWindow}}}"
+                         d:DataContext="{d:DesignInstance Type=local:GrundrechnenÜbungConfig, IsDesignTimeCreatable=True}">
+
+                <!-- Ausgabe -->
+                <Expander Header="Ausgabe" Style="{StaticResource ExpanderCategoryHeader}"  >
+                    <StackPanel>
+                        <Separator Style="{StaticResource CategoryHeaderUnterline}"/>
+                        <TextBlock Text="Ausgabe-Typ auswählen" Style="{StaticResource CategoryHeaderSubText}" />
+
+                        <RadioButton Style="{StaticResource ToggleSetting}" IsEnabled="False"  Content="Interne Ausgabe" IsChecked="{Binding OutputToExcelTemplate, Converter={StaticResource BooleanInverterConverter} }"  />
+                        
+                        <DockPanel>
+                            <RadioButton Style="{StaticResource ToggleSetting}"  Content="Excel-Vorlage" IsChecked="{Binding OutputToExcelTemplate }"  DockPanel.Dock="Left" />
+                            <Button Margin="3" Content="..." Width="20" DockPanel.Dock="Right" Click="Button_Click_1" />
+                            <TextBox x:Name="FilePathTextBox" Text="{Binding FilePath}" Style="{StaticResource SettingTextBox}" Width="Auto" />
+                        </DockPanel>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Auswahl der Rechenarten-->
+                <Expander Header="Rechenarten" Style="{StaticResource ExpanderCategoryHeader}" >
+                    <StackPanel >
+                        <Separator Style="{StaticResource CategoryHeaderUnterline}"/>
+                        <TextBlock Text="Bitte auswählen, welche Rechenarten vorkommen sollen" Style="{StaticResource CategoryHeaderSubText}" />
+
+                        <CheckBox Content="Addition" Style="{StaticResource ToggleSetting}" IsChecked="{Binding IncludePlus}"  />
+                        <CheckBox Content="Subtraktion" Style="{StaticResource ToggleSetting}" IsChecked="{Binding IncludeMinus}" />
+                        <CheckBox Content="Multiplikation" Style="{StaticResource ToggleSetting}" IsChecked="{Binding IncludeMal}" />
+                        <CheckBox Content="Division" Style="{StaticResource ToggleSetting}" IsChecked="{Binding IncludeGeteilt}" />
+                    </StackPanel>
+                </Expander>
+
+                <!-- Auswahl der Aufgabenstellung-->
+                <Expander Header="Aufgabenstellung" Style="{StaticResource ExpanderCategoryHeader}" IsExpanded="False" >
+                    <StackPanel >
+                        <Separator Style="{StaticResource CategoryHeaderUnterline}"/>
+                        <TextBlock Text="Bitte die Form der Aufgabenstellung wählen" Style="{StaticResource CategoryHeaderSubText}" />
+
+                        <RadioButton Content="Ergebnis fehlt&#x09;&#8680;   A   +   B   =   _____  " Style="{StaticResource ToggleSetting}" IsChecked="{Binding MissingPart, Converter={StaticResource RadioButtonToEnumConverter}, ConverterParameter={x:Static local:AufgabenStellung.ErgebnisFehlt}}"   />
+                        <RadioButton Content="1. Operand fehlt&#x09;&#8680;  _____   +   B   =   C" Style="{StaticResource ToggleSetting}" IsChecked="{Binding MissingPart, Converter={StaticResource RadioButtonToEnumConverter}, ConverterParameter={x:Static local:AufgabenStellung.AFehlt}}" />
+                        <RadioButton Content="2. Operand fehlt&#x09;&#8680;   A   +  _____   =   C" Style="{StaticResource ToggleSetting}" IsChecked="{Binding MissingPart, ConverterParameter={x:Static local:AufgabenStellung.BFehlt}, Converter={StaticResource RadioButtonToEnumConverter}}" />
+                        <RadioButton Content="Gemischt" Style="{StaticResource ToggleSetting}" IsChecked="{Binding MissingPart, ConverterParameter={x:Static local:AufgabenStellung.Gemischt}, Converter={StaticResource RadioButtonToEnumConverter}}"/>
+                    </StackPanel>
+                </Expander>
+
+                <!-- Aufgabenstellung-->
+                <Expander Header="Zahlenraum" Style="{StaticResource ExpanderCategoryHeader}" >
+                    <StackPanel >
+                        <Separator Style="{StaticResource CategoryHeaderUnterline}"/>
+                        <TextBlock Text="Einstellungen, die den verwendeten Zahlenraum der Aufgaben beeinflussen" Style="{StaticResource CategoryHeaderSubText}" />
+                        
+                        <!-- Subcategory Allgemein -->
+                        <TextBlock Text="Allgemein" Style="{StaticResource SubCategoryHeader}" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Gesamt-Zahlenraum (größte Zahl):" Style="{StaticResource SettingLabel }"/>
+                            <TextBox Text="{Binding MaxResult}" Style="{StaticResource SettingTextBox}" />
+                        </StackPanel>
+                        <CheckBox  Style="{StaticResource ToggleSetting }"  IsChecked="{Binding AllowZero}"   Content="Zahl 0 als Operand oder Ergebnis erlauben" />
+                        <TextBlock Text="Generiert auch einfache Aufgaben, wie z.B. 10 + 0 = 10 oder 3 &#x00B7; 0 = 0" Style="{StaticResource SettingDescription}" />
+                        
+                        <!-- Subcategory Addition, Subtr. -->
+                        <TextBlock Text="Addition, Subtraktion" Style="{StaticResource SubCategoryHeader}" />
+                        <StackPanel Orientation="Horizontal" >
+                            <TextBlock Text="Größter Summand (Einzelzahl):" Style="{StaticResource SettingLabel }"  />
+                            <TextBox Text="{Binding MaxSummant}" Style="{StaticResource SettingTextBox}"/>                            
+                        </StackPanel>
+                        <TextBlock Text="Maximaler Wert für A und B bei &#8680;    A + B = C    bzw.    C - A = B" Style="{StaticResource SettingDescription}" />
+
+                        <!-- Subcategory Multipl., Division. -->
+                        <TextBlock Text="Multiplikation, Division" Style="{StaticResource SubCategoryHeader}" />
+                        <StackPanel Orientation="Horizontal" >
+                            <TextBlock Text="Max. Faktor (Einzelzahl):" Style="{StaticResource SettingLabel }" />
+                            <TextBox Text="{Binding MaxFaktor}" Style="{StaticResource SettingTextBox}"  />                            
+                        </StackPanel>
+                        <TextBlock Text="Maximaler Wert für A und B bei &#8680;    A &#x00B7; B = C    bzw.    C : A = B" Style="{StaticResource SettingDescription}" />
+                        
+                        <CheckBox Style="{StaticResource ToggleSetting}" IsChecked="{Binding AllowOne}"  Content="Zahl 1 als Faktor erlauben" />
+                        <TextBlock Text="Generiert auch einfache Aufgaben, wie z.B. 3 &#x00B7; 1 = 3  oder  3 : 1 = 3" Style="{StaticResource SettingDescription}" />
+
+                        <StackPanel Orientation="Horizontal" >
+                            <TextBlock Text="Faktoren einschränken:" Style="{StaticResource SettingLabel }"  />
+                            <TextBox Text="{Binding AllowedFaktors}" Style="{StaticResource SettingTextBox}"  />
+                        </StackPanel>
+                        <TextBlock Text="Faktoren (mit Komma getrennt) eintragen, um auf bestimmte Einmal-Eins-Reihen zu beschränken. " Style="{StaticResource SettingDescription}" />
+
+                    </StackPanel>
+                </Expander>
+
+                <!-- Scenarien -->
+                <Expander Header="Scenarien" Style="{StaticResource ExpanderCategoryHeader}" >
+                    <StackPanel >
+                        <Separator Style="{StaticResource CategoryHeaderUnterline}"/>
+                        <TextBlock Text="Aufgaben auf spezielle Scenarien bzw. Themen zuschneiden" Style="{StaticResource CategoryHeaderSubText}" />
+
+                        <DockPanel >
+                            <TextBlock Text="Scenario auswählen:" Style="{StaticResource SettingLabel }" DockPanel.Dock="Left" />
+                            <ComboBox ItemsSource="{Binding AvailableScenarious}" DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedScenariou}"  Style="{StaticResource SettingCombo}" />
+                        </DockPanel>
+                        <TextBlock Text="{Binding SelectedScenariou.Description}" Style="{StaticResource SettingDescription}"  />
+                    </StackPanel>
+                </Expander>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Row="3" Grid.ColumnSpan="3" >
+            <Button Content="Abbrechen" Width="100" Height="30" Margin="6,12" IsCancel="True"/>
+            <Button Content="OK" Width="100" Height="30" Margin="6,12" IsDefault="True" Click="Button_Click"/>
+        </StackPanel>
+
+
+    </Grid>
+</Window>
