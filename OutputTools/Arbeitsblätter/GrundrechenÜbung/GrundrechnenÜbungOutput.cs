@@ -11,7 +11,7 @@ using System.IO;
 namespace Groll.Schule.OutputTools.Arbeitsblätter
 {
     public enum GrundrechenArten { Plus, Minus, Mal, Geteilt }
-    public enum AufgabenStellung { ErgebnisFehlt, AFehlt, BFehlt, Gemischt }
+    public enum AufgabenStellung { AFehlt, BFehlt, ErgebnisFehlt, Gemischt }
   
     public class GrundrechnenÜbungOutput : OutputTemplate
     {
@@ -195,8 +195,8 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
                                 for (int r = 0; r < Anzahl.Row; r++)
                                 {
                                     var rech = GenerateRechnung();
-                                    WriteRechnung((Excel.Range) ws.Cells[StartPos.Row +Abstand.Row * r, StartPos.Column + Abstand.Column * c], rech);
-                                    WriteRechnung((Excel.Range) wsL.Cells[StartPos.Row + Abstand.Row * r, StartPos.Column + Abstand.Column * c], rech, true);
+                                    WriteRechnung(ws, wsL, new ColumnRowTupel(StartPos.Row +Abstand.Row * r, StartPos.Column + Abstand.Column * c), rech, Config.MissingPart);                            
+                                    
                                 }
                         }
 
@@ -216,8 +216,7 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
                                 continue;
 
                             var rech = GenerateRechnung();
-                            WriteRechnung((Excel.Range) ws.Cells[m.Row, m.Column], rech);
-                            WriteRechnung((Excel.Range) wsL.Cells[m.Row, m.Column], rech, true);
+                            WriteRechnung( ws, wsL, m, rech, Config.MissingPart);                            
                         }
 
                         catch (Exception)
@@ -246,14 +245,55 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
            
         }
 
-        private void WriteRechnung(Excel.Range range, Rechnung rechnung, bool WithSolution = false)
-        {            
-            range.Offset[0,0].Value = rechnung.A;
-            range.Offset[0,1].Value = Config.Rechenzeichen[(int)rechnung.Operator];
-            range.Offset[0,2].Value = rechnung.B;
-            range.Offset[0,3].Value = "=";
-            if (WithSolution)
-                range.Offset[0,4].Value = rechnung.R;
+
+        /// <summary>
+        /// Ausgabe der Rechnung in Excel Bereich
+        /// </summary>
+        /// <param name="range">Start-Zelle</param>
+        /// <param name="rechnung">Rechnung</param>
+        /// <param name="missingValue">Welcher Wert soll leer bleiben</param>
+        /// <param name="WithSolution">Lösung ausgeben ?</param>
+        private void WriteRechnung(Excel.Worksheet Aufgabe, Excel.Worksheet Lösung,  ColumnRowTupel position, Rechnung rechnung, AufgabenStellung missingValue = AufgabenStellung.ErgebnisFehlt)
+        {
+            // Wenn Aufgabenstellung gemischt, dann konkrete Aufgabenstellung herleiten
+            if (missingValue == AufgabenStellung.Gemischt)
+            {
+                missingValue = (AufgabenStellung)rnd.Next(0, 2);
+            }
+
+            Excel.Range range = (Excel.Range) Aufgabe.Cells[position.Row, position.Column];
+
+            // Write A
+            FormatNumber(range, rechnung.A, missingValue == AufgabenStellung.AFehlt);
+            range.Offset[0, 1].Value = Config.Rechenzeichen[(int)rechnung.Operator];
+            FormatNumber(range.Offset[0, 2], rechnung.B, missingValue == AufgabenStellung.BFehlt);
+            range.Offset[0, 3].Value = "=";
+            FormatNumber(range.Offset[0, 4], rechnung.R, missingValue == AufgabenStellung.ErgebnisFehlt);            
+
+            range = (Excel.Range) Lösung.Cells[position.Row, position.Column];
+            FormatNumber(range, rechnung.A, missingValue == AufgabenStellung.AFehlt, true);
+            range.Offset[0, 1].Value = Config.Rechenzeichen[(int)rechnung.Operator];
+            FormatNumber(range.Offset[0, 2], rechnung.B, missingValue == AufgabenStellung.BFehlt, true);
+            range.Offset[0, 3].Value = "=";
+            FormatNumber(range.Offset[0, 4], rechnung.R, missingValue == AufgabenStellung.ErgebnisFehlt, true); 
+        }
+
+        private void FormatNumber(Excel.Range cell, double Number, bool IsMissing = false, bool ShowSolution = false)
+        {
+            // Write number
+            if (!IsMissing || ShowSolution)
+                cell.Value = Number;
+
+            // Format Cell
+            if (IsMissing)
+            {
+                cell.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThin);
+
+                if (ShowSolution)
+                {
+                    cell.Interior.Color = 65535;
+                }
+            }
         }
 
         
