@@ -52,15 +52,15 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arbeitsblätter\GrundrechenÜbung\Converters.cs" />
     <Compile Include="Arbeitsblätter\GrundrechenÜbung\GrundrechnenÜbungConfig.cs" />
     <Compile Include="Arbeitsblätter\GrundrechenÜbung\GrundrechnenÜbungConfigWindow.xaml.cs">
       <DependentUpon>GrundrechnenÜbungConfigWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Arbeitsblätter\GrundrechenÜbung\GrundrechnenÜbungOutput.cs" />
-    <Compile Include="IOutputTemplate.cs" />
-    <Compile Include="OutputTemplate.cs" />
-    <Compile Include="IOutputTemplateConfig.cs" />
+    <Compile Include="Base\IOutputTemplate.cs" />
+    <Compile Include="Base\OutputTemplateBase.cs" />
+    <Compile Include="Base\IOutputTemplateConfig.cs" />
+    <Compile Include="Base\OutputTemplateConfigBase.cs" />
     <Compile Include="OutputTemplateManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -139,7 +139,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OutputToolsConfigWindowStyles.xaml">
+    <Page Include="Base\OutputToolsConfigWindowStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

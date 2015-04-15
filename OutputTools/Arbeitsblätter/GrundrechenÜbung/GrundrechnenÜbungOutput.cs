@@ -13,7 +13,7 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
     public enum GrundrechenArten { Plus, Minus, Mal, Geteilt }
     public enum AufgabenStellung { AFehlt, BFehlt, ErgebnisFehlt, Gemischt }
   
-    public class GrundrechnenÜbungOutput : OutputTemplate
+    public class GrundrechnenÜbungOutput : OutputTemplateBase
     {
         #region Pos Struct
 
@@ -100,17 +100,25 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
             HasConfig = hasConfig;
         }
 
-
-
-        public override void ShowConfig()
+        public override void ShowConfig(Schule.DataManager.UowSchuleDB uow = null)
         {
+            if (uow != null)
+                Config.LoadFromDatabase(uow);
+            
             var c = new GrundrechnenÜbungConfigWindow(Config.Clone() as GrundrechnenÜbungConfig);            
             if (c.ShowDialog() == true)
-                Config = c.Config;            
+                Config = c.Config;
+
+            if (uow != null)
+                Config.SaveToDatabase(uow);
+           
         }
 
-        public override void Start()
+        public override void Start(Schule.DataManager.UowSchuleDB uow = null)
         {
+            if (uow != null)
+                Config.LoadFromDatabase(uow);
+            
             if (Config.OutputToExcelTemplate)
                 CreateExcel();
 
@@ -119,6 +127,7 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
                 ;
             
         }
+  
         private void CreateExcel()
         {
             // Get Excel Config File
@@ -139,6 +148,7 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
                     throw new FileNotFoundException("Vorlage nicht gefunden:", Filename);
 
             }
+
             catch (Exception e)
             {
                 System.Windows.MessageBox.Show("Fehler beim Öffnen des Templates:\n" + e.Message);
@@ -292,25 +302,25 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
                 rnd = new Random();
 
             Rechnung r = new Rechnung();                       
-            r.Operator = (GrundrechenArten) rnd.Next(Config.SelectedOperators.Count);
+            r.Operator = Config.SelectedOperators[rnd.Next(Config.SelectedOperators.Count)];
             int min = 0, max = 0;
 
             switch (r.Operator)
             {
                 case GrundrechenArten.Plus:
                     min = !Config.AllowZero ? 1 : 0;
-                    max = Math.Min(Config.MaxResult - min, Config.MaxSummant);
+                    max = Math.Min(Config.MaxResult - min, Config.MaxSummand);
                     r.A = rnd.Next(min, max + 1);
-                    max = Math.Min(Config.MaxResult - r.A, Config.MaxSummant);
+                    max = Math.Min(Config.MaxResult - r.A, Config.MaxSummand);
                     r.B = rnd.Next(min, max + 1);                    
                     break;
 
                 case GrundrechenArten.Minus:
                     min = !Config.AllowZero ? 2 : 0;
-                    max = Math.Min(Config.MaxResult, Config.MaxSummant);
+                    max = Math.Min(Config.MaxResult, Config.MaxSummand);
                     r.A = rnd.Next(min, max + 1);
                     min = !Config.AllowZero ? 1 : 0;
-                    max = Math.Min(r.A - min, Config.MaxSummant);
+                    max = Math.Min(r.A - min, Config.MaxSummand);
                     r.B = rnd.Next(min, max + 1);                    
                     break;
 

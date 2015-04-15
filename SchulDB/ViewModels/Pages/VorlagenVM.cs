@@ -117,8 +117,8 @@ namespace Groll.Schule.SchulDB.ViewModels
         //  Konstructor
         public VorlagenVM()
         {
-            Start = new DelegateCommand((x) => SelectedVorlage.Start());
-            ShowSettings = new DelegateCommand( (x) => SelectedVorlage.ShowConfig());
+            Start = new DelegateCommand((x) => SelectedVorlage.Start(UnitOfWork));
+            ShowSettings = new DelegateCommand( (x) => SelectedVorlage.ShowConfig(UnitOfWork));
        
         }
 

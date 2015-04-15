@@ -19,8 +19,9 @@ namespace Groll.Schule.OutputTools
         string SubGroup { get; }
 
         bool HasConfig { get; }
-        void ShowConfig();
-        void Start();
+
+        void ShowConfig(Schule.DataManager.UowSchuleDB uow = null);
+        void Start(Schule.DataManager.UowSchuleDB uow = null);
 
     }
 }

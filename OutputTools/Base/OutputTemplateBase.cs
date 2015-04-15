@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Groll.Schule.OutputTools
 {
-    public abstract class OutputTemplate : IOutputTemplate
+    public abstract class OutputTemplateBase : IOutputTemplate
     {
         public string Name { get; protected set; }
         public string Description { get; protected set; }
         public string Group { get; protected set; }
         public string SubGroup { get; protected set; }
 
-        public OutputTemplate()
+        public OutputTemplateBase()
         {
             Group = "Sonstiges";
         }
@@ -23,9 +23,9 @@ namespace Groll.Schule.OutputTools
             get; protected set;
         }
 
-        public abstract void ShowConfig();
+        public abstract void ShowConfig(Schule.DataManager.UowSchuleDB uow = null);
 
-        public abstract void Start();
+        public abstract void Start(Schule.DataManager.UowSchuleDB uow = null);
        
     }
 }
