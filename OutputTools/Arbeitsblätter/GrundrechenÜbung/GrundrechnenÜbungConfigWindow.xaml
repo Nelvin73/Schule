@@ -12,7 +12,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/OutputTools;component/OutputToolsConfigWindowStyles.xaml" />
+                <ResourceDictionary Source="/OutputTools;component/Base/OutputToolsConfigWindowStyles.xaml"  />
             </ResourceDictionary.MergedDictionaries>            
         </ResourceDictionary>
     </Window.Resources>

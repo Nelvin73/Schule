@@ -230,7 +230,7 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
                 {                                    
                     var rech = GenerateRechnung();
 
-                    var missingValue = Config.MissingPart == AufgabenStellung.Gemischt ? (AufgabenStellung) rnd.Next(0, 2) : Config.MissingPart;            
+                    var missingValue = Config.MissingPart == AufgabenStellung.Gemischt ? (AufgabenStellung) rnd.Next(0, 3) : Config.MissingPart;            
                     WriteRechnung((Excel.Range) ws.Cells[pos.Row, pos.Column], rech, missingValue);
                     WriteRechnung((Excel.Range) wsL.Cells[pos.Row, pos.Column], rech, missingValue, true);                                       
                 }
