@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Collections.ObjectModel;
 using Groll.Schule.Model;
-using Groll.Schule.DataAccess;
+using Groll.Schule.Datenbank;
 
 
 namespace Groll.Schule.DataManager.Repositories

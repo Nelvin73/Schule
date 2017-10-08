@@ -78,11 +78,11 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             string db = Properties.Settings.Default.UsedDatabase;
             if (db == "<Default>")
-                UnitOfWork.ConnectDatabase(DataManager.UowSchuleDB.DatabaseType.Standard);
+                UnitOfWork.ConnectDatabase("Groll.SchulDB");
             else if (db == "<Dev>")
-                UnitOfWork.ConnectDatabase(DataManager.UowSchuleDB.DatabaseType.Development);
+                UnitOfWork.ConnectDatabase("Groll.SchulDB_dev");
             else
-                UnitOfWork.ConnectDatabase(DataManager.UowSchuleDB.DatabaseType.Custom, db);
+                UnitOfWork.ConnectDatabase(db);
         }
 
 

@@ -6,13 +6,15 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using SchuleDB_Web.Models;
+using Groll.Schule.SchuleDBWeb.Models;
 
-namespace SchuleDB_Web.Models
+namespace Groll.Schule.SchuleDBWeb.Models
 {
     // Sie können Benutzerdaten für den Benutzer durch Hinzufügen weiterer Eigenschaften zur User-Klasse hinzufügen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=317594".
     public class ApplicationUser : IdentityUser
     {
+        public string Schulbezeichnung { get; set; }
+
         public ClaimsIdentity GenerateUserIdentity(ApplicationUserManager manager)
         {
             // Beachten Sie, dass der "authenticationType" mit dem in "CookieAuthenticationOptions.AuthenticationType" definierten Typ übereinstimmen muss.
@@ -42,7 +44,7 @@ namespace SchuleDB_Web.Models
 }
 
 #region Hilfsprogramme
-namespace SchuleDB_Web
+namespace Groll.Schule.SchuleDBWeb
 {
     public static class IdentityHelper
     {

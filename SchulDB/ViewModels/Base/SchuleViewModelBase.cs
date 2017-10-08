@@ -31,17 +31,17 @@ namespace Groll.Schule.SchulDB.ViewModels
         }        
 
         #region Unit of Work
-        
-        private UowSchuleDB unitOfWork;
 
-        public UowSchuleDB UnitOfWork
+        private SchuleUnitOfWork unitOfWork;
+
+        public SchuleUnitOfWork UnitOfWork
         {
             get
             {
                 if (unitOfWork == null)
                 { 
                     // Try to get UnitOfWork Global Ressource; if not successful, it stays <null>
-                    unitOfWork = System.Windows.Application.Current.TryFindResource("UnitOfWork") as UowSchuleDB;
+                    unitOfWork = System.Windows.Application.Current.TryFindResource("UnitOfWork") as SchuleUnitOfWork;
                     unitOfWork.DatabaseChanged += unitOfWork_DatabaseChanged;
                     // OnDatabaseChanged();
                 }

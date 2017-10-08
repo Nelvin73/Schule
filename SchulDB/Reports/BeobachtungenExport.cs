@@ -345,10 +345,10 @@ namespace Groll.Schule.SchulDB.Reports
         /// <summary>
         /// Exportiert alle Beobachtungen in Word
         /// </summary>
-        public void ExportToWord(Schule.DataManager.UowSchuleDB UOW = null)
+        public void ExportToWord(Schule.DataManager.SchuleUnitOfWork UOW = null)
         {
             if (UOW == null)
-                UOW = App.Current.FindResource("UnitOfWork") as Groll.Schule.DataManager.UowSchuleDB;
+                UOW = App.Current.FindResource("UnitOfWork") as Groll.Schule.DataManager.SchuleUnitOfWork;
             
             if (UOW != null)   
                 ExportToWord(UOW.Beobachtungen.GetList());
@@ -357,10 +357,10 @@ namespace Groll.Schule.SchulDB.Reports
         /// <summary>
         /// Exportiert alle Beobachtungen einer Klasse in Word
         /// </summary>
-        public void ExportToWord(Klasse Klasse, Schule.DataManager.UowSchuleDB UOW = null)
+        public void ExportToWord(Klasse Klasse, Schule.DataManager.SchuleUnitOfWork UOW = null)
         {
             if (UOW == null)
-                UOW = App.Current.FindResource("UnitOfWork") as Groll.Schule.DataManager.UowSchuleDB;
+                UOW = App.Current.FindResource("UnitOfWork") as Groll.Schule.DataManager.SchuleUnitOfWork;
 
             if (UOW != null)
             {
@@ -375,7 +375,7 @@ namespace Groll.Schule.SchulDB.Reports
         /// <summary>
         /// Exportiert alle Beobachtungen eines Jahrgangs in Word
         /// </summary>
-        public void ExportToWord(Schuljahr Schuljahr, Schule.DataManager.UowSchuleDB UOW = null)
+        public void ExportToWord(Schuljahr Schuljahr, Schule.DataManager.SchuleUnitOfWork UOW = null)
         {
             ExportToWord(Schuljahr.Startjahr, UOW);
         }
@@ -383,10 +383,10 @@ namespace Groll.Schule.SchulDB.Reports
         /// <summary>
         /// Exportiert alle Beobachtungen eines Jahrgangs in Word
         /// </summary>
-        public void ExportToWord(int Schuljahr, Schule.DataManager.UowSchuleDB UOW = null)
+        public void ExportToWord(int Schuljahr, Schule.DataManager.SchuleUnitOfWork UOW = null)
         {
             if (UOW == null)
-                UOW = App.Current.FindResource("UnitOfWork") as Groll.Schule.DataManager.UowSchuleDB;
+                UOW = App.Current.FindResource("UnitOfWork") as Groll.Schule.DataManager.SchuleUnitOfWork;
 
             if (UOW != null)
             {
@@ -397,10 +397,10 @@ namespace Groll.Schule.SchulDB.Reports
          /// <summary>
         /// Exportiert alle Beobachtungen eines Schülers in Word
         /// </summary>
-        public void ExportToWord(Schueler Schüler, int Schuljahr = 0, Schule.DataManager.UowSchuleDB UOW = null)
+        public void ExportToWord(Schueler Schüler, int Schuljahr = 0, Schule.DataManager.SchuleUnitOfWork UOW = null)
         {
             if (UOW == null)
-                UOW = App.Current.FindResource("UnitOfWork") as Groll.Schule.DataManager.UowSchuleDB;
+                UOW = App.Current.FindResource("UnitOfWork") as Groll.Schule.DataManager.SchuleUnitOfWork;
 
             if (UOW != null)
             {
@@ -416,7 +416,7 @@ namespace Groll.Schule.SchulDB.Reports
         /// <summary>
         /// Exportiert alle Beobachtungen eines Schülers in Word
         /// </summary>
-        public void ExportToWord(Schueler Schüler, Schuljahr Schuljahr, Schule.DataManager.UowSchuleDB UOW = null)
+        public void ExportToWord(Schueler Schüler, Schuljahr Schuljahr, Schule.DataManager.SchuleUnitOfWork UOW = null)
         {
             ExportToWord(Schüler, Schuljahr == null ? 0 : Schuljahr.Startjahr, UOW);
         }

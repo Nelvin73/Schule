@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SchuleDB_Web.Account
+namespace Groll.Schule.SchuleDBWeb.Account
 {
 
 

@@ -7,9 +7,9 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.DataProtection;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using SchuleDB_Web.Models;
+using Groll.Schule.SchuleDBWeb.Models;
 
-namespace SchuleDB_Web
+namespace Groll.Schule.SchuleDBWeb
 {
     public partial class Startup {
 

@@ -7,7 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.FriendlyUrls.Resolvers;
 
-namespace SchuleDB_Web
+namespace Groll.Schule.SchuleDBWeb
 {
     public partial class ViewSwitcher : System.Web.UI.UserControl
     {

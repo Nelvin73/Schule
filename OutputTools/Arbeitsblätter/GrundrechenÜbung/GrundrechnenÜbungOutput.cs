@@ -100,7 +100,7 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
             HasConfig = hasConfig;
         }
 
-        public override void ShowConfig(Schule.DataManager.UowSchuleDB uow = null)
+        public override void ShowConfig(Schule.DataManager.SchuleUnitOfWork uow = null)
         {
             if (uow != null)
                 Config.LoadFromDatabase(uow);
@@ -114,7 +114,7 @@ namespace Groll.Schule.OutputTools.Arbeitsblätter
            
         }
 
-        public override void Start(Schule.DataManager.UowSchuleDB uow = null)
+        public override void Start(Schule.DataManager.SchuleUnitOfWork uow = null)
         {
             if (uow != null)
                 Config.LoadFromDatabase(uow);

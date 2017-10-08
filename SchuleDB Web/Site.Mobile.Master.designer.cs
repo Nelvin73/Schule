@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SchuleDB_Web {
+namespace Groll.Schule.SchuleDBWeb {
     
     
     public partial class Site_Mobile {

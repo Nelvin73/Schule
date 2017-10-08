@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Optimization;
 using System.Web.UI;
 
-namespace SchuleDB_Web
+namespace Groll.Schule.SchuleDBWeb
 {
     public class BundleConfig
     {

@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.Routing;
 using Microsoft.AspNet.FriendlyUrls;
 
-namespace SchuleDB_Web
+namespace Groll.Schule.SchuleDBWeb
 {
     public static class RouteConfig
     {

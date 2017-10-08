@@ -13,7 +13,7 @@ namespace Groll.Schule.SchulDB
         
         // globale Programmeinstellungen        
         private static Dictionary<string, object> settingsCache;
-        private static UowSchuleDB DB;
+        private static SchuleUnitOfWork DB;
 
         // Statische Instanz
         public static Settings Instance;

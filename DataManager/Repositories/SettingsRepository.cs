@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Groll.Schule.Model;
-using Groll.Schule.DataAccess;
+using Groll.Schule.Datenbank;
 
 namespace Groll.Schule.DataManager.Repositories
 {

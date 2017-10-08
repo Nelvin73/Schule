@@ -5,9 +5,9 @@ using System.Web.UI;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Owin;
-using SchuleDB_Web.Models;
+using Groll.Schule.SchuleDBWeb.Models;
 
-namespace SchuleDB_Web.Account
+namespace Groll.Schule.SchuleDBWeb.Account
 {
     public partial class Register : Page
     {

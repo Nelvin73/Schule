@@ -20,8 +20,8 @@ namespace Groll.Schule.OutputTools
 
         bool HasConfig { get; }
 
-        void ShowConfig(Schule.DataManager.UowSchuleDB uow = null);
-        void Start(Schule.DataManager.UowSchuleDB uow = null);
+        void ShowConfig(Schule.DataManager.SchuleUnitOfWork uow = null);
+        void Start(Schule.DataManager.SchuleUnitOfWork uow = null);
 
     }
 }

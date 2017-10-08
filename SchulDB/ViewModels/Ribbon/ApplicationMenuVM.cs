@@ -23,7 +23,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             get
             {
-                return UnitOfWork == null ? "" : UnitOfWork.CurrentDbType.ToString();
+                return UnitOfWork == null ? "" : UnitOfWork.ConnectionProvider.ToString();
             }
         }
 
@@ -77,13 +77,13 @@ namespace Groll.Schule.SchulDB.ViewModels
                     break;
 
                 case "dev":
-                    UnitOfWork.ConnectDatabase(UowSchuleDB.DatabaseType.Development);
+                    UnitOfWork.ConnectDatabase("Groll.SchulDB_dev");
                     Properties.Settings.Default.UsedDatabase = "<Dev>";
                     Properties.Settings.Default.Save();
                     break;
 
                 default:
-                    UnitOfWork.ConnectDatabase(UowSchuleDB.DatabaseType.Standard);
+                    UnitOfWork.ConnectDatabase("Groll.SchulDB");
                     Properties.Settings.Default.UsedDatabase = "<Default>";
                     Properties.Settings.Default.Save();
                     break;

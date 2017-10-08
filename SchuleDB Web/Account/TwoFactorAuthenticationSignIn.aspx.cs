@@ -7,9 +7,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using SchuleDB_Web.Models;
+using Groll.Schule.SchuleDBWeb.Models;
 
-namespace SchuleDB_Web.Account
+namespace Groll.Schule.SchuleDBWeb.Account
 {
     public partial class TwoFactorAuthenticationSignIn : System.Web.UI.Page
     {

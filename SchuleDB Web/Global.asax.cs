@@ -7,7 +7,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 
-namespace SchuleDB_Web
+namespace Groll.Schule.SchuleDBWeb
 {
     public class Global : HttpApplication
     {

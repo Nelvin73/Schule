@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Groll.Schule.Model;
-using Groll.Schule.DataAccess;
+using Groll.Schule.Datenbank;
 using Groll.Schule.DataManager.Repositories;
 using System.Data.Entity;
 
 namespace Groll.Schule.DataManager
 {
-    public class UowSchuleDB : IDisposable
+    public class UowSmchuleDB : IDisposable
     {
         public enum DatabaseType { Standard, Development, Custom, None }
 
@@ -165,12 +165,12 @@ namespace Groll.Schule.DataManager
 
         #endregion
 
-        public UowSchuleDB()
+        public UowSmchuleDB()
         {
             // Default Konstruktor verbindet sich noch nicht mit der Datenbank.            
         }
 
-        public UowSchuleDB(DatabaseType DBtype, string Filename = "")
+        public UowSmchuleDB(DatabaseType DBtype, string Filename = "")
         {
             ConnectDatabase(DBtype, Filename);                     
         }
@@ -253,7 +253,7 @@ namespace Groll.Schule.DataManager
                     break;
 
                 case DatabaseType.Custom:
-                    context = SchuleContext.Open(Filename);
+                    context = SchuleContext.OpenDatabase(Filename);
                     break;
             }
 

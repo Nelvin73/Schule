@@ -7,10 +7,11 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace SchuleDB_Web
+namespace Groll.Schule.SchuleDBWeb
 {
     public partial class SiteMaster : MasterPage
     {
+        private string AssemblyName = null;
         private const string AntiXsrfTokenKey = "__AntiXsrfToken";
         private const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
         private string _antiXsrfTokenValue;
@@ -74,6 +75,18 @@ namespace SchuleDB_Web
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
         {
             Context.GetOwinContext().Authentication.SignOut();
+        }
+
+        public string GetAssemblyName()
+        {
+            if (AssemblyName == null)
+            {
+                var attr = System.Reflection.Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(System.Reflection.AssemblyTitleAttribute), false);
+                if (attr.Length > 0)
+                    AssemblyName = ((System.Reflection.AssemblyTitleAttribute) attr[0]).Title;                
+            }
+
+            return AssemblyName;
         }
     }
 

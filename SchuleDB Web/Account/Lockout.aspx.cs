@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace SchuleDB_Web.Account
+namespace Groll.Schule.SchuleDBWeb.Account
 {
     public partial class Lockout : System.Web.UI.Page
     {

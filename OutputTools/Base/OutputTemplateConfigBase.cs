@@ -12,8 +12,8 @@ namespace Groll.Schule.OutputTools
         {            
             RestoreDefaultValues();            
         }
-        
-        public virtual void LoadFromDatabase(DataManager.UowSchuleDB UnitofWork)
+
+        public virtual void LoadFromDatabase(DataManager.SchuleUnitOfWork UnitofWork)
         {
             var s = UnitofWork.Settings["OutputTemplate.Settings." + GetType().FullName];
             string settings = s == null ? "" : s.GetString();            
@@ -23,7 +23,7 @@ namespace Groll.Schule.OutputTools
             }
         }
 
-        public virtual void SaveToDatabase(DataManager.UowSchuleDB UnitofWork)
+        public virtual void SaveToDatabase(DataManager.SchuleUnitOfWork UnitofWork)
         {
             string settings = GetSettingsAsString();
             if (!String.IsNullOrEmpty(settings))

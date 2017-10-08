@@ -11,7 +11,18 @@ namespace Groll.Schule.DataAccess
 {
     public class SchuleContextInitializer : CreateDatabaseIfNotExists<SchuleContext> // DropCreateDatabaseIfModelChanges<SchuleContext>
     {
-        public bool CreateEmptyDB = true;
+
+        private bool createTestData = true;
+
+        public SchuleContextInitializer(bool CreateTestData = false) 
+            : base ()
+        {
+            createTestData = CreateTestData;
+        }
+
+       
+        
+        
 
         protected override void Seed(SchuleContext context)
         {
@@ -19,8 +30,8 @@ namespace Groll.Schule.DataAccess
             var SJ = Schuljahr.GetCurrent();
             context.Settings.Add(new Setting("Global.AktuellesSchuljahr", SJ.Startjahr));
             context.Schuljahre.Add(SJ);
-            
-            if (!CreateEmptyDB)
+
+            if (createTestData)
             {
                 var Zuhause = new Adresse { Strasse = "Vogtstrasse 1", Ort = "Friedberg", PLZ = 86316 };
 

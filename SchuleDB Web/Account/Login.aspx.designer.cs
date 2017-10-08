@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SchuleDB_Web.Account {
+namespace Groll.Schule.SchuleDBWeb.Account {
     
     
     public partial class Login {
@@ -73,6 +73,6 @@ namespace SchuleDB_Web.Account {
         /// Automatisch generiertes Feld.
         /// Zum Ändern die Felddeklaration aus der Designerdatei in die CodeBehind-Datei verschieben.
         /// </remarks>
-        protected global::SchuleDB_Web.Account.OpenAuthProviders OpenAuthLogin;
+        protected global::Groll.Schule.SchuleDBWeb.Account.OpenAuthProviders OpenAuthLogin;
     }
 }

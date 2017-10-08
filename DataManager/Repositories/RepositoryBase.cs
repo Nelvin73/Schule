@@ -1,4 +1,4 @@
-﻿using Groll.Schule.DataAccess;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using Groll.Schule.Datenbank;
 
 namespace Groll.Schule.DataManager.Repositories
 {
     public class RepositoryBase<T> where T : class, new()
         {
-            protected SchuleContext context;            
+            protected SchuleContext context;
 
             public RepositoryBase(SchuleContext context)
             {

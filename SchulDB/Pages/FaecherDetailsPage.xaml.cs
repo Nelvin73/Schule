@@ -36,14 +36,14 @@ namespace Groll.Schule.SchulDB.Pages
             System.Windows.Data.CollectionViewSource schuelerSource =
                 ((System.Windows.Data.CollectionViewSource)(this.FindResource("fachViewSource")));
 
-            var UOW = (this.FindResource("UnitOfWork")) as Groll.Schule.DataManager.UowSchuleDB;            
+            var UOW = (this.FindResource("UnitOfWork")) as Groll.Schule.DataManager.SchuleUnitOfWork;            
             schuelerSource.Source = UOW.Fächer.GetObservableCollection();
 
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var UOW = (this.FindResource("UnitOfWork")) as Groll.Schule.DataManager.UowSchuleDB;
+            var UOW = (this.FindResource("UnitOfWork")) as Groll.Schule.DataManager.SchuleUnitOfWork;
             UOW.Fächer.Create().Name = "Test";            
         }
 

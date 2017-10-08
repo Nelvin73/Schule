@@ -23,9 +23,9 @@ namespace Groll.Schule.OutputTools
             get; protected set;
         }
 
-        public abstract void ShowConfig(Schule.DataManager.UowSchuleDB uow = null);
+        public abstract void ShowConfig(Schule.DataManager.SchuleUnitOfWork uow = null);
 
-        public abstract void Start(Schule.DataManager.UowSchuleDB uow = null);
+        public abstract void Start(Schule.DataManager.SchuleUnitOfWork uow = null);
        
     }
 }

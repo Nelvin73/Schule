@@ -4,7 +4,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Classic"
                     xmlns:hlp="clr-namespace:Groll.Schule.SchulDB.Helper">
 
-    <data:UowSchuleDB x:Key="UnitOfWork" />
+    <data:SchuleUnitOfWork x:Key="UnitOfWork" />
     <VM:RibbonViewModel x:Key="Ribbon" />
     <hlp:IntToSchuljahrConverter x:Key="IntToSchuljahrConverter"/>
     <hlp:BooleanInverterConverter x:Key="BooleanInverterConverter"/>

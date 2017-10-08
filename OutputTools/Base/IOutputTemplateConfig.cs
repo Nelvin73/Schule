@@ -15,10 +15,10 @@ namespace Groll.Schule.OutputTools
     public interface IOutputTemplateConfig : ICloneable
     {
         // Load config from database
-        void LoadFromDatabase(UowSchuleDB UnitofWork);
+        void LoadFromDatabase(SchuleUnitOfWork UnitofWork);
 
         // save config to database
-        void SaveToDatabase(UowSchuleDB UnitofWork);
+        void SaveToDatabase(SchuleUnitOfWork UnitofWork);
 
         // Load default
         void RestoreDefaultValues();        

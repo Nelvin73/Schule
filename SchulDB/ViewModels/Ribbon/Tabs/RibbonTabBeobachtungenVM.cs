@@ -566,7 +566,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             get
             {
-                if (UnitOfWork == null || UnitOfWork.CurrentDbType == UowSchuleDB.DatabaseType.None)
+                if (UnitOfWork == null || UnitOfWork.ConnectionString == "")
                     return new List<Beobachtung>();
 
                 if (beobachtungenCollection == null)
@@ -585,7 +585,7 @@ namespace Groll.Schule.SchulDB.ViewModels
         {
             get
             {
-                if (UnitOfWork == null || UnitOfWork.CurrentDbType == UowSchuleDB.DatabaseType.None)
+                if (UnitOfWork == null || UnitOfWork.ConnectionString  == "")
                     return new List<Textbaustein>();
 
                 if (texteCollection == null)
